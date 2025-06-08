@@ -34,7 +34,7 @@ const SecondHandCars: React.FC = () => {
       year: 2023,
       driveType: "AWD",
       category: "Electric SUV",
-      location: "Brisbane"
+      location: "Melbourne"
     },
     {
       id: "hyundai-venue",
@@ -101,7 +101,7 @@ const SecondHandCars: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Second Hand Cars | FlexCar</title>
+        <title>Second Hand Cars | Faith Auto</title>
         <meta name="description" content="Browse our selection of quality second-hand cars. Each vehicle is thoroughly inspected and comes with a warranty." />
       </Helmet>
 

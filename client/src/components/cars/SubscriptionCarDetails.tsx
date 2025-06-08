@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { Car } from "@shared/schema";
+import { Car as BaseCar } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
 import { Link } from "wouter";
 import { useState } from "react";
+import { Car, FullCar } from "@/types/car";
 
 interface SubscriptionCarDetailsProps {
   carId: string;
@@ -10,20 +11,27 @@ interface SubscriptionCarDetailsProps {
 
 const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   // For the example page, we'll use hardcoded data
-  const exampleCar = {
+  const exampleCar: FullCar = {
     id: "example",
     make: "BMW",
-    model: "X5",
-    year: 2023,
-    category: "Luxury SUV",
+    model: "X5 M Sport",
+    year: 2024,
+    category: "Luxury Performance SUV",
     bodyType: "SUV",
-    driveType: "AWD",
+    driveType: "xDrive (AWD)",
     fuelType: "Diesel",
     seats: 5,
     weeklyPrice: 899,
     available: true,
     isGreatValue: true,
-    location: "Brisbane"
+    location: "Brisbane",
+    description: "Experience unparalleled luxury with the latest BMW X5 M Sport. This commanding SUV combines athletic performance with sophisticated elegance, featuring M Sport-specific design elements, advanced driver assistance systems, and BMW's latest iDrive technology.",
+    highlights: [
+      "M Sport Package",
+      "21-inch M light alloy wheels",
+      "Adaptive M Suspension",
+      "BMW Live Cockpit Professional"
+    ]
   };
 
   // Only fetch from API if it's not the example page
@@ -51,29 +59,40 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/95 to-gray-900/85" style={{ 
-          backgroundImage: `url(${getCarImageUrl(displayCar.id)})`
-        }}></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full z-10 py-24">
-          <div className="w-full max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {displayCar.make} {displayCar.model}
-            </h1>
-            <p className="text-xl text-gray-300 mb-6">
-              {displayCar.year} {displayCar.category}
-            </p>
-            <div className="flex items-center gap-4">
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                displayCar.available 
-                  ? 'bg-success/10 text-success' 
-                  : 'bg-danger/10 text-danger'
-              }`}>
-                {displayCar.available ? 'Available' : 'Not Available'}
-              </span>
-              <span className="text-3xl font-bold text-white bg-primary/20 backdrop-blur-sm px-6 py-2 rounded-lg">
-                ${displayCar.weeklyPrice}/week
-              </span>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Image Section */}
+          <div className="relative rounded-xl overflow-hidden">
+            <img 
+              src={getCarImageUrl(displayCar.id)} 
+              alt={`${displayCar.make} ${displayCar.model}`}
+              className="w-full aspect-[16/10] object-cover rounded-xl"
+            />
+            <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+              displayCar.available 
+                ? 'bg-success/90 text-white' 
+                : 'bg-danger/90 text-white'
+            }`}>
+              {displayCar.available ? 'Available Now' : 'Coming Soon'}
+            </span>
+          </div>
+
+          {/* Details Section */}
+          <div className="flex flex-col h-full">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-sm text-gray-600">{displayCar.location}</span>
+                <span className="text-sm text-gray-600">•</span>
+                <span className="text-sm text-gray-600">{displayCar.category}</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {displayCar.year} {displayCar.make} {displayCar.model}
+              </h1>
+              <p className="text-gray-600 text-lg leading-relaxed">
+                {displayCar.description}
+              </p>
+              {/* Quick Actions */}
+    
             </div>
           </div>
         </div>
@@ -127,81 +146,51 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                 </div>
               </div>
 
-              {/* Subscription Benefits */}
-              <div className="bg-white rounded-xl shadow-sm p-8">
-                <h2 className="text-2xl font-bold mb-6">Subscription Benefits</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Insurance Included</p>
-                      <p className="text-sm text-gray-500">Comprehensive coverage</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Maintenance Included</p>
-                      <p className="text-sm text-gray-500">Regular servicing covered</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Flexible Terms</p>
-                      <p className="text-sm text-gray-500">Minimum 1 month</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
             </div>
 
-            {/* Subscription Plans Sidebar */}
+            {/* Sidebar - Subscription Plans */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-sm p-8 sticky top-8">
                 <h2 className="text-2xl font-bold mb-6">Subscription Plans</h2>
                 <div className="space-y-4">
-                  {/* 4 Months Plan */}
-                  <div 
-                    className={`border rounded-lg p-6 transition-all ${
-                      selectedPlan === 0 
-                        ? 'border-primary bg-primary/5' 
-                        : 'border-gray-200 hover:border-primary/50'
-                    }`}
-                    onClick={() => handleSelectPlan(0)}
-                    role="button"
-                    tabIndex={0}
-                  >
-                    <div className="text-center mb-4">
-                      <h3 className="text-xl font-bold text-gray-900">4 Months</h3>
-                      <div className="mt-2">
-                        <p className="text-3xl font-bold text-primary">${displayCar.weeklyPrice}</p>
-                        <p className="text-gray-600">per week</p>
-                      </div>
-                    </div>
-                    <ul className="space-y-3">
-                      <li className="flex items-center text-gray-700">
-                        <i className="fas fa-check text-success mr-3"></i>
-                        4-month commitment
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <i className="fas fa-check text-success mr-3"></i>
-                        Insurance included
-                      </li>
-                      <li className="flex items-center text-gray-700">
-                        <i className="fas fa-check text-success mr-3"></i>
-                        Maintenance included
-                      </li>
-                    </ul>
-                  </div>
+                  {[4, 6, 9].map((months) => {
+                    const weeklyDiscount = months === 4 ? 0 : months === 6 ? 50 : 100;
+                    const discountedPrice = displayCar.weeklyPrice - weeklyDiscount;
+                    const isSelected = selectedPlan === months;
+                    
+                    return (
+                      <button
+                        key={months}
+                        onClick={() => setSelectedPlan(months)}
+                        className={`w-full p-4 rounded-xl border-2 transition-all ${
+                          isSelected 
+                            ? 'border-primary bg-primary/5' 
+                            : 'border-gray-200 hover:border-primary/50'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-semibold text-gray-900">{months} Months</span>
+                          <div className="text-right">
+                            <div className="flex items-baseline gap-1">
+                              <span className={`text-2xl font-bold ${isSelected ? 'text-primary' : 'text-gray-900'}`}>
+                                ${discountedPrice}
+                              </span>
+                              <span className="text-sm text-gray-600">/week</span>
+                            </div>
+                            {weeklyDiscount > 0 && (
+                              <div className="mt-1">
+                                <span className="text-sm text-success">Save ${weeklyDiscount}/week</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
 
-                  {/* Enquiry Button */}
+                <div className="mt-6">
                   <Link 
                     href={selectedPlan !== null ? "/enquiry" : "#"}
                     className={`w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all ${

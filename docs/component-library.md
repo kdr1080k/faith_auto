@@ -1,8 +1,8 @@
-# FlexCar 组件库文档
+# Faith Auto 组件库文档
 
 ## 1. 组件库概述
 
-FlexCar组件库基于React和Tailwind CSS构建，提供一套完整的、可复用的UI组件，确保整个应用的设计一致性和开发效率。
+Faith Auto组件库基于React和Tailwind CSS构建，提供一套完整的、可复用的UI组件，确保整个应用的设计一致性和开发效率。
 
 ### 1.1 技术栈
 - **React 18**: 组件化开发框架

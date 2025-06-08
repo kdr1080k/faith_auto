@@ -1,0 +1,12 @@
+.heroBanner {
+  position: relative;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+} 
