@@ -6,47 +6,50 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid", "Electric"];
 const BODY_TYPES = ["All", "SUV", "Sedan", "Hatchback", "Wagon", "Ute", "Van", "Coupe"];
 const SEATS = ["All", "2", "4", "5", "6", "7+"];
-const LOCATIONS = ["All", "Brisbane", "Sydney", "Melbourne", "Adelaide", "Perth"];
+const MAKES = ["All", "Smart", "Tesla", "Toyota", "Hyundai", "Nissan", "Suzuki", "Mazda"];
 
 interface FiltersState {
-  fuelTypes: string[];
-  bodyTypes: string[];
-  seats: string[];
-  makes: string[];
   location: string;
+  bodyType: string;
+  fuelType: string;
+  seats: string;
+  make: string;
 }
 
 interface CarFiltersProps {
-  initialFilters: FiltersState;
-  onApplyFilters: (filters: FiltersState) => void;
-  availableMakes: string[];
+  initial: FiltersState;
+  onApply: (filters: FiltersState) => void;
 }
 
-const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters, availableMakes }) => {
-  const [filters, setFilters] = useState<FiltersState>(initialFilters);
+const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
+  const [filters, setFilters] = useState<FiltersState>(initial);
 
   useEffect(() => {
-    setFilters(initialFilters);
-  }, [initialFilters]);
+    setFilters(initial);
+  }, [initial]);
 
-  const handleFilterChange = (type: keyof FiltersState, value: string) => {
-    if (type === 'location') {
-      setFilters(prev => ({
-        ...prev,
-        location: value === 'All' ? '' : value
-      }));
-    } else {
-      const arrayType = type as keyof Omit<FiltersState, 'location'>;
-      setFilters(prev => ({
-        ...prev,
-        [arrayType]: value === 'All' ? [] : [value]
-      }));
-    }
+  const handleFilterChange = (key: keyof FiltersState, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onApplyFilters(filters);
+    onApply(filters);
+  };
+
+  const handleReset = () => {
+    const resetFilters = {
+      location: "All",
+      bodyType: "All",
+      fuelType: "All",
+      seats: "All",
+      make: "All"
+    };
+    setFilters(resetFilters);
+    onApply(resetFilters);
   };
 
   return (
@@ -58,29 +61,10 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters,
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Location</label>
-              <Select 
-                value={filters.location || 'All'} 
-                onValueChange={v => handleFilterChange('location', v)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select location" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {LOCATIONS.map(loc => (
-                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Fuel Type</label>
               <Select 
-                value={filters.fuelTypes[0] || 'All'} 
-                onValueChange={v => handleFilterChange('fuelTypes', v)}
+                value={filters.fuelType} 
+                onValueChange={v => handleFilterChange('fuelType', v)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select fuel type" />
@@ -98,8 +82,8 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters,
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Body Type</label>
               <Select 
-                value={filters.bodyTypes[0] || 'All'} 
-                onValueChange={v => handleFilterChange('bodyTypes', v)}
+                value={filters.bodyType} 
+                onValueChange={v => handleFilterChange('bodyType', v)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select body type" />
@@ -117,7 +101,7 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters,
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">No. of Seats</label>
               <Select 
-                value={filters.seats[0] || 'All'} 
+                value={filters.seats} 
                 onValueChange={v => handleFilterChange('seats', v)}
               >
                 <SelectTrigger className="w-full">
@@ -136,16 +120,15 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters,
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Make</label>
               <Select 
-                value={filters.makes[0] || 'All'} 
-                onValueChange={v => handleFilterChange('makes', v)}
+                value={filters.make} 
+                onValueChange={v => handleFilterChange('make', v)}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select make" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="All">All</SelectItem>
-                    {availableMakes.map(make => (
+                    {MAKES.map(make => (
                       <SelectItem key={make} value={make}>{make}</SelectItem>
                     ))}
                   </SelectGroup>
@@ -154,9 +137,19 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters,
             </div>
           </div>
 
-          <Button type="submit" className="w-full mt-2">
-            Apply Filters
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button type="submit" className="w-full">
+              Apply Filters
+            </Button>
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full"
+              onClick={handleReset}
+            >
+              Reset Filters
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

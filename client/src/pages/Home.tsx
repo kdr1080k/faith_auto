@@ -19,7 +19,7 @@ const Home = () => {
           }
         });
       },
-      { 
+      {
         threshold: 0.1,
         rootMargin: '-100px 0px'
       }
@@ -38,8 +38,8 @@ const Home = () => {
         <title>Faith Auto - Car Subscription & Quality Used Cars</title>
         <meta name="description" content="Experience the freedom of car subscription or find your perfect pre-owned vehicle. Flexible terms, all-inclusive packages, and quality assured used cars." />
       </Helmet>
-      
-      <Hero 
+
+      <Hero
         title="Your Journey, Your Choice"
         subtitle="Subscribe to a flexible car experience or find your perfect pre-owned vehicle. Quality assured, hassle-free, and tailored to your lifestyle."
         buttonText="Explore Subscription"
@@ -47,7 +47,7 @@ const Home = () => {
         secondaryButtonText="View Used Cars"
         secondaryButtonLink="/second-hand-cars"
       />
-      
+
       {/* Featured Categories Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,8 +78,11 @@ const Home = () => {
                 </li>
               </ul>
               <Link href="/subscription">
-                <Button className="w-full transform transition-transform hover:scale-105">Learn More</Button>
+                <Button className="w-full text-white transform transition-transform hover:scale-105">
+                  View Vehicles
+                </Button>
               </Link>
+
             </div>
 
             {/* Second Hand Cars */}
@@ -107,17 +110,20 @@ const Home = () => {
                 </li>
               </ul>
               <Link href="/second-hand-cars">
-                <Button className="w-full transform transition-transform hover:scale-105">View Inventory</Button>
+                <Button className="w-full text-white transform transition-transform hover:scale-105">
+                  View Vehicles
+                </Button>
               </Link>
+
             </div>
           </div>
         </div>
       </section>
-      
+
       {/* Why Choose Us Section */}
-      <section 
+      <section
         className="py-24 bg-cover bg-center bg-no-repeat relative"
-        style={{ 
+        style={{
           backgroundImage: `
             linear-gradient(
               to bottom,
@@ -132,7 +138,7 @@ const Home = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-6 text-white">Why Choose Faith Auto</h2>
             <p className="text-xl max-w-3xl mx-auto text-gray-300">
-              Whether you're looking for the flexibility of a subscription or the perfect pre-owned vehicle, 
+              Whether you're looking for the flexibility of a subscription or the perfect pre-owned vehicle,
               we're here to provide you with the best automotive experience.
             </p>
           </div>
@@ -147,7 +153,7 @@ const Home = () => {
                 Every vehicle thoroughly inspected and maintained to the highest standards
               </p>
             </div>
-            
+
             <div className="p-6 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1">
               <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mb-4">
                 <i className="fas fa-dollar-sign text-primary text-xl"></i>
@@ -246,8 +252,8 @@ const Home = () => {
           </div>
           <div className="text-center">
             <Link href="/contact">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-primary text-white hover:bg-primary-hover transform transition-all duration-300 hover:scale-105"
               >
                 Contact Us Now
