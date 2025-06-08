@@ -132,10 +132,10 @@ const SecondHandCars: React.FC = () => {
           backgroundImage: `url('/pexels-bertellifotografia-13872477.jpg')`
         }}></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-black mb-4">
             Quality Used Cars
           </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+          <p className="text-xl text-black max-w-3xl mx-auto">
             Browse our selection of thoroughly inspected second-hand vehicles. 
             All cars come with warranty and our quality guarantee.
           </p>
