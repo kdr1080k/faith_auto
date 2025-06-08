@@ -184,43 +184,6 @@ const Home = () => {
               </p>
             </div>
           </div>
-
-          {/* Smart Cars Section */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-6 text-white">Smart Cars</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="p-8 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <i className="fas fa-check-circle text-primary text-2xl"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-white">All inclusive rates</h3>
-              <p className="text-gray-300">
-                Insurance, registration, servicing and roadside assistance all included for complete peace of mind.*
-              </p>
-            </div>
-
-            <div className="p-8 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <i className="fas fa-car-side text-primary text-2xl"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-white">Premium luxury vehicles</h3>
-              <p className="text-gray-300">
-                Choose from our fleet of new & near-new hatchbacks, sedans and SUVs.
-              </p>
-            </div>
-
-            <div className="p-8 bg-white/10 backdrop-blur-sm rounded-lg hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-16 h-16 bg-primary/20 rounded-full flex items-center justify-center mb-6">
-                <i className="fas fa-sync-alt text-primary text-2xl"></i>
-              </div>
-              <h3 className="text-xl font-bold mb-4 text-white">Flexible options</h3>
-              <p className="text-gray-300">
-                Subscribe from 3 months with options to switch, upgrade or purchase at term end.*
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-gray-400 mt-8 text-center">* Terms and conditions apply</p>
         </div>
       </section>
 

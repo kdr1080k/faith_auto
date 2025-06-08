@@ -18,6 +18,55 @@ const SORTS = [
   { label: "Newest", value: "newest" },
 ];
 
+// Hardcoded subscription cars data
+const SUBSCRIPTION_CARS: Car[] = [
+  {
+    id: "smart-1-sub",
+    make: "Smart",
+    model: "#1",
+    weeklyPrice: 299,
+    available: true,
+    isGreatValue: true,
+    fuelType: "Electric",
+    bodyType: "SUV",
+    seats: 5,
+    year: 2023,
+    driveType: "AWD",
+    category: "Electric SUV",
+    location: "Brisbane"
+  },
+  {
+    id: "tesla-3-sub",
+    make: "Tesla",
+    model: "Model 3",
+    weeklyPrice: 349,
+    available: true,
+    isGreatValue: false,
+    fuelType: "Electric",
+    bodyType: "Sedan",
+    seats: 5,
+    year: 2023,
+    driveType: "AWD",
+    category: "Electric Sedan",
+    location: "Melbourne"
+  },
+  {
+    id: "toyota-camry-sub",
+    make: "Toyota",
+    model: "Camry",
+    weeklyPrice: 249,
+    available: true,
+    isGreatValue: true,
+    fuelType: "Hybrid",
+    bodyType: "Sedan",
+    seats: 5,
+    year: 2023,
+    driveType: "FWD",
+    category: "Hybrid Sedan",
+    location: "Sydney"
+  }
+];
+
 function useQueryParams(): FiltersState & { sort: string } {
   const [location] = useLocation();
   return useMemo(() => {
@@ -35,41 +84,30 @@ function useQueryParams(): FiltersState & { sort: string } {
 
 const BrowseCars = () => {
   const filters = useQueryParams();
-  const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(false);
   const [, navigate] = useLocation();
   const [sort, setSort] = useState(filters.sort);
 
-  useEffect(() => {
-    setLoading(true);
-    const params = new URLSearchParams();
-    if (filters.bodyType !== "All") params.append("bodyType", filters.bodyType);
-    if (filters.fuelType !== "All") params.append("fuelType", filters.fuelType);
-    if (filters.seats !== "All") params.append("seats", filters.seats);
-    if (filters.make !== "All") params.append("make", filters.make);
-    params.append("sort", sort);
-    
-    fetch(`/api/cars?${params.toString()}`)
-      .then(res => res.json())
-      .then(data => {
-        let sortedCars = [...(data.cars || [])];
-        
-        // Apply sorting
-        if (sort === "price-asc") {
-          sortedCars.sort((a, b) => a.weeklyPrice - b.weeklyPrice);
-        } else if (sort === "price-desc") {
-          sortedCars.sort((a, b) => b.weeklyPrice - a.weeklyPrice);
-        } else if (sort === "newest") {
-          sortedCars.sort((a, b) => b.year - a.year);
-        }
-        
-        setCars(sortedCars);
-      })
-      .catch(error => {
-        console.error("Error fetching cars:", error);
-        setCars([]);
-      })
-      .finally(() => setLoading(false));
+  // Apply filters to the cars
+  const filteredCars = useMemo(() => {
+    let filtered = SUBSCRIPTION_CARS.filter(car => {
+      if (filters.bodyType !== "All" && car.bodyType !== filters.bodyType) return false;
+      if (filters.fuelType !== "All" && car.fuelType !== filters.fuelType) return false;
+      if (filters.seats !== "All" && car.seats !== parseInt(filters.seats)) return false;
+      if (filters.make !== "All" && car.make !== filters.make) return false;
+      return true;
+    });
+
+    // Apply sorting
+    if (sort === "price-asc") {
+      filtered.sort((a, b) => a.weeklyPrice - b.weeklyPrice);
+    } else if (sort === "price-desc") {
+      filtered.sort((a, b) => b.weeklyPrice - a.weeklyPrice);
+    } else if (sort === "newest") {
+      filtered.sort((a, b) => b.year - a.year);
+    }
+
+    return filtered;
   }, [filters.bodyType, filters.fuelType, filters.seats, filters.make, sort]);
 
   const handleApplyFilters = (newFilters: FiltersState) => {
@@ -99,7 +137,7 @@ const BrowseCars = () => {
         <main className="flex-1">
           {/* Sort Controls */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 gap-4">
-            <div className="text-gray-700 font-medium">{cars.length} Models Available</div>
+            <div className="text-gray-700 font-medium">{filteredCars.length} Models Available</div>
             <div className="flex gap-2">
               <select 
                 className="border rounded p-2" 
@@ -122,12 +160,12 @@ const BrowseCars = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {cars.length === 0 ? (
+              {filteredCars.length === 0 ? (
                 <div className="col-span-full text-center text-gray-400 py-12">
                   No cars found matching your criteria.
                 </div>
               ) : (
-                cars.map(car => (
+                filteredCars.map(car => (
                   <CarCard key={car.id} car={car} isSubscription />
                 ))
               )}
