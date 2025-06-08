@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
-import SubscriptionInventory from "@/pages/SubscriptionInventory";
+import BrowseCars from "@/pages/BrowseCars";
 import CarDetail from "@/pages/CarDetail";
 import SubscriptionCarDetail from "@/pages/SubscriptionCarDetail";
 import Smart from "@/pages/Smart";
@@ -23,7 +23,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
-      <Route path="/subscription-inventory" component={SubscriptionInventory} />
+      <Route path="/browse-cars" component={BrowseCars} />
       <Route path="/car/:id" component={CarDetail} />
       <Route path="/subscription-car/:id" component={SubscriptionCarDetail} />
       <Route path="/smart" component={Smart} />
@@ -33,7 +33,6 @@ function Router() {
       <Route path="/subscription" component={WhySubscription} />
       <Route path="/second-hand-cars" component={SecondHandCars} />
       <Route path="/long-term-rental" component={LongTermRental} />
-      <Route path="/browse-cars" component={SubscriptionInventory} />
       <Route path="/enquiry" component={Enquiry} />
       <Route path="/faq" component={FAQ} />
       <Route component={NotFound} />

@@ -11,7 +11,8 @@ const About: React.FC = () => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
         }
       });
     };
@@ -77,7 +78,7 @@ const About: React.FC = () => {
           {/* Mission & Story Section */}
           <section 
             ref={el => sectionRefs.current[0] = el}
-            className="mb-16 opacity-0 transition-all duration-1000"
+            className="mb-16 opacity-0 translate-y-4 transition-all duration-1000"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
@@ -243,7 +244,7 @@ const About: React.FC = () => {
           {/* Why Choose Us Section */}
           <section 
             ref={el => sectionRefs.current[4] = el}
-            className="mb-16 opacity-0 transition-all duration-1000"
+            className="mb-16 opacity-0 translate-y-4 transition-all duration-1000"
           >
             <h2 className="text-3xl font-bold mb-8 hover:scale-105 transition-transform duration-300">
               Why Choose Faith Auto
@@ -290,12 +291,8 @@ const About: React.FC = () => {
               Browse our current inventory or make an enquiry. Our team is here to help you find the perfect Japanese import for your needs.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/inventory">
-                <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
-                  View Inventory
-                </Button>
-              </Link>
-              <Link href="/enquiry">
+             
+              <Link href="/contact">
                 <Button variant="outline" className="border-primary text-primary hover:bg-primary/5 px-8 py-6 text-lg w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
                   Make an Enquiry
                 </Button>
