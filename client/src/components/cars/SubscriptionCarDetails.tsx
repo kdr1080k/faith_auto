@@ -3,6 +3,7 @@ import { Car } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
 import { Link } from "wouter";
 import { useState } from "react";
+import styles from './SubscriptionCarDetails.module.css';
 
 interface SubscriptionCarDetailsProps {
   carId: string;
@@ -51,10 +52,12 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative min-h-[600px] bg-cover bg-center bg-no-repeat">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-900/95 to-gray-900/85" style={{ 
+      <section 
+        className={styles.heroBanner}
+        style={{ 
           backgroundImage: `url(${getCarImageUrl(displayCar.id)})`
-        }}></div>
+        }}>
+        <div className={styles.overlay}></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full z-10 py-24">
           <div className="w-full max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
