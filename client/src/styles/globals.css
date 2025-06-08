@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand Colors */
+  --primary: #00BFA5;
+  --primary-hover: #00A693;
+  --secondary: #263238;
+  --secondary-hover: #37474F;
+  --accent: #00C8AA;
+  
+  /* Text Colors */
+  --text-primary: #263238;
+  --text-secondary: #546E7A;
+  --text-light: #90A4AE;
+  
+  /* Status Colors */
+  --success: #4CAF50;
+  --success-light: #E8F5E9;
+  --danger: #F44336;
+  --danger-light: #FFEBEE;
+  --warning: #FFC107;
+  --warning-light: #FFF8E1;
+  --info: #2196F3;
+  --info-light: #E3F2FD;
+  
+  /* Background Colors */
+  --background: #FFFFFF;
+  --background-light: #F5F7FA;
+  --background-dark: #263238;
+  
+  /* Border Colors */
+  --border: #E0E0E0;
+  
+  /* Component Colors */
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 210 40% 96.1%;
+  --accent-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: var(--primary);
+  --radius: 0.5rem;
+}
+
+/* Utility classes */
+.text-success { color: var(--success) !important; }
+.bg-success-light { background-color: var(--success-light) !important; }
+.text-danger { color: var(--danger) !important; }
+.bg-danger-light { background-color: var(--danger-light) !important; }
+.text-warning { color: var(--warning) !important; }
+.bg-warning-light { background-color: var(--warning-light) !important; }
+.text-info { color: var(--info) !important; }
+.bg-info-light { background-color: var(--info-light) !important; }
+
+/* Dark background transition styles */
+.bg-dark-active {
+  background-color: var(--background-dark) !important;
+}
+
+.bg-dark-active h2,
+.bg-dark-active h3 {
+  color: white !important;
+}
+
+.bg-dark-active p,
+.bg-dark-active div:not([class*="text-primary"]) {
+  color: var(--text-light) !important;
+}
+
+.bg-dark-active div[class*="bg-opacity-10"] {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(8px);
+}
+
+.bg-dark-active div[class*="bg-opacity-10"]:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+} 

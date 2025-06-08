@@ -1,0 +1,160 @@
+@keyframes fadeInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.navItem {
+  opacity: 0;
+  animation: fadeInFromBottom 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.logo {
+  animation-delay: 0ms;
+}
+
+.services {
+  animation-delay: 200ms;
+}
+
+.resources {
+  animation-delay: 400ms;
+}
+
+.aboutUs {
+  animation-delay: 600ms;
+}
+
+.phone {
+  animation-delay: 800ms;
+}
+
+.mobileMenu {
+  animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mobileMenu.closing {
+  animation: slideOutToRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mobileMenuItem {
+  opacity: 0;
+  animation: fadeInFromBottom 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.mobileMenuText {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobileMenuText::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: white;
+  opacity: 0.8;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+}
+
+.mobileMenuItem:hover .mobileMenuText {
+  transform: scale(1.1);
+}
+
+.mobileMenuItem:hover .mobileMenuText::after {
+  width: 100%;
+}
+
+.mobileMenuItem:nth-child(1) { animation-delay: 100ms; }
+.mobileMenuItem:nth-child(2) { animation-delay: 150ms; }
+.mobileMenuItem:nth-child(3) { animation-delay: 200ms; }
+.mobileMenuItem:nth-child(4) { animation-delay: 250ms; }
+.mobileMenuItem:nth-child(5) { animation-delay: 300ms; }
+.mobileMenuItem:nth-child(6) { animation-delay: 350ms; }
+
+.desktopMenuText {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.desktopMenuText::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: white;
+  opacity: 0.8;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+}
+
+button:hover .desktopMenuText,
+a:hover .desktopMenuText {
+  transform: scale(1.1);
+}
+
+button:hover .desktopMenuText::after,
+a:hover .desktopMenuText::after {
+  width: 100%;
+}
+
+.dropdownMenuText {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdownMenuText::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background-color: white;
+  opacity: 0.8;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: left;
+}
+
+a:hover .dropdownMenuText {
+  transform: scale(1.1);
+}
+
+a:hover .dropdownMenuText::after {
+  width: 100%;
+} 

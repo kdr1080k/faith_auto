@@ -1,0 +1,73 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.benefitCard {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.benefitCard:hover {
+  transform: scale(1.03) translateY(-5px);
+}
+
+.benefitCard:nth-child(1) { animation-delay: 100ms; }
+.benefitCard:nth-child(2) { animation-delay: 200ms; }
+.benefitCard:nth-child(3) { animation-delay: 300ms; }
+.benefitCard:nth-child(4) { animation-delay: 400ms; }
+.benefitCard:nth-child(5) { animation-delay: 500ms; }
+.benefitCard:nth-child(6) { animation-delay: 600ms; }
+.benefitCard:nth-child(7) { animation-delay: 700ms; }
+.benefitCard:nth-child(8) { animation-delay: 800ms; }
+
+.carouselImage {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 6s ease-out;
+}
+
+.carouselImage.active {
+  transform: scale(1.1);
+}
+
+.smoothUnderline {
+  position: relative;
+  display: inline-block;
+}
+
+.smoothUnderline::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #37474F;
+  transition: width 2.5s cubic-bezier(0.001, 0.05, 0.02, 1);
+  transform-origin: left;
+  opacity: 0.9;
+}
+
+.smoothUnderline:hover::after {
+  width: 100%;
+} 

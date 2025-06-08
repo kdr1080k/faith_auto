@@ -1,0 +1,17 @@
+<svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Australian flag simplified -->
+  <rect width="24" height="16" fill="#012169"/>
+  <rect width="12" height="8" fill="#012169"/>
+  <!-- Union Jack simplified -->
+  <path d="M0 0h12v8H0z" fill="#012169"/>
+  <path d="M0 0l12 8M12 0L0 8" stroke="#fff" stroke-width="1"/>
+  <path d="M6 0v8M0 4h12" stroke="#fff" stroke-width="2"/>
+  <path d="M0 0l12 8M12 0L0 8" stroke="#C8102E" stroke-width="0.5"/>
+  <path d="M6 0v8M0 4h12" stroke="#C8102E" stroke-width="1"/>
+  <!-- Southern Cross stars simplified -->
+  <circle cx="18" cy="4" r="0.8" fill="white"/>
+  <circle cx="20" cy="6" r="0.6" fill="white"/>
+  <circle cx="19" cy="8" r="0.8" fill="white"/>
+  <circle cx="17" cy="10" r="0.6" fill="white"/>
+  <circle cx="21" cy="11" r="0.5" fill="white"/>
+</svg> 

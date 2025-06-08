@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/ba11d38c-a96e-4da4-94cc-3f9d15a03147/resourceGroups/all-data-group/providers/Microsoft.Web/sites/flashauto2",
+    "appService.deploySubpath": "."
+}
