@@ -58,7 +58,6 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // In production, we know exactly where the build output is
   const distPath = path.resolve(process.cwd(), "dist", "public");
   
   if (!fs.existsSync(distPath)) {
@@ -66,13 +65,7 @@ export function serveStatic(app: Express) {
     throw new Error("Could not find the build directory. Make sure to build the client first.");
   }
 
-  // Serve static files with caching headers
-  app.use(express.static(distPath, {
-    maxAge: '1d', // Cache static assets for 1 day
-    index: false  // Don't serve index.html for directory requests
-  }));
-
-  // API routes should be handled before the catch-all
+  // First handle API routes
   app.use('/api', (req: Request, res: Response, next: NextFunction) => {
     if (req.path.startsWith('/api')) {
       next();
@@ -82,13 +75,26 @@ export function serveStatic(app: Express) {
     }
   });
 
-  // SPA catch-all route - serve index.html for all non-file requests
-  app.use('*', (req: Request, res: Response) => {
-    const indexPath = path.join(distPath, 'index.html');
-    if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
-    } else {
-      res.status(404).send("Application not built properly - index.html not found");
+  // Serve static files with appropriate caching
+  app.use(express.static(distPath, {
+    maxAge: '1d',
+    index: false,
+    setHeaders: (res: Response, filePath: string) => {
+      // Don't cache index.html
+      if (filePath.endsWith('index.html')) {
+        res.setHeader('Cache-Control', 'no-cache');
+      }
     }
+  }));
+
+  // Handle all other routes by serving index.html
+  app.get('*', (req: Request, res: Response) => {
+    const indexPath = path.join(distPath, 'index.html');
+    res.sendFile(indexPath, {
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'text/html'
+      }
+    });
   });
 }
