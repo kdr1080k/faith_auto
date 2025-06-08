@@ -26,12 +26,18 @@ export default defineConfig(({ command }) => ({
   },
   server: {
     port: 5173,
+    host: true,
+    allowedHosts: [
+      'localhost',
+      '127.0.0.1',
+      'faithauto-v1-arb6hddnedhef6c9.australiacentral-01.azurewebsites.net',
+      '.azurewebsites.net'
+    ],
     proxy: {
       '/api': {
         target: 'http://localhost:5006',
         changeOrigin: true
       }
-    },
-    allowedHosts: ['faithauto-v1-arb6hddnedhef6c9.australiacentral-01.azurewebsites.net']
+    }
   }
 }));
