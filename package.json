@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0 <21.0.0",
+    "node": ">=18.0.0 <21.x",
     "npm": ">=8.0.0"
   },
   "scripts": {
@@ -12,11 +12,12 @@
     "dev:frontend": "vite",
     "dev:backend": "cross-env NODE_ENV=development tsx watch server/index.ts",
     "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "vite build",
-    "build:backend": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "node dist/index.js",
+    "build:frontend": "cross-env NODE_ENV=production vite build",
+    "build:backend": "cross-env NODE_ENV=production esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "start": "cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "preinstall": "npm install cross-env -g"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.4",
@@ -88,13 +89,19 @@
     "wouter": "^3.3.5",
     "ws": "^8.18.0",
     "zod": "^3.24.2",
-    "zod-validation-error": "^3.4.0"
-  },
-  "devDependencies": {
-    "@replit/vite-plugin-cartographer": "^0.2.5",
-    "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
+    "zod-validation-error": "^3.4.0",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.17",
     "@tailwindcss/typography": "^0.5.15",
     "@tailwindcss/vite": "^4.1.3",
+    "esbuild": "^0.25.0",
+    "cross-env": "^7.0.3",
+    "tsx": "^4.19.4",
+    "typescript": "5.6.3",
+    "concurrently": "^9.1.2"
+  },
+  "devDependencies": {
     "@types/connect-pg-simple": "^7.0.3",
     "@types/express": "4.17.21",
     "@types/express-session": "^1.18.0",
@@ -104,15 +111,7 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
     "@types/ws": "^8.5.13",
-    "autoprefixer": "^10.4.20",
-    "concurrently": "^9.1.2",
-    "cross-env": "^7.0.3",
-    "drizzle-kit": "^0.30.4",
-    "esbuild": "^0.25.0",
-    "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.17",
-    "tsx": "^4.19.4",
-    "typescript": "5.6.3"
+    "drizzle-kit": "^0.30.4"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
