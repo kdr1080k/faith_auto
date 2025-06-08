@@ -1,4 +1,4 @@
-import express, { type Express } from "express";
+import express, { type Express, Request, Response, NextFunction } from "express";
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer, createLogger } from "vite";
@@ -36,7 +36,7 @@ export async function setupVite(app: Express, server: Server) {
 
   app.use(vite.middlewares);
 
-  app.use("*", async (req, res, next) => {
+  app.use("*", async (req: Request, res: Response, next: NextFunction) => {
     const url = req.originalUrl;
 
     try {
@@ -58,35 +58,33 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // Try multiple possible paths for the build directory
-  const possiblePaths = [
-    path.resolve(import.meta.dirname, "..", "dist", "public"),  // from project root
-    path.resolve(process.cwd(), "dist", "public"),              // from current working directory
-    path.resolve("dist", "public"),                             // relative path
-    path.resolve("public")                                      // fallback
-  ];
+  // In production, we know exactly where the build output is
+  const distPath = path.resolve(process.cwd(), "dist", "public");
   
-  let distPath = "";
-  for (const testPath of possiblePaths) {
-    if (fs.existsSync(testPath)) {
-      distPath = testPath;
-      break;
+  if (!fs.existsSync(distPath)) {
+    console.error("Build directory not found:", distPath);
+    throw new Error("Could not find the build directory. Make sure to build the client first.");
+  }
+
+  // Serve static files with caching headers
+  app.use(express.static(distPath, {
+    maxAge: '1d', // Cache static assets for 1 day
+    index: false  // Don't serve index.html for directory requests
+  }));
+
+  // API routes should be handled before the catch-all
+  app.use('/api', (req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/api')) {
+      next();
+    } else {
+      const indexPath = path.join(distPath, 'index.html');
+      res.sendFile(indexPath);
     }
-  }
+  });
 
-  if (!distPath || !fs.existsSync(distPath)) {
-    console.error("Build directory not found. Tried paths:", possiblePaths);
-    throw new Error(
-      `Could not find the build directory. Make sure to build the client first. Tried: ${possiblePaths.join(", ")}`,
-    );
-  }
-
-  console.log(`Serving static files from: ${distPath}`);
-  app.use(express.static(distPath));
-
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    const indexPath = path.resolve(distPath, "index.html");
+  // SPA catch-all route - serve index.html for all non-file requests
+  app.use('*', (req: Request, res: Response) => {
+    const indexPath = path.join(distPath, 'index.html');
     if (fs.existsSync(indexPath)) {
       res.sendFile(indexPath);
     } else {
