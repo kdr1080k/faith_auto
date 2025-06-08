@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { Car } from "@shared/schema";
+import { Car as BaseCar } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
 import { Link } from "wouter";
 import { useState } from "react";
-import styles from './SubscriptionCarDetails.module.css';
+import { Car, FullCar } from "@/types/car";
 
 interface SubscriptionCarDetailsProps {
   carId: string;
@@ -11,20 +11,27 @@ interface SubscriptionCarDetailsProps {
 
 const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   // For the example page, we'll use hardcoded data
-  const exampleCar = {
+  const exampleCar: FullCar = {
     id: "example",
     make: "BMW",
-    model: "X5",
-    year: 2023,
-    category: "Luxury SUV",
+    model: "X5 M Sport",
+    year: 2024,
+    category: "Luxury Performance SUV",
     bodyType: "SUV",
-    driveType: "AWD",
+    driveType: "xDrive (AWD)",
     fuelType: "Diesel",
     seats: 5,
     weeklyPrice: 899,
     available: true,
     isGreatValue: true,
-    location: "Brisbane"
+    location: "Brisbane",
+    description: "Experience unparalleled luxury with the latest BMW X5 M Sport. This commanding SUV combines athletic performance with sophisticated elegance, featuring M Sport-specific design elements, advanced driver assistance systems, and BMW's latest iDrive technology.",
+    highlights: [
+      "M Sport Package",
+      "21-inch M light alloy wheels",
+      "Adaptive M Suspension",
+      "BMW Live Cockpit Professional"
+    ]
   };
 
   // Only fetch from API if it's not the example page
@@ -52,31 +59,64 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   return (
     <>
       {/* Hero Section */}
-      <section 
-        className={styles.heroBanner}
-        style={{ 
-          backgroundImage: `url(${getCarImageUrl(displayCar.id)})`
-        }}>
-        <div className={styles.overlay}></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-full z-10 py-24">
-          <div className="w-full max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {displayCar.make} {displayCar.model}
-            </h1>
-            <p className="text-xl text-gray-300 mb-6">
-              {displayCar.year} {displayCar.category}
-            </p>
-            <div className="flex items-center gap-4">
-              <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                displayCar.available 
-                  ? 'bg-success/10 text-success' 
-                  : 'bg-danger/10 text-danger'
-              }`}>
-                {displayCar.available ? 'Available' : 'Not Available'}
-              </span>
-              <span className="text-3xl font-bold text-white bg-primary/20 backdrop-blur-sm px-6 py-2 rounded-lg">
-                ${displayCar.weeklyPrice}/week
-              </span>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          {/* Image Section */}
+          <div className="relative rounded-xl overflow-hidden">
+            <img 
+              src={getCarImageUrl(displayCar.id)} 
+              alt={`${displayCar.make} ${displayCar.model}`}
+              className="w-full aspect-[16/10] object-cover rounded-xl"
+            />
+            <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+              displayCar.available 
+                ? 'bg-success/90 text-white' 
+                : 'bg-danger/90 text-white'
+            }`}>
+              {displayCar.available ? 'Available Now' : 'Coming Soon'}
+            </span>
+          </div>
+
+          {/* Details Section */}
+          <div className="flex flex-col h-full">
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-sm text-gray-600">{displayCar.location}</span>
+                <span className="text-sm text-gray-600">•</span>
+                <span className="text-sm text-gray-600">{displayCar.category}</span>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {displayCar.year} {displayCar.make} {displayCar.model}
+              </h1>
+              <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                {displayCar.description}
+              </p>
+              
+              {/* Price Box */}
+              <div className="bg-gray-50 rounded-xl p-6 mb-6">
+                <div className="flex items-baseline gap-2 mb-4">
+                  <span className="text-3xl font-bold text-primary">${displayCar.weeklyPrice}</span>
+                  <span className="text-gray-600">/week</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {displayCar.highlights?.map((highlight, index) => (
+                    <div key={index} className="flex items-center text-gray-700">
+                      <i className="fas fa-check text-success mr-3"></i>
+                      {highlight}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="flex gap-4">
+                <button className="flex-1 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-all">
+                  Start Subscription
+                </button>
+                <button className="flex items-center justify-center bg-gray-100 hover:bg-gray-200 p-3 rounded-lg transition-all">
+                  <i className="fas fa-heart text-gray-600"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
