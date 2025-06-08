@@ -1,4 +1,4 @@
 #!/bin/bash
-cd /home/site/wwwroot
-export PORT=8080
-npm start 
+export NODE_ENV=production
+export PORT=${PORT:-8080}
+node dist/index.js 
