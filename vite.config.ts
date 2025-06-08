@@ -27,12 +27,12 @@ export default defineConfig(({ command }) => ({
   server: {
     port: 5173,
     host: true,
-    allowedHosts: true,
+    allowedHosts: ['.azurewebsites.net'],
     proxy: {
       '/api': {
         target: 'http://localhost:5006',
         changeOrigin: true
       }
     }
-  }
+  }  
 }));
