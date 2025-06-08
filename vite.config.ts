@@ -31,6 +31,7 @@ export default defineConfig(({ command }) => ({
         target: 'http://localhost:5006',
         changeOrigin: true
       }
-    }
+    },
+    allowedHosts: ['faithauto-v1-arb6hddnedhef6c9.australiacentral-01.azurewebsites.net']
   }
 }));
