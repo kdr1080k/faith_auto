@@ -71,11 +71,8 @@ const Hero = ({
 
   return (
     <section className="relative pt-0 pb-20 md:pb-28 lg:pb-32 overflow-hidden">
-      {/* Gradient overlay for image */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/30 z-10"></div>
-      
-      {/* Additional vignette effect */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/60 z-10"></div>
+      {/* Light text contrast layer */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 z-10"></div>
       
       {/* Slideshow */}
       <div className={styles.slideshow}>
@@ -85,9 +82,10 @@ const Hero = ({
             className={`${styles.slide} ${index === currentImageIndex ? styles.active : ''} ${index === 0 && initialRender ? styles.instantFade : ''}`}
           >
             <div className={styles.scaleContainer}>
-              <div 
-                className={styles.slideImage}
-                style={{ backgroundImage: `url('${image}')` }}
+              <img 
+                src={image}
+                alt="Hero"
+                className={`${styles.slideImage} w-full h-full object-cover`}
               />
             </div>
           </div>

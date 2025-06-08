@@ -19,16 +19,16 @@ export default {
       },
       colors: {
         primary: {
-          DEFAULT: "#00BFA5",
-          hover: "#00A693",
+          DEFAULT: "#2B597C",
+          hover: "#346A93",
         },
         secondary: {
           DEFAULT: "#263238",
           hover: "#37474F",
         },
         accent: {
-          DEFAULT: "#00C8AA",
-          light: "#E0F7FA",
+          DEFAULT: "#3D7BA6",
+          light: "#EBF2F7",
           foreground: "hsl(var(--accent-foreground))",
         },
         success: {

@@ -148,10 +148,11 @@
 .slideImage {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
   transition: transform 4s ease-out;
   transform: scale(1);
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .slide.active .slideImage,
@@ -161,5 +162,5 @@
 
 /* Force maintain scale during transitions */
 .slide:not(.active) .slideImage {
-  transform: scale3d(var(--base-scale), var(--base-scale), 1) !important;
+  transform: scale(1) !important;
 } 

@@ -4,11 +4,11 @@
 
 :root {
   /* Brand Colors */
-  --primary: #00BFA5;
-  --primary-hover: #00A693;
+  --primary: #2B597C;
+  --primary-hover: #346A93;
   --secondary: #263238;
   --secondary-hover: #37474F;
-  --accent: #00C8AA;
+  --accent: #3D7BA6;
   
   /* Text Colors */
   --text-primary: #263238;
@@ -82,4 +82,4 @@
 .bg-dark-active div[class*="bg-opacity-10"]:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
   transform: translateY(-2px);
-} 
+}
