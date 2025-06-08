@@ -1,37 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid"];
+const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid", "Electric"];
 const BODY_TYPES = ["All", "SUV", "Sedan", "Hatchback", "Wagon", "Ute", "Van", "Coupe"];
 const SEATS = ["All", "2", "4", "5", "6", "7+"];
-const MAKES = ["All", "Hyundai", "Nissan", "Toyota", "Smart", "Suzuki"];
-const MODELS = ["All", "Venue", "X-Trail", "Yaris Cross Hybrid", "#1", "#3", "Swift"];
+const LOCATIONS = ["All", "Brisbane", "Sydney", "Melbourne", "Adelaide", "Perth"];
 
-interface Filters {
-  fuelType: string;
-  bodyType: string;
-  seats: string;
-  make: string;
-  model: string;
+interface FiltersState {
+  fuelTypes: string[];
+  bodyTypes: string[];
+  seats: string[];
+  makes: string[];
+  location: string;
 }
 
 interface CarFiltersProps {
-  initial?: Filters;
-  onApply: (filters: Filters) => void;
+  initialFilters: FiltersState;
+  onApplyFilters: (filters: FiltersState) => void;
+  availableMakes: string[];
 }
 
-const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
-  const [fuelType, setFuelType] = useState(initial?.fuelType || "All");
-  const [bodyType, setBodyType] = useState(initial?.bodyType || "All");
-  const [seats, setSeats] = useState(initial?.seats || "All");
-  const [make, setMake] = useState(initial?.make || "All");
-  const [model, setModel] = useState(initial?.model || "All");
+const CarFilters: React.FC<CarFiltersProps> = ({ initialFilters, onApplyFilters, availableMakes }) => {
+  const [filters, setFilters] = useState<FiltersState>(initialFilters);
+
+  useEffect(() => {
+    setFilters(initialFilters);
+  }, [initialFilters]);
+
+  const handleFilterChange = (type: keyof FiltersState, value: string) => {
+    if (type === 'location') {
+      setFilters(prev => ({
+        ...prev,
+        location: value === 'All' ? '' : value
+      }));
+    } else {
+      const arrayType = type as keyof Omit<FiltersState, 'location'>;
+      setFilters(prev => ({
+        ...prev,
+        [arrayType]: value === 'All' ? [] : [value]
+      }));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onApply({ fuelType, bodyType, seats, make, model });
+    onApplyFilters(filters);
   };
 
   return (
@@ -43,8 +58,30 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="space-y-4">
             <div>
+              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Location</label>
+              <Select 
+                value={filters.location || 'All'} 
+                onValueChange={v => handleFilterChange('location', v)}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {LOCATIONS.map(loc => (
+                      <SelectItem key={loc} value={loc}>{loc}</SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Fuel Type</label>
-              <Select value={fuelType} onValueChange={setFuelType}>
+              <Select 
+                value={filters.fuelTypes[0] || 'All'} 
+                onValueChange={v => handleFilterChange('fuelTypes', v)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select fuel type" />
                 </SelectTrigger>
@@ -60,7 +97,10 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
 
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Body Type</label>
-              <Select value={bodyType} onValueChange={setBodyType}>
+              <Select 
+                value={filters.bodyTypes[0] || 'All'} 
+                onValueChange={v => handleFilterChange('bodyTypes', v)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select body type" />
                 </SelectTrigger>
@@ -76,7 +116,10 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
 
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">No. of Seats</label>
-              <Select value={seats} onValueChange={setSeats}>
+              <Select 
+                value={filters.seats[0] || 'All'} 
+                onValueChange={v => handleFilterChange('seats', v)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select seats" />
                 </SelectTrigger>
@@ -92,30 +135,18 @@ const CarFilters: React.FC<CarFiltersProps> = ({ initial, onApply }) => {
 
             <div>
               <label className="text-sm font-medium text-text-secondary mb-1.5 block">Make</label>
-              <Select value={make} onValueChange={setMake}>
+              <Select 
+                value={filters.makes[0] || 'All'} 
+                onValueChange={v => handleFilterChange('makes', v)}
+              >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select make" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {MAKES.map(make => (
+                    <SelectItem value="All">All</SelectItem>
+                    {availableMakes.map(make => (
                       <SelectItem key={make} value={make}>{make}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div>
-              <label className="text-sm font-medium text-text-secondary mb-1.5 block">Model</label>
-              <Select value={model} onValueChange={setModel}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select model" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {MODELS.map(model => (
-                      <SelectItem key={model} value={model}>{model}</SelectItem>
                     ))}
                   </SelectGroup>
                 </SelectContent>

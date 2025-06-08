@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from "react-helmet-async";
 import { Car } from "@shared/schema";
 import CarCard from "@/components/cars/CarCard";
 
+const LOCATIONS = ["All", "Brisbane", "Sydney", "Melbourne", "Adelaide", "Perth"];
+const BODY_TYPES = ["All", "SUV", "Sedan", "Hatchback", "Wagon", "Ute", "Van", "Coupe"];
+const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid", "Electric"];
+const SEATS = ["All", "2", "4", "5", "6", "7+"];
+
 const SecondHandCars: React.FC = () => {
+  // Filter states
+  const [location, setLocation] = useState("All");
+  const [bodyType, setBodyType] = useState("All");
+  const [fuelType, setFuelType] = useState("All");
+  const [seats, setSeats] = useState("All");
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+
   // Hardcoded car listings
   const hardcodedCars: Car[] = [
     {
@@ -98,6 +110,15 @@ const SecondHandCars: React.FC = () => {
     }
   ];
 
+  // Filter cars based on selected criteria
+  const filteredCars = hardcodedCars.filter(car => {
+    if (location !== "All" && car.location !== location) return false;
+    if (bodyType !== "All" && car.bodyType !== bodyType) return false;
+    if (fuelType !== "All" && car.fuelType !== fuelType) return false;
+    if (seats !== "All" && car.seats !== parseInt(seats)) return false;
+    return true;
+  });
+
   return (
     <>
       <Helmet>
@@ -122,12 +143,91 @@ const SecondHandCars: React.FC = () => {
       </section>
 
       <main className="min-h-screen bg-background">
-        {/* Featured Car Listings */}
+        {/* Filter Section */}
+        <div className="bg-gray-100 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Filter Cars</h2>
+              <button
+                onClick={() => setIsFilterVisible(!isFilterVisible)}
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
+              >
+                <i className={`fas fa-chevron-${isFilterVisible ? 'up' : 'down'}`}></i>
+                {isFilterVisible ? 'Hide Filters' : 'Show Filters'}
+              </button>
+            </div>
+            
+            {isFilterVisible && (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-6 rounded-xl shadow-sm">
+                {/* Location */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                  <select
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  >
+                    {LOCATIONS.map(loc => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Body Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Body Type</label>
+                  <select
+                    value={bodyType}
+                    onChange={(e) => setBodyType(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  >
+                    {BODY_TYPES.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Fuel Type */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
+                  <select
+                    value={fuelType}
+                    onChange={(e) => setFuelType(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  >
+                    {FUEL_TYPES.map(type => (
+                      <option key={type} value={type}>{type}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Seats */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Seats</label>
+                  <select
+                    value={seats}
+                    onChange={(e) => setSeats(e.target.value)}
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                  >
+                    {SEATS.map(seat => (
+                      <option key={seat} value={seat}>{seat}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Car Listings */}
         <section className="py-8 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold mb-6">Featured Vehicles</h2>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Available Vehicles</h2>
+              <p className="text-gray-600">{filteredCars.length} cars found</p>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {hardcodedCars.map(car => (
+              {filteredCars.map(car => (
                 <CarCard 
                   key={car.id} 
                   car={car} 
@@ -136,6 +236,22 @@ const SecondHandCars: React.FC = () => {
                 />
               ))}
             </div>
+            {filteredCars.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-600">No cars match your selected filters.</p>
+                <button
+                  onClick={() => {
+                    setLocation("All");
+                    setBodyType("All");
+                    setFuelType("All");
+                    setSeats("All");
+                  }}
+                  className="mt-4 text-primary hover:text-primary/80"
+                >
+                  Clear all filters
+                </button>
+              </div>
+            )}
           </div>
         </section>
       </main>

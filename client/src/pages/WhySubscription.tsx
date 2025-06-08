@@ -46,12 +46,7 @@ const WhySubscription = () => {
                   Whether you need a car for a few months or longer, our subscription model adapts to your lifestyle. Want to switch to a different vehicle? No problem. Your needs change? Simply return the car with minimal notice. It's car ownership reimagined for the modern driver in Melbourne, Sydney, Brisbane, Perth, and Adelaide.
                 </p>
               </div>
-              <div className="mt-8">
-                <a href="/subscription-inventory" className="inline-flex items-center text-gray-800 font-semibold hover:text-primary transition-colors">
-                  Explore our subscription plans
-                  <i className="fas fa-arrow-right ml-2"></i>
-                </a>
-              </div>
+           
             </div>
           </div>
         </div>

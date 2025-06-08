@@ -167,7 +167,7 @@ export class MemStorage implements IStorage {
         available: true,
         isGreatValue: true,
         category: "standard",
-        location: "Brisbane"
+        location: "Sydney"
       },
       {
         id: "nissan-xtrail",
@@ -182,7 +182,7 @@ export class MemStorage implements IStorage {
         available: true,
         isGreatValue: false,
         category: "standard",
-        location: "Brisbane"
+        location: "Perth"
       },
       {
         id: "toyota-yaris-cross",
@@ -197,7 +197,7 @@ export class MemStorage implements IStorage {
         available: true,
         isGreatValue: false,
         category: "standard",
-        location: "Brisbane"
+        location: "Adelaide"
       },
       {
         id: "suzuki-swift",
@@ -213,6 +213,96 @@ export class MemStorage implements IStorage {
         isGreatValue: false,
         category: "standard",
         location: "Brisbane"
+      },
+      {
+        id: "toyota-camry",
+        make: "Toyota",
+        model: "Camry",
+        year: 2023,
+        fuelType: "Hybrid",
+        bodyType: "Sedan",
+        seats: 5,
+        driveType: "FWD",
+        weeklyPrice: 290,
+        available: true,
+        isGreatValue: true,
+        category: "standard",
+        location: "Melbourne"
+      },
+      {
+        id: "tesla-model3",
+        make: "Tesla",
+        model: "Model 3",
+        year: 2023,
+        fuelType: "Electric",
+        bodyType: "Sedan",
+        seats: 5,
+        driveType: "RWD",
+        weeklyPrice: 320,
+        available: true,
+        isGreatValue: true,
+        category: "premium",
+        location: "Sydney"
+      },
+      {
+        id: "mazda-cx5",
+        make: "Mazda",
+        model: "CX-5",
+        year: 2023,
+        fuelType: "Petrol",
+        bodyType: "SUV",
+        seats: 5,
+        driveType: "AWD",
+        weeklyPrice: 275,
+        available: true,
+        isGreatValue: false,
+        category: "standard",
+        location: "Perth"
+      },
+      {
+        id: "volkswagen-golf",
+        make: "Volkswagen",
+        model: "Golf",
+        year: 2023,
+        fuelType: "Petrol",
+        bodyType: "Hatchback",
+        seats: 5,
+        driveType: "FWD",
+        weeklyPrice: 265,
+        available: true,
+        isGreatValue: true,
+        category: "standard",
+        location: "Adelaide"
+      },
+      {
+        id: "kia-carnival",
+        make: "Kia",
+        model: "Carnival",
+        year: 2023,
+        fuelType: "Petrol",
+        bodyType: "Van",
+        seats: 7,
+        driveType: "FWD",
+        weeklyPrice: 310,
+        available: true,
+        isGreatValue: false,
+        category: "standard",
+        location: "Brisbane"
+      },
+      {
+        id: "ford-ranger",
+        make: "Ford",
+        model: "Ranger",
+        year: 2023,
+        fuelType: "Diesel",
+        bodyType: "Ute",
+        seats: 5,
+        driveType: "4WD",
+        weeklyPrice: 295,
+        available: true,
+        isGreatValue: true,
+        category: "commercial",
+        location: "Melbourne"
       }
     ];
 
