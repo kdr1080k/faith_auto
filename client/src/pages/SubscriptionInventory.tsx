@@ -25,12 +25,12 @@ const SubscriptionInventory = () => {
   const { data: cars, isLoading } = useQuery<Car[]>({
     queryKey: ['/api/cars'],
     queryFn: async () => {
-      const response = await fetch('http://localhost:5006/api/cars');
+      const response = await fetch('/api/cars');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      return data.cars;
+      return data;
     }
   });
 

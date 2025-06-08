@@ -18,7 +18,7 @@ const WhySubscription = () => {
         title="Car Subscription Service"
         subtitle="Drive the car you want with all-inclusive pricing. No long-term commitment, just flexible mobility solutions tailored to your lifestyle."
         buttonText="Browse our cars"
-        buttonLink="http://localhost:5006/subscription"
+        buttonLink="/subscription-inventory"
         secondaryButtonText="Make an Enquiry"
         secondaryButtonLink="/enquiry"
       />
