@@ -1,4 +1,4 @@
-# FlexCar SEO实施检查清单
+# Faith Auto SEO实施检查清单
 
 ## 📋 第一阶段：技术SEO基础 (第1-2个月)
 
@@ -47,11 +47,11 @@
 - [ ] **URL结构优化**
   ```
   ✅ 推荐结构：
-  - https://flexcar.com.au/
-  - https://flexcar.com.au/car-subscription/
-  - https://flexcar.com.au/browse-cars/
-  - https://flexcar.com.au/locations/sydney/
-  - https://flexcar.com.au/cars/toyota-camry-2023/
+  - https://Faith Auto.com.au/
+  - https://Faith Auto.com.au/car-subscription/
+  - https://Faith Auto.com.au/browse-cars/
+  - https://Faith Auto.com.au/locations/sydney/
+  - https://Faith Auto.com.au/cars/toyota-camry-2023/
   ```
 
 - [ ] **网站地图创建**
@@ -68,7 +68,7 @@
   Disallow: /api/
   Disallow: /private/
   
-  Sitemap: https://flexcar.com.au/sitemap.xml
+  Sitemap: https://Faith Auto.com.au/sitemap.xml
   ```
 
 - [ ] **SSL证书配置**
@@ -117,8 +117,8 @@
 #### ✅ 首页SEO
 - [ ] **Meta标签优化**
   ```html
-  <title>FlexCar - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
-  <meta name="description" content="FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
+  <title>Faith Auto - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
+  <meta name="description" content="Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
   ```
 
 - [ ] **结构化数据**
@@ -293,11 +293,11 @@
 - [ ] **基本信息**
   ```json
   {
-    "businessName": "FlexCar Australia",
+    "businessName": "Faith Auto Australia",
     "category": "汽车租赁服务",
     "address": "完整地址信息",
     "phone": "+61-x-xxxx-xxxx",
-    "website": "https://flexcar.com.au",
+    "website": "https://Faith Auto.com.au",
     "hours": "24小时服务"
   }
   ```

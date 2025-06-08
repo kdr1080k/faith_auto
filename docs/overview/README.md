@@ -1,8 +1,8 @@
-# FlexCar Project Overview
+# Faith Auto Project Overview
 
 ## Introduction
 
-FlexCar is a modern car subscription platform that offers flexible, all-inclusive vehicle subscriptions. Our platform allows customers to subscribe to vehicles without long-term commitments, providing the freedom to swap vehicles as needed.
+Faith Auto is a modern car subscription platform that offers flexible, all-inclusive vehicle subscriptions. Our platform allows customers to subscribe to vehicles without long-term commitments, providing the freedom to swap vehicles as needed.
 
 ## Core Features
 
@@ -42,7 +42,7 @@ Our business model is based on a subscription-first approach, offering customers
 
 ## Market Position
 
-FlexCar positions itself as a premium car subscription service, focusing on:
+Faith Auto positions itself as a premium car subscription service, focusing on:
 - Customer convenience
 - Service quality
 - Vehicle variety

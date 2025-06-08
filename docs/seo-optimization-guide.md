@@ -1,4 +1,4 @@
-# FlexCar SEO优化指南
+# Faith Auto SEO优化指南
 
 ## 1. SEO策略概述
 
@@ -55,12 +55,12 @@
 #### URL结构设计
 ```
 推荐URL结构:
-├── https://flexcar.com.au/
-├── https://flexcar.com.au/car-subscription/
-├── https://flexcar.com.au/browse-cars/
-├── https://flexcar.com.au/locations/sydney/
-├── https://flexcar.com.au/cars/toyota-camry/
-└── https://flexcar.com.au/help/faq/
+├── https://Faith Auto.com.au/
+├── https://Faith Auto.com.au/car-subscription/
+├── https://Faith Auto.com.au/browse-cars/
+├── https://Faith Auto.com.au/locations/sydney/
+├── https://Faith Auto.com.au/cars/toyota-camry/
+└── https://Faith Auto.com.au/help/faq/
 ```
 
 #### 网站地图配置
@@ -69,13 +69,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://flexcar.com.au/</loc>
+    <loc>https://Faith Auto.com.au/</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://flexcar.com.au/car-subscription/</loc>
+    <loc>https://Faith Auto.com.au/car-subscription/</loc>
     <lastmod>2024-01-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -93,9 +93,9 @@ Disallow: /api/
 Disallow: /private/
 Disallow: /*?*utm_*
 
-Sitemap: https://flexcar.com.au/sitemap.xml
-Sitemap: https://flexcar.com.au/sitemap-cars.xml
-Sitemap: https://flexcar.com.au/sitemap-locations.xml
+Sitemap: https://Faith Auto.com.au/sitemap.xml
+Sitemap: https://Faith Auto.com.au/sitemap-cars.xml
+Sitemap: https://Faith Auto.com.au/sitemap-locations.xml
 ```
 
 ### 2.2 页面性能优化
@@ -223,8 +223,8 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 ```json
 // manifest.json
 {
-  "name": "FlexCar - 汽车订阅服务",
-  "short_name": "FlexCar",
+  "name": "Faith Auto - 汽车订阅服务",
+  "short_name": "Faith Auto",
   "description": "澳大利亚领先的汽车订阅平台",
   "start_url": "/",
   "display": "standalone",
@@ -259,32 +259,32 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- SEO核心标签 -->
-  <title>FlexCar - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
-  <meta name="description" content="FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
+  <title>Faith Auto - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
+  <meta name="description" content="Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
   <meta name="keywords" content="汽车订阅,车辆租赁,悉尼租车,墨尔本租车,灵活用车,汽车共享">
   
   <!-- Open Graph标签 -->
-  <meta property="og:title" content="FlexCar - 澳大利亚领先的汽车订阅服务">
+  <meta property="og:title" content="Faith Auto - 澳大利亚领先的汽车订阅服务">
   <meta property="og:description" content="灵活的汽车订阅服务，无需首付，包含保险维护">
-  <meta property="og:image" content="https://flexcar.com.au/images/og-image.jpg">
-  <meta property="og:url" content="https://flexcar.com.au/">
+  <meta property="og:image" content="https://Faith Auto.com.au/images/og-image.jpg">
+  <meta property="og:url" content="https://Faith Auto.com.au/">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="FlexCar">
+  <meta property="og:site_name" content="Faith Auto">
   
   <!-- Twitter Card标签 -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="FlexCar - 澳大利亚领先的汽车订阅服务">
+  <meta name="twitter:title" content="Faith Auto - 澳大利亚领先的汽车订阅服务">
   <meta name="twitter:description" content="灵活的汽车订阅服务，无需首付，包含保险维护">
-  <meta name="twitter:image" content="https://flexcar.com.au/images/twitter-card.jpg">
+  <meta name="twitter:image" content="https://Faith Auto.com.au/images/twitter-card.jpg">
   
   <!-- 结构化数据 -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "FlexCar",
-    "url": "https://flexcar.com.au",
-    "logo": "https://flexcar.com.au/images/logo.png",
+    "name": "Faith Auto",
+    "url": "https://Faith Auto.com.au",
+    "logo": "https://Faith Auto.com.au/images/logo.png",
     "description": "澳大利亚领先的汽车订阅服务平台",
     "address": {
       "@type": "PostalAddress",
@@ -298,19 +298,19 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
       "contactType": "customer service"
     },
     "sameAs": [
-      "https://www.facebook.com/flexcar",
-      "https://www.instagram.com/flexcar",
-      "https://www.linkedin.com/company/flexcar"
+      "https://www.facebook.com/Faith Auto",
+      "https://www.instagram.com/Faith Auto",
+      "https://www.linkedin.com/company/Faith Auto"
     ]
   }
   </script>
   
   <!-- 规范链接 -->
-  <link rel="canonical" href="https://flexcar.com.au/">
+  <link rel="canonical" href="https://Faith Auto.com.au/">
   
   <!-- 语言版本 -->
-  <link rel="alternate" hreflang="en-AU" href="https://flexcar.com.au/en/">
-  <link rel="alternate" hreflang="zh-CN" href="https://flexcar.com.au/">
+  <link rel="alternate" hreflang="en-AU" href="https://Faith Auto.com.au/en/">
+  <link rel="alternate" hreflang="zh-CN" href="https://Faith Auto.com.au/">
 </head>
 ```
 
@@ -324,7 +324,7 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
   </section>
   
   <section class="services" aria-label="服务特色">
-    <h2>为什么选择FlexCar</h2>
+    <h2>为什么选择Faith Auto</h2>
     <div class="service-grid">
       <article class="service-item">
         <h3>无需首付</h3>
@@ -360,7 +360,7 @@ interface CarSEOProps {
 }
 
 const CarSEO: React.FC<CarSEOProps> = ({ car }) => {
-  const title = `${car.make} ${car.model} ${car.year} - 汽车订阅 | FlexCar`;
+  const title = `${car.make} ${car.model} ${car.year} - 汽车订阅 | Faith Auto`;
   const description = `订阅${car.make} ${car.model} ${car.year}，每周仅需$${car.price}。包含保险、维护、道路救援。在${car.location}取车，立即申请。`;
   
   const structuredData = {
@@ -380,7 +380,7 @@ const CarSEO: React.FC<CarSEOProps> = ({ car }) => {
       "availability": "https://schema.org/InStock",
       "seller": {
         "@type": "Organization",
-        "name": "FlexCar"
+        "name": "Faith Auto"
       }
     },
     "aggregateRating": {
@@ -415,7 +415,7 @@ const LocationSEO: React.FC<{ city: string }> = ({ city }) => {
   const cityData = {
     sydney: {
       name: "悉尼",
-      description: "在悉尼享受FlexCar汽车订阅服务",
+      description: "在悉尼享受Faith Auto汽车订阅服务",
       coordinates: { lat: -33.8688, lng: 151.2093 }
     },
     melbourne: {
@@ -430,7 +430,7 @@ const LocationSEO: React.FC<{ city: string }> = ({ city }) => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": `FlexCar ${location.name}`,
+    "name": `Faith Auto ${location.name}`,
     "description": location.description,
     "address": {
       "@type": "PostalAddress",
@@ -442,14 +442,14 @@ const LocationSEO: React.FC<{ city: string }> = ({ city }) => {
       "latitude": location.coordinates.lat,
       "longitude": location.coordinates.lng
     },
-    "url": `https://flexcar.com.au/locations/${city}/`,
+    "url": `https://Faith Auto.com.au/locations/${city}/`,
     "telephone": "+61-2-xxxx-xxxx",
     "openingHours": "Mo-Su 00:00-23:59"
   };
 
   return (
     <Head>
-      <title>{location.name}汽车订阅服务 - FlexCar</title>
+      <title>{location.name}汽车订阅服务 - Faith Auto</title>
       <meta name="description" content={`${location.description}，灵活用车，无需首付，包含保险维护。立即申请。`} />
       <script 
         type="application/ld+json"
@@ -567,7 +567,7 @@ const ReviewSystem: React.FC<{ carId: string }> = ({ carId }) => {
       "@type": "Person",
       "name": "张先生"
     },
-    "reviewBody": "FlexCar的服务非常棒，车辆状况良好，客服响应及时。"
+    "reviewBody": "Faith Auto的服务非常棒，车辆状况良好，客服响应及时。"
   };
 
   return (
@@ -705,7 +705,7 @@ const linkQualityAssessment = {
 #### GMB配置
 ```json
 {
-  "businessName": "FlexCar Australia",
+  "businessName": "Faith Auto Australia",
   "category": "汽车租赁服务",
   "description": "澳大利亚领先的汽车订阅服务平台，提供灵活的用车解决方案",
   "address": {
@@ -716,7 +716,7 @@ const linkQualityAssessment = {
     "country": "Australia"
   },
   "phone": "+61-3-xxxx-xxxx",
-  "website": "https://flexcar.com.au",
+  "website": "https://Faith Auto.com.au",
   "hours": {
     "monday": "24小时",
     "tuesday": "24小时",
@@ -763,7 +763,7 @@ const linkQualityAssessment = {
 // NAP (Name, Address, Phone) 一致性检查工具
 const napConsistencyChecker = {
   standardFormat: {
-    name: "FlexCar Australia",
+    name: "Faith Auto Australia",
     address: "123 Collins Street, Melbourne VIC 3000",
     phone: "+61 3 xxxx xxxx"
   },
@@ -837,7 +837,7 @@ const generateSEOReport = async () => {
   const pdf = await generatePDFReport(report);
   
   // 发送邮件
-  await sendEmailReport(pdf, ['seo@flexcar.com.au']);
+  await sendEmailReport(pdf, ['seo@Faith Auto.com.au']);
   
   return report;
 };

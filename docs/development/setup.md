@@ -1,4 +1,4 @@
-# FlexCar Development Setup Guide
+# Faith Auto Development Setup Guide
 
 ## Prerequisites
 
@@ -44,7 +44,7 @@ SECRET_KEY=your-secret-key
 ALLOWED_HOSTS=localhost,127.0.0.1
 
 # Database
-DB_NAME=flexcar
+DB_NAME=Faith Auto
 DB_USER=postgres
 DB_PASSWORD=your-password
 DB_HOST=localhost
@@ -56,7 +56,7 @@ REDIS_URL=redis://localhost:6379/0
 # AWS
 AWS_ACCESS_KEY_ID=your-access-key
 AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_STORAGE_BUCKET_NAME=flexcar-media
+AWS_STORAGE_BUCKET_NAME=Faith Auto-media
 
 # Email
 EMAIL_HOST=smtp.gmail.com
@@ -69,7 +69,7 @@ EMAIL_HOST_PASSWORD=your-app-password
 
 ```bash
 # Create database
-createdb flexcar
+createdb Faith Auto
 
 # Run migrations
 python manage.py migrate
@@ -107,8 +107,8 @@ REACT_APP_API_URL=http://localhost:8000/api/v1
 REACT_APP_WS_URL=ws://localhost:8000/ws
 
 # Authentication
-REACT_APP_AUTH_TOKEN_KEY=flexcar_auth_token
-REACT_APP_AUTH_REFRESH_TOKEN_KEY=flexcar_refresh_token
+REACT_APP_AUTH_TOKEN_KEY=Faith Auto_auth_token
+REACT_APP_AUTH_REFRESH_TOKEN_KEY=Faith Auto_refresh_token
 
 # Google Maps
 REACT_APP_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
@@ -297,6 +297,6 @@ git push origin main:production
 ## Support
 
 For technical support:
-- Email: tech-support@flexcar.com
+- Email: tech-support@Faith Auto.com
 - Slack: #tech-support
-- Documentation: https://docs.flexcar.com 
+- Documentation: https://docs.Faith Auto.com 

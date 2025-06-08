@@ -1,14 +1,14 @@
-# FlexCar Design System
+# Faith Auto Design System
 
 ## Overview
 
-The FlexCar design system provides a comprehensive set of guidelines, components, and tools to ensure consistency and quality across all digital products.
+The Faith Auto design system provides a comprehensive set of guidelines, components, and tools to ensure consistency and quality across all digital products.
 
 ## Brand Identity
 
 ### Logo
 
-The FlexCar logo represents flexibility, mobility, and innovation. It should be used consistently across all platforms.
+The Faith Auto logo represents flexibility, mobility, and innovation. It should be used consistently across all platforms.
 
 #### Usage Guidelines
 - Maintain clear space around the logo
@@ -320,18 +320,18 @@ const tokens = {
 
 ### Design Tools
 
-- Figma: [FlexCar Design System](https://figma.com/flexcar)
-- Storybook: [Component Library](https://storybook.flexcar.com)
+- Figma: [Faith Auto Design System](https://figma.com/Faith Auto)
+- Storybook: [Component Library](https://storybook.Faith Auto.com)
 
 ### Documentation
 
-- [Component API](https://docs.flexcar.com/components)
-- [Design Guidelines](https://docs.flexcar.com/design)
-- [Accessibility Guide](https://docs.flexcar.com/accessibility)
+- [Component API](https://docs.Faith Auto.com/components)
+- [Design Guidelines](https://docs.Faith Auto.com/design)
+- [Accessibility Guide](https://docs.Faith Auto.com/accessibility)
 
 ### Support
 
 For design system support:
-- Email: design@flexcar.com
+- Email: design@Faith Auto.com
 - Slack: #design-system
-- Documentation: https://design.flexcar.com 
+- Documentation: https://design.Faith Auto.com 

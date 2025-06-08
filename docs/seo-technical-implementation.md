@@ -1,4 +1,4 @@
-# FlexCar SEO技术实施指南
+# Faith Auto SEO技术实施指南
 *Django + React + Tailwind CSS技术栈*
 
 ## 🏗️ 技术架构SEO优化
@@ -201,8 +201,8 @@ def get_seo_metadata(page_type, page_id):
     except SEOMetadata.DoesNotExist:
         # 返回默认SEO数据
         return {
-            'title': 'FlexCar - 澳大利亚领先的汽车订阅服务',
-            'meta_description': 'FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。',
+            'title': 'Faith Auto - 澳大利亚领先的汽车订阅服务',
+            'meta_description': 'Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。',
             'robots_meta': 'index,follow',
         }
 ```
@@ -212,8 +212,8 @@ def get_seo_metadata(page_type, page_id):
 {% load static %}
 
 <!-- 基础Meta标签 -->
-<title>{{ seo_data.title|default:"FlexCar - 澳大利亚领先的汽车订阅服务" }}</title>
-<meta name="description" content="{{ seo_data.meta_description|default:"FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。" }}">
+<title>{{ seo_data.title|default:"Faith Auto - 澳大利亚领先的汽车订阅服务" }}</title>
+<meta name="description" content="{{ seo_data.meta_description|default:"Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。" }}">
 <meta name="robots" content="{{ seo_data.robots_meta|default:"index,follow" }}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -225,11 +225,11 @@ def get_seo_metadata(page_type, page_id):
 <meta property="og:description" content="{{ seo_data.og_description|default:seo_data.meta_description }}">
 <meta property="og:type" content="{{ seo_data.og_type|default:"website" }}">
 <meta property="og:url" content="{{ current_url }}">
-<meta property="og:site_name" content="FlexCar">
+<meta property="og:site_name" content="Faith Auto">
 {% if seo_data.og_image %}
 <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ seo_data.og_image.url }}">
 {% else %}
-<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/flexcar-og-default.jpg' %}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/Faith Auto-og-default.jpg' %}">
 {% endif %}
 
 <!-- Twitter Card -->
@@ -239,7 +239,7 @@ def get_seo_metadata(page_type, page_id):
 {% if seo_data.twitter_image %}
 <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ seo_data.twitter_image.url }}">
 {% else %}
-<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/flexcar-twitter-default.jpg' %}">
+<meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/Faith Auto-twitter-default.jpg' %}">
 {% endif %}
 
 <!-- 结构化数据 -->
@@ -336,7 +336,7 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['flexcar.com.au'],
+    domains: ['Faith Auto.com.au'],
     formats: ['image/webp', 'image/avif'],
   },
   async headers() {
@@ -394,10 +394,10 @@ interface SEOProps {
 }
 
 export const SEOHead: React.FC<SEOProps> = ({
-  title = 'FlexCar - 澳大利亚领先的汽车订阅服务',
-  description = 'FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。',
+  title = 'Faith Auto - 澳大利亚领先的汽车订阅服务',
+  description = 'Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。',
   keywords = '汽车订阅,车辆租赁,悉尼租车,墨尔本租车,灵活用车',
-  ogImage = '/images/flexcar-og-default.jpg',
+  ogImage = '/images/Faith Auto-og-default.jpg',
   ogType = 'website',
   twitterCard = 'summary_large_image',
   canonical,
@@ -405,7 +405,7 @@ export const SEOHead: React.FC<SEOProps> = ({
   structuredData,
 }) => {
   const router = useRouter()
-  const currentUrl = `https://flexcar.com.au${router.asPath}`
+  const currentUrl = `https://Faith Auto.com.au${router.asPath}`
   const canonicalUrl = canonical || currentUrl
 
   return (
@@ -425,8 +425,8 @@ export const SEOHead: React.FC<SEOProps> = ({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:site_name" content="FlexCar" />
-      <meta property="og:image" content={`https://flexcar.com.au${ogImage}`} />
+      <meta property="og:site_name" content="Faith Auto" />
+      <meta property="og:image" content={`https://Faith Auto.com.au${ogImage}`} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
       
@@ -434,7 +434,7 @@ export const SEOHead: React.FC<SEOProps> = ({
       <meta name="twitter:card" content={twitterCard} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={`https://flexcar.com.au${ogImage}`} />
+      <meta name="twitter:image" content={`https://Faith Auto.com.au${ogImage}`} />
       
       {/* 结构化数据 */}
       {structuredData && (
@@ -464,9 +464,9 @@ export const SEOHead: React.FC<SEOProps> = ({
 export const generateOrganizationSchema = () => ({
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "FlexCar",
-  "url": "https://flexcar.com.au",
-  "logo": "https://flexcar.com.au/images/logo.png",
+  "name": "Faith Auto",
+  "url": "https://Faith Auto.com.au",
+  "logo": "https://Faith Auto.com.au/images/logo.png",
   "description": "澳大利亚领先的汽车订阅服务提供商",
   "address": {
     "@type": "PostalAddress",
@@ -481,9 +481,9 @@ export const generateOrganizationSchema = () => ({
     "availableLanguage": ["English", "Chinese"]
   },
   "sameAs": [
-    "https://www.facebook.com/flexcar",
-    "https://www.instagram.com/flexcar",
-    "https://www.linkedin.com/company/flexcar"
+    "https://www.facebook.com/Faith Auto",
+    "https://www.instagram.com/Faith Auto",
+    "https://www.linkedin.com/company/Faith Auto"
   ]
 })
 
@@ -492,7 +492,7 @@ export const generateCarSchema = (car: Car) => ({
   "@type": "Product",
   "name": `${car.make} ${car.model} ${car.year}`,
   "description": car.description,
-  "image": car.images.map(img => `https://flexcar.com.au${img.url}`),
+  "image": car.images.map(img => `https://Faith Auto.com.au${img.url}`),
   "brand": {
     "@type": "Brand",
     "name": car.make
@@ -516,9 +516,9 @@ export const generateCarSchema = (car: Car) => ({
 export const generateLocalBusinessSchema = (location: Location) => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": `FlexCar ${location.city}`,
-  "description": `FlexCar汽车订阅服务 - ${location.city}`,
-  "url": `https://flexcar.com.au/locations/${location.slug}`,
+  "name": `Faith Auto ${location.city}`,
+  "description": `Faith Auto汽车订阅服务 - ${location.city}`,
+  "url": `https://Faith Auto.com.au/locations/${location.slug}`,
   "address": {
     "@type": "PostalAddress",
     "streetAddress": location.address,
@@ -760,17 +760,17 @@ export function reportWebVitals() {
 #### 5.1 Nginx配置
 
 ```nginx
-# /etc/nginx/sites-available/flexcar
+# /etc/nginx/sites-available/Faith Auto
 server {
     listen 80;
-    server_name flexcar.com.au www.flexcar.com.au;
-    return 301 https://flexcar.com.au$request_uri;
+    server_name Faith Auto.com.au www.Faith Auto.com.au;
+    return 301 https://Faith Auto.com.au$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name www.flexcar.com.au;
-    return 301 https://flexcar.com.au$request_uri;
+    server_name www.Faith Auto.com.au;
+    return 301 https://Faith Auto.com.au$request_uri;
     
     ssl_certificate /path/to/ssl/cert.pem;
     ssl_certificate_key /path/to/ssl/private.key;
@@ -778,7 +778,7 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name flexcar.com.au;
+    server_name Faith Auto.com.au;
     
     ssl_certificate /path/to/ssl/cert.pem;
     ssl_certificate_key /path/to/ssl/private.key;
@@ -809,7 +809,7 @@ server {
     
     # robots.txt
     location = /robots.txt {
-        alias /var/www/flexcar/static/robots.txt;
+        alias /var/www/Faith Auto/static/robots.txt;
     }
     
     # sitemap.xml
@@ -819,11 +819,11 @@ server {
     
     # 静态文件
     location /static/ {
-        alias /var/www/flexcar/static/;
+        alias /var/www/Faith Auto/static/;
     }
     
     location /media/ {
-        alias /var/www/flexcar/media/;
+        alias /var/www/Faith Auto/media/;
     }
     
     # Django应用
@@ -844,7 +844,7 @@ server {
 import os
 
 # SEO设置
-ALLOWED_HOSTS = ['flexcar.com.au', 'www.flexcar.com.au']
+ALLOWED_HOSTS = ['Faith Auto.com.au', 'www.Faith Auto.com.au']
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_HSTS_SECONDS = 31536000
@@ -867,9 +867,9 @@ CACHES = {
 
 # 静态文件
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/flexcar/static/'
+STATIC_ROOT = '/var/www/Faith Auto/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/flexcar/media/'
+MEDIA_ROOT = '/var/www/Faith Auto/media/'
 
 # 中间件
 MIDDLEWARE = [
@@ -922,8 +922,8 @@ class Command(BaseCommand):
     def check_page_speed(self):
         """检查页面速度"""
         urls = [
-            'https://flexcar.com.au/',
-            'https://flexcar.com.au/browse-cars/',
+            'https://Faith Auto.com.au/',
+            'https://Faith Auto.com.au/browse-cars/',
         ]
         
         for url in urls:
@@ -938,15 +938,15 @@ class Command(BaseCommand):
                 send_mail(
                     'SEO Alert: Low Page Speed',
                     f'Page speed for {url} is {score}',
-                    'noreply@flexcar.com.au',
-                    ['seo@flexcar.com.au'],
+                    'noreply@Faith Auto.com.au',
+                    ['seo@Faith Auto.com.au'],
                 )
     
     def check_meta_tags(self):
         """检查Meta标签"""
         urls = [
-            'https://flexcar.com.au/',
-            'https://flexcar.com.au/browse-cars/',
+            'https://Faith Auto.com.au/',
+            'https://Faith Auto.com.au/browse-cars/',
         ]
         
         for url in urls:
@@ -968,8 +968,8 @@ class Command(BaseCommand):
                 send_mail(
                     'SEO Alert: Meta Tag Issues',
                     f'Issues found for {url}: {", ".join(issues)}',
-                    'noreply@flexcar.com.au',
-                    ['seo@flexcar.com.au'],
+                    'noreply@Faith Auto.com.au',
+                    ['seo@Faith Auto.com.au'],
                 )
 ```
 
@@ -982,4 +982,4 @@ class Command(BaseCommand):
 5. **部署配置** - Nginx、Django设置
 6. **自动化监控** - SEO指标监控脚本
 
-这些技术实施将帮助FlexCar网站在搜索引擎中获得更好的排名和可见性。 
+这些技术实施将帮助Faith Auto网站在搜索引擎中获得更好的排名和可见性。 

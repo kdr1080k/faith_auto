@@ -146,39 +146,7 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                 </div>
               </div>
 
-              {/* Subscription Benefits */}
-              <div className="bg-white rounded-xl shadow-sm p-8">
-                <h2 className="text-2xl font-bold mb-6">Subscription Benefits</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Insurance Included</p>
-                      <p className="text-sm text-gray-500">Comprehensive coverage</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Maintenance Included</p>
-                      <p className="text-sm text-gray-500">Regular servicing covered</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                      <i className="fas fa-check-circle text-success text-lg"></i>
-                    </div>
-                    <div>
-                      <p className="font-medium">Flexible Terms</p>
-                      <p className="text-sm text-gray-500">Minimum 1 month</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             
             </div>
 
             {/* Sidebar - Subscription Plans */}

@@ -35,7 +35,7 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>FlexCar - Car Subscription & Quality Used Cars</title>
+        <title>Faith Auto - Car Subscription & Quality Used Cars</title>
         <meta name="description" content="Experience the freedom of car subscription or find your perfect pre-owned vehicle. Flexible terms, all-inclusive packages, and quality assured used cars." />
       </Helmet>
       
@@ -130,7 +130,7 @@ const Home = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-6 text-white">Why Choose FlexCar</h2>
+            <h2 className="text-3xl font-bold mb-6 text-white">Why Choose Faith Auto</h2>
             <p className="text-xl max-w-3xl mx-auto text-gray-300">
               Whether you're looking for the flexibility of a subscription or the perfect pre-owned vehicle, 
               we're here to provide you with the best automotive experience.
@@ -241,7 +241,7 @@ const Home = () => {
             <div className="text-center">
               <i className="fas fa-envelope text-primary text-2xl mb-3"></i>
               <h3 className="font-medium text-lg mb-2">Email Us</h3>
-              <p className="text-gray-600">info@flexcar.com.au</p>
+              <p className="text-gray-600">info@Faith Auto.com.au</p>
             </div>
           </div>
           <div className="text-center">

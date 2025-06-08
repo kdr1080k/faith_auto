@@ -1,6 +1,6 @@
-# FlexCar Documentation
+# Faith Auto Documentation
 
-Welcome to the FlexCar documentation. This documentation provides comprehensive information about the FlexCar car subscription platform.
+Welcome to the Faith Auto documentation. This documentation provides comprehensive information about the Faith Auto car subscription platform.
 
 ## Table of Contents
 
@@ -44,5 +44,5 @@ Welcome to the FlexCar documentation. This documentation provides comprehensive 
 ## Support
 
 For support, please contact:
-- Technical Support: tech-support@flexcar.com
-- Business Inquiries: business@flexcar.com 
+- Technical Support: tech-support@Faith Auto.com
+- Business Inquiries: business@Faith Auto.com 

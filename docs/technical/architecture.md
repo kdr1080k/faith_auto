@@ -1,8 +1,8 @@
-# FlexCar Technical Architecture
+# Faith Auto Technical Architecture
 
 ## System Overview
 
-FlexCar's architecture is built on a modern, scalable, and secure foundation using Django for the backend and React for the frontend.
+Faith Auto's architecture is built on a modern, scalable, and secure foundation using Django for the backend and React for the frontend.
 
 ## Architecture Diagram
 

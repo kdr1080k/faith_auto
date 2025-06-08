@@ -1,4 +1,4 @@
-# FlexCar SEO快速启动指南
+# Faith Auto SEO快速启动指南
 *立即开始提升搜索引擎排名*
 
 ## 🚀 第一周：立即执行的优化
@@ -8,9 +8,9 @@
 #### ✅ 1. Google Search Console设置
 ```bash
 # 1. 访问 https://search.google.com/search-console/
-# 2. 添加属性：flexcar.com.au
+# 2. 添加属性：Faith Auto.com.au
 # 3. 验证所有权（推荐HTML文件验证）
-# 4. 提交网站地图：https://flexcar.com.au/sitemap.xml
+# 4. 提交网站地图：https://Faith Auto.com.au/sitemap.xml
 ```
 
 #### ✅ 2. Google Analytics 4设置
@@ -29,12 +29,12 @@
 #### ✅ 3. 基础Meta标签优化
 ```html
 <!-- 首页 -->
-<title>FlexCar - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
-<meta name="description" content="FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
+<title>Faith Auto - 澳大利亚领先的汽车订阅服务 | 灵活用车新选择</title>
+<meta name="description" content="Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。在悉尼、墨尔本等城市享受便捷用车体验。立即申请，开启智能出行新生活。">
 
 <!-- 浏览车辆页 -->
-<title>浏览车辆 - FlexCar汽车订阅 | 悉尼墨尔本租车服务</title>
-<meta name="description" content="浏览FlexCar精选车辆，包括轿车、SUV、豪华车等。灵活订阅，包含保险维护，悉尼墨尔本等城市可选。立即查看可用车辆。">
+<title>浏览车辆 - Faith Auto汽车订阅 | 悉尼墨尔本租车服务</title>
+<meta name="description" content="浏览Faith Auto精选车辆，包括轿车、SUV、豪华车等。灵活订阅，包含保险维护，悉尼墨尔本等城市可选。立即查看可用车辆。">
 ```
 
 ### 📋 Day 2: 技术SEO基础 (3小时)
@@ -43,7 +43,7 @@
 ```bash
 # 检查当前速度
 # 访问：https://pagespeed.web.dev/
-# 测试URL：https://flexcar.com.au/
+# 测试URL：https://Faith Auto.com.au/
 
 # 立即优化措施：
 # 1. 压缩图片（目标：<500KB）
@@ -63,8 +63,8 @@
 # 确保所有HTTP重定向到HTTPS
 server {
     listen 80;
-    server_name flexcar.com.au www.flexcar.com.au;
-    return 301 https://flexcar.com.au$request_uri;
+    server_name Faith Auto.com.au www.Faith Auto.com.au;
+    return 301 https://Faith Auto.com.au$request_uri;
 }
 ```
 
@@ -85,10 +85,10 @@ server {
 #### ✅ 2. 图片Alt标签优化
 ```html
 <!-- 车辆图片 -->
-<img src="car-image.jpg" alt="2023年丰田凯美瑞 - FlexCar汽车订阅服务">
+<img src="car-image.jpg" alt="2023年丰田凯美瑞 - Faith Auto汽车订阅服务">
 
 <!-- Logo -->
-<img src="logo.png" alt="FlexCar - 澳大利亚汽车订阅服务">
+<img src="logo.png" alt="Faith Auto - 澳大利亚汽车订阅服务">
 
 <!-- 功能图标 -->
 <img src="insurance-icon.png" alt="包含全险保障">
@@ -112,9 +112,9 @@ server {
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "FlexCar",
-  "url": "https://flexcar.com.au",
-  "logo": "https://flexcar.com.au/images/logo.png",
+  "name": "Faith Auto",
+  "url": "https://Faith Auto.com.au",
+  "logo": "https://Faith Auto.com.au/images/logo.png",
   "description": "澳大利亚领先的汽车订阅服务提供商",
   "address": {
     "@type": "PostalAddress",
@@ -157,24 +157,24 @@ server {
 1. 访问：https://business.google.com/
 2. 创建或认领业务资料
 3. 完善所有信息：
-   - 业务名称：FlexCar Australia
+   - 业务名称：Faith Auto Australia
    - 类别：汽车租赁服务
    - 地址：完整地址
    - 电话：+61-x-xxxx-xxxx
-   - 网站：https://flexcar.com.au
+   - 网站：https://Faith Auto.com.au
    - 营业时间：24小时服务
 ```
 
 #### ✅ 2. 本地关键词优化
 ```html
 <!-- 为每个服务城市创建页面 -->
-<title>FlexCar悉尼 - 悉尼汽车订阅服务 | 灵活租车</title>
-<h1>FlexCar悉尼汽车订阅服务</h1>
-<p>在悉尼享受FlexCar灵活的汽车订阅服务...</p>
+<title>Faith Auto悉尼 - 悉尼汽车订阅服务 | 灵活租车</title>
+<h1>Faith Auto悉尼汽车订阅服务</h1>
+<p>在悉尼享受Faith Auto灵活的汽车订阅服务...</p>
 
-<title>FlexCar墨尔本 - 墨尔本汽车订阅服务 | 灵活租车</title>
-<h1>FlexCar墨尔本汽车订阅服务</h1>
-<p>在墨尔本享受FlexCar灵活的汽车订阅服务...</p>
+<title>Faith Auto墨尔本 - 墨尔本汽车订阅服务 | 灵活租车</title>
+<h1>Faith Auto墨尔本汽车订阅服务</h1>
+<p>在墨尔本享受Faith Auto灵活的汽车订阅服务...</p>
 ```
 
 ## 🎯 第二周：内容和链接建设
@@ -231,7 +231,7 @@ server {
 5. Hotfrog ⭐⭐
 
 确保NAP信息一致：
-Name: FlexCar Australia
+Name: Faith Auto Australia
 Address: [完整地址]
 Phone: +61-x-xxxx-xxxx
 ```
@@ -246,7 +246,7 @@ Phone: +61-x-xxxx-xxxx
 提交信息：
 - 业务描述：一致的品牌描述
 - 关键词：汽车订阅, 车辆租赁, 灵活用车
-- 网站链接：https://flexcar.com.au
+- 网站链接：https://Faith Auto.com.au
 ```
 
 ## 📊 第三周：监控和优化
@@ -344,7 +344,7 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /private/
 
-Sitemap: https://flexcar.com.au/sitemap.xml
+Sitemap: https://Faith Auto.com.au/sitemap.xml
 ```
 
 #### 2. 网站地图生成
@@ -368,15 +368,15 @@ urlpatterns = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 基础Meta标签 -->
-    <title>{% block title %}FlexCar - 澳大利亚领先的汽车订阅服务{% endblock %}</title>
-    <meta name="description" content="{% block description %}FlexCar提供灵活的汽车订阅服务，无需首付，包含保险维护。{% endblock %}">
+    <title>{% block title %}Faith Auto - 澳大利亚领先的汽车订阅服务{% endblock %}</title>
+    <meta name="description" content="{% block description %}Faith Auto提供灵活的汽车订阅服务，无需首付，包含保险维护。{% endblock %}">
     
     <!-- Open Graph -->
     <meta property="og:title" content="{% block og_title %}{{ block.super }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ block.super }}{% endblock %}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
-    <meta property="og:site_name" content="FlexCar">
+    <meta property="og:site_name" content="Faith Auto">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="{% block canonical %}{{ request.build_absolute_uri }}{% endblock %}">

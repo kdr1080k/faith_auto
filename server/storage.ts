@@ -152,7 +152,7 @@ export class MemStorage implements IStorage {
         available: true,
         isGreatValue: true,
         category: "smart",
-        location: "Brisbane"
+        location: "Melbourne"
       },
       {
         id: "hyundai-venue",

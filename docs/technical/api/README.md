@@ -1,13 +1,13 @@
-# FlexCar API Documentation
+# Faith Auto API Documentation
 
 ## Overview
 
-The FlexCar API follows RESTful principles and provides endpoints for managing car subscriptions, vehicles, users, and payments.
+The Faith Auto API follows RESTful principles and provides endpoints for managing car subscriptions, vehicles, users, and payments.
 
 ## Base URL
 
 ```
-https://api.flexcar.com/v1
+https://api.Faith Auto.com/v1
 ```
 
 ## Authentication
@@ -268,7 +268,7 @@ API versions are specified in the URL path. The current version is v1.
 
 ## Webhooks
 
-FlexCar provides webhooks for the following events:
+Faith Auto provides webhooks for the following events:
 
 - Subscription created
 - Subscription updated

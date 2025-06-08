@@ -1,8 +1,8 @@
-# FlexCar Database Schema
+# Faith Auto Database Schema
 
 ## Overview
 
-The FlexCar database uses PostgreSQL and follows a normalized structure to ensure data integrity and efficient querying.
+The Faith Auto database uses PostgreSQL and follows a normalized structure to ensure data integrity and efficient querying.
 
 ## Schema Diagram
 
