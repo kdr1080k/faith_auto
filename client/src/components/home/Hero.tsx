@@ -74,7 +74,9 @@ const Hero = ({
   }, [imagesLoaded, backgroundImage]);
 
   return (
-    <section className="relative pt-0 pb-20 md:pb-28 lg:pb-32 overflow-hidden">
+    <section className={`relative pt-0 overflow-hidden ${
+      height === 'medium' ? '' : 'pb-20 md:pb-28 lg:pb-32'
+    }`}>
       {/* Black gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55 z-10"></div>
       
@@ -113,7 +115,7 @@ const Hero = ({
         height === 'small' 
           ? 'min-h-[300px] md:min-h-[350px] lg:min-h-[400px]'
           : height === 'medium'
-          ? 'min-h-[450px] md:min-h-[550px] lg:min-h-[600px]'
+          ? 'h-[600px]'
           : 'min-h-[600px] md:min-h-[700px] lg:min-h-[800px]'
       }`}>
         <div className="max-w-4xl">

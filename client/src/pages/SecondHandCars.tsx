@@ -161,7 +161,7 @@ const SecondHandCars: React.FC = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative py-32 bg-cover bg-center bg-no-repeat">
+      <section className="relative h-[600px] bg-cover bg-center bg-no-repeat flex items-center">
         {/* Black gradient overlay */}
         <div
           className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55"

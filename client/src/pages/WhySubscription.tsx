@@ -63,47 +63,6 @@ const WhySubscription = () => {
         </div>
       </section>
       
-      <section className="py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Why Choose Car Subscription?</h2>
-            <p className="text-xl text-gray-600">All-inclusive car subscription with no hidden costs</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <i className="fas fa-calendar-alt text-primary text-xl"></i>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Flexible Terms</h3>
-              <p className="text-gray-600">
-                Subscribe month-to-month with no long-term commitment. Change or return your car when needed.
-              </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <i className="fas fa-dollar-sign text-primary text-xl"></i>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">All-Inclusive Price</h3>
-              <p className="text-gray-600">
-                One simple payment covers registration, insurance, maintenance, and roadside assistance.
-              </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-lg shadow-sm">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                <i className="fas fa-sync-alt text-primary text-xl"></i>
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Swap Vehicles</h3>
-              <p className="text-gray-600">
-                Switch between different vehicles to suit your changing needs and lifestyle.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <CarSearchForm 
         onFilterChange={handleFilterChange}
         initialLocation="All"

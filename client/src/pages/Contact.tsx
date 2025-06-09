@@ -58,7 +58,7 @@ const Contact = () => {
         <meta name="description" content="Get in touch with the Faith Auto team for inquiries about our car subscription service, support, or partnerships." />
       </Helmet>
 
-      <section className="relative min-h-[400px] md:min-h-[450px] lg:min-h-[500px] flex items-center">
+      <section className="relative h-[600px] flex items-center">
         <div className="absolute inset-0 bg-cover bg-center" style={{ 
           backgroundImage: `
             linear-gradient(to bottom, 
