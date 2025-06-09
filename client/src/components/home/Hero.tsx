@@ -10,13 +10,14 @@ interface HeroProps {
   buttonLink: string;
   secondaryButtonText?: string;
   secondaryButtonLink?: string;
+  height?: 'small' | 'medium' | 'large';
 }
 
 // Images are in the client/public directory
 const images = [
-  './pexels-prime-cinematics-1005175-2036544.jpg',
-  './pexels-svonhorst-2920064.jpg',
-  './kia-k8-hero.jpg'
+  '/pexels-prime-cinematics-1005175-2036544.jpg',
+  '/pexels-svonhorst-2920064.jpg',
+  '/kia-k8-hero.jpg'
 ];
 
 const Hero = ({
@@ -26,6 +27,7 @@ const Hero = ({
   buttonLink = "/smart",
   secondaryButtonText,
   secondaryButtonLink,
+  height = 'large',
 }: HeroProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -93,8 +95,14 @@ const Hero = ({
       </div>
       
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center z-20 min-h-[600px] md:min-h-[700px] lg:min-h-[800px] pt-16">
-        <div className="max-w-2xl">
+      <div className={`relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-center z-20 pt-16 ${
+        height === 'small' 
+          ? 'min-h-[300px] md:min-h-[350px] lg:min-h-[400px]'
+          : height === 'medium'
+          ? 'min-h-[450px] md:min-h-[550px] lg:min-h-[600px]'
+          : 'min-h-[600px] md:min-h-[700px] lg:min-h-[800px]'
+      }`}>
+        <div className="max-w-4xl">
           <div 
             className="inline-block opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards]"
             style={{ animationDelay: '250ms' }}
@@ -114,7 +122,7 @@ const Hero = ({
           </div>
           
           <div 
-            className="mt-8 flex flex-col sm:flex-row gap-4 opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards]"
+            className="mt-8 flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards]"
             style={{ animationDelay: '750ms' }}
           >
             <Link href={buttonLink}>

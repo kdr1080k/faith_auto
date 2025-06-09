@@ -28,9 +28,9 @@ const WhySubscription = () => {
       <Hero 
         title="Car Subscription Service"
         subtitle="Drive the car you want with all-inclusive pricing. No long-term commitment, just flexible mobility solutions tailored to your lifestyle."
-      
         buttonText="Make an Enquiry"
-        buttonLink="/enquiry"
+        buttonLink="/contact"
+        height="medium"
       />
 
       <section className="py-24">
