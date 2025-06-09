@@ -220,20 +220,14 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
 
                 <div className="space-y-4">
                   <Link 
-                    href="/enquiry"
+                    href="/contact"
                     className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-primary hover:bg-primary/90 text-white transition-all"
                   >
                     <i className="fas fa-envelope mr-2"></i>
                     Make an Enquiry
                   </Link>
                   
-                  <a 
-                    href="tel:1300555555"
-                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-gray-100 hover:bg-gray-200 text-gray-900 transition-all"
-                  >
-                    <i className="fas fa-phone mr-2"></i>
-                    Call Us
-                  </a>
+                 
                 </div>
               </div>
             </div>

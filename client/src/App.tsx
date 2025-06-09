@@ -18,6 +18,7 @@ import SecondHandCars from "@/pages/SecondHandCars";
 import Layout from "@/components/layout/Layout";
 import Enquiry from "@/pages/Enquiry";
 import FAQ from "@/pages/FAQ";
+import ThankYou from "@/pages/ThankYou";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/long-term-rental" component={LongTermRental} />
       <Route path="/enquiry" component={Enquiry} />
       <Route path="/faq" component={FAQ} />
+      <Route path="/thank-you" component={ThankYou} />
       <Route component={NotFound} />
     </Switch>
   );

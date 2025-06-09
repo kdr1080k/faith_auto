@@ -62,7 +62,7 @@ const Enquiry: React.FC = () => {
   const handleSubmit = () => {
     console.log('Form submitted:', formData);
     // Here you would typically send the data to your backend
-    setLocation('/');
+    setLocation('/thank-you');
   };
 
   const renderProgressDots = () => (
@@ -407,19 +407,13 @@ const Enquiry: React.FC = () => {
                 />
               </div>
               
-              <div className="flex">
-                <div className="flex items-center px-4 py-4 border-2 border-r-0 rounded-l-lg bg-gray-50">
-                  <img src="/au-flag.png" alt="AU" className="w-6 h-4 mr-2" />
-                  <span className="text-gray-600">▼</span>
-                </div>
-                <Input
-                  placeholder="+61 000 000 000"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => updateFormData('phone', e.target.value)}
-                  className="flex-1 p-4 border-2 border-l-0 rounded-r-lg"
-                />
-              </div>
+              <Input
+                placeholder="+61 000 000 000"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => updateFormData('phone', e.target.value)}
+                className="p-4 border-2 rounded-lg"
+              />
               
               <div className="flex items-start space-x-3 text-left">
                 <Checkbox

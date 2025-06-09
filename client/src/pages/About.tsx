@@ -43,13 +43,12 @@ const About: React.FC = () => {
       <section className="relative w-full h-[600px] bg-cover bg-center bg-no-repeat" style={{ 
         backgroundImage: `
           linear-gradient(to bottom, 
-            rgba(31, 41, 55, 0.95), 
-            rgba(31, 41, 55, 0.85)
+            rgba(0, 0, 0, 0.55), 
+            rgba(0, 0, 0, 0.55)
           ),
           url('/pexels-bertellifotografia-13872477.jpg')
         `
       }}>
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center z-20 h-full">
           <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
             <div 

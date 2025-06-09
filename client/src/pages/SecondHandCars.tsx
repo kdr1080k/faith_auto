@@ -162,9 +162,9 @@ const SecondHandCars: React.FC = () => {
 
       {/* Hero Section */}
       <section className="relative py-32 bg-cover bg-center bg-no-repeat">
-        {/* Strong dark gray gradient overlay */}
+        {/* Black gradient overlay */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-gray-900/95 to-gray-900/95"
+          className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55"
           style={{
             backgroundImage: `url('/pexels-bertellifotografia-13872477.jpg')`,
             backgroundSize: 'cover',

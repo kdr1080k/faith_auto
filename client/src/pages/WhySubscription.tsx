@@ -31,6 +31,7 @@ const WhySubscription = () => {
         buttonText="Make an Enquiry"
         buttonLink="/contact"
         height="medium"
+        backgroundImage="/pexels-joshsorenson-59512.jpg"
       />
 
       <section className="py-24">

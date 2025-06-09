@@ -62,8 +62,8 @@ const Contact = () => {
         <div className="absolute inset-0 bg-cover bg-center" style={{ 
           backgroundImage: `
             linear-gradient(to bottom, 
-              rgba(31, 41, 55, 0.95), 
-              rgba(31, 41, 55, 0.85)
+              rgba(0, 0, 0, 0.55), 
+              rgba(0, 0, 0, 0.55)
             ),
             url('/pexels-bertellifotografia-13872477.jpg')
           `
@@ -167,7 +167,7 @@ const Contact = () => {
                   <div className="space-y-3">
                     <p className="flex items-center text-gray-300">
                       <i className="fas fa-phone-alt w-5 text-primary"></i>
-                      <a href="tel:1800787422" className="ml-2 hover:text-primary">1800 RUSH CAR (1800 7874 227)</a>
+                      <a href="tel:1800787422" className="ml-2 hover:text-primary">1800 7874 227</a>
                     </p>
                     <p className="flex items-center text-gray-300">
                       <i className="fas fa-envelope w-5 text-primary"></i>

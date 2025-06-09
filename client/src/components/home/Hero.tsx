@@ -11,6 +11,7 @@ interface HeroProps {
   secondaryButtonText?: string;
   secondaryButtonLink?: string;
   height?: 'small' | 'medium' | 'large';
+  backgroundImage?: string;
 }
 
 // Images are in the client/public directory
@@ -28,6 +29,7 @@ const Hero = ({
   secondaryButtonText,
   secondaryButtonLink,
   height = 'large',
+  backgroundImage,
 }: HeroProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
@@ -61,7 +63,7 @@ const Hero = ({
   }, []);
 
   useEffect(() => {
-    if (!imagesLoaded) return;
+    if (!imagesLoaded || backgroundImage) return;
 
     const interval = setInterval(() => {
       setInitialRender(false);
@@ -69,29 +71,41 @@ const Hero = ({
     }, 6000);
 
     return () => clearInterval(interval);
-  }, [imagesLoaded]);
+  }, [imagesLoaded, backgroundImage]);
 
   return (
     <section className="relative pt-0 pb-20 md:pb-28 lg:pb-32 overflow-hidden">
-      {/* Light text contrast layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 z-10"></div>
+      {/* Black gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55 z-10"></div>
       
       {/* Slideshow */}
       <div className={styles.slideshow}>
-        {images.map((image, index) => (
-          <div
-            key={image}
-            className={`${styles.slide} ${index === currentImageIndex ? styles.active : ''} ${index === 0 && initialRender ? styles.instantFade : ''}`}
-          >
+        {backgroundImage ? (
+          <div className={`${styles.slide} ${styles.active}`}>
             <div className={styles.scaleContainer}>
               <img 
-                src={image}
+                src={backgroundImage}
                 alt="Hero"
                 className={`${styles.slideImage} w-full h-full object-cover`}
               />
             </div>
           </div>
-        ))}
+        ) : (
+          images.map((image, index) => (
+            <div
+              key={image}
+              className={`${styles.slide} ${index === currentImageIndex ? styles.active : ''} ${index === 0 && initialRender ? styles.instantFade : ''}`}
+            >
+              <div className={styles.scaleContainer}>
+                <img 
+                  src={image}
+                  alt="Hero"
+                  className={`${styles.slideImage} w-full h-full object-cover`}
+                />
+              </div>
+            </div>
+          ))
+        )}
       </div>
       
       {/* Content */}
