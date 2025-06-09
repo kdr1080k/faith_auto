@@ -27,14 +27,14 @@ const Header = () => {
   return (
     <header className="bg-gray-800 bg-opacity-50 fixed top-0 left-0 right-0 z-50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-24">
           {/* Logo */}
           <div className={`flex-shrink-0 ${styles.navItem} ${styles.logo}`}>
             <Link href="/" className="group">
               <img 
                 src="/faith_auto.png" 
                 alt="Faith Auto" 
-                className="h-16 w-auto transform duration-300 group-hover:scale-110" 
+                className="h-24 w-auto transform duration-300 group-hover:scale-110" 
               />
             </Link>
           </div>

@@ -200,12 +200,12 @@ const Home = () => {
             <div className="text-center">
               <i className="fas fa-map-marker-alt text-primary text-2xl mb-3"></i>
               <h3 className="font-medium text-lg mb-2">Visit Us</h3>
-              <p className="text-gray-600">123 Car Street<br />Melbourne, VIC 3000</p>
+              <p className="text-gray-600">3/95-97 Western Ave, Westmeadows VIC 3049</p>
             </div>
             <div className="text-center">
               <i className="fas fa-phone-alt text-primary text-2xl mb-3"></i>
               <h3 className="font-medium text-lg mb-2">Call Us</h3>
-              <p className="text-gray-600">(03) 1234 5678</p>
+              <p className="text-gray-600">1800 316 965</p>
             </div>
             <div className="text-center">
               <i className="fas fa-envelope text-primary text-2xl mb-3"></i>
