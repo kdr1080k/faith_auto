@@ -46,7 +46,7 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
             </div>
             <p className="text-gray-600 mb-4">{car.model}</p>
             <div className="flex justify-between items-center">
-              <div className="text-primary font-semibold">${formatCurrency(car.weeklyPrice)}/week</div>
+              <div className="text-primary font-semibold">{formatCurrency(car.weeklyPrice * 52)}</div>
               <div className={`text-sm font-medium ${car.available ? 'text-green-600' : 'text-red-600'}`}>
                 {car.available ? 'Available' : 'Not Available'}
               </div>
