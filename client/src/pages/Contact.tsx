@@ -93,18 +93,9 @@ const Contact = () => {
         </section>
 
         {/* Contact Section */}
-        <section className="py-20 min-h-screen">
+        <section className="py-230 min-h-screen">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Section Header */}
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                We're Here to Help
-              </h2>
-              <p className="text-lg text-gray-200 max-w-2xl mx-auto">
-                Ready to start your car subscription journey? Have questions about our services? 
-                Our friendly team is here to assist you every step of the way.
-              </p>
-            </div>
+           
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Contact Form */}
