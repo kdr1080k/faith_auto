@@ -210,7 +210,7 @@ const Home = () => {
             <div className="text-center">
               <i className="fas fa-envelope text-primary text-2xl mb-3"></i>
               <h3 className="font-medium text-lg mb-2">Email Us</h3>
-              <p className="text-gray-600">info@Faith Auto.com.au</p>
+              <p className="text-gray-600">info@faithauto.com.au</p>
             </div>
           </div>
           <div className="text-center">

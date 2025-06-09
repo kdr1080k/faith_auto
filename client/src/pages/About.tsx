@@ -40,13 +40,13 @@ const About: React.FC = () => {
       </Helmet>
 
       {/* Hero Banner Section - Full Width */}
-      <section className="relative w-full h-[600px] bg-cover bg-center bg-no-repeat" style={{ 
+      <section className="relative w-full h-[600px] bg-cover bg-center bg-no-repeat flex items-center" style={{
         backgroundImage: `
           linear-gradient(to bottom, 
             rgba(0, 0, 0, 0.55), 
             rgba(0, 0, 0, 0.55)
           ),
-          url('/pexels-bertellifotografia-13872477.jpg')
+          url('/pexels-olia-danilevich-6647233.jpg')
         `
       }}>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center z-20 h-full">

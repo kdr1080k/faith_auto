@@ -77,34 +77,38 @@ const Hero = ({
     <section className={`relative pt-0 overflow-hidden ${
       height === 'medium' ? '' : 'pb-20 md:pb-28 lg:pb-32'
     }`}>
-      {/* Black gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55 z-10"></div>
-      
       {/* Slideshow */}
       <div className={styles.slideshow}>
         {backgroundImage ? (
-          <div className={`${styles.slide} ${styles.active}`}>
-            <div className={styles.scaleContainer}>
-              <img 
-                src={backgroundImage}
-                alt="Hero"
-                className={`${styles.slideImage} w-full h-full object-cover`}
-              />
-            </div>
+          <div className={`${styles.slide} ${styles.active}`} style={{
+            backgroundImage: `
+              linear-gradient(to bottom, 
+                rgba(0, 0, 0, 0.55), 
+                rgba(0, 0, 0, 0.55)
+              ),
+              url('${backgroundImage}')
+            `,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}>
           </div>
         ) : (
           images.map((image, index) => (
             <div
               key={image}
               className={`${styles.slide} ${index === currentImageIndex ? styles.active : ''} ${index === 0 && initialRender ? styles.instantFade : ''}`}
+              style={{
+                backgroundImage: `
+                  linear-gradient(to bottom, 
+                    rgba(0, 0, 0, 0.55), 
+                    rgba(0, 0, 0, 0.55)
+                  ),
+                  url('${image}')
+                `,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center'
+              }}
             >
-              <div className={styles.scaleContainer}>
-                <img 
-                  src={image}
-                  alt="Hero"
-                  className={`${styles.slideImage} w-full h-full object-cover`}
-                />
-              </div>
             </div>
           ))
         )}

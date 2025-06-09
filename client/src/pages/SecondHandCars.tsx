@@ -161,16 +161,15 @@ const SecondHandCars: React.FC = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="relative h-[600px] bg-cover bg-center bg-no-repeat flex items-center">
-        {/* Black gradient overlay */}
-        <div
-          className="absolute inset-0 bg-gradient-to-b from-black/55 to-black/55"
-          style={{
-            backgroundImage: `url('/pexels-bertellifotografia-13872477.jpg')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        ></div>
+      <section className="relative h-[600px] bg-cover bg-center bg-no-repeat flex items-center" style={{
+        backgroundImage: `
+          linear-gradient(to bottom, 
+            rgba(0, 0, 0, 0.55), 
+            rgba(0, 0, 0, 0.55)
+          ),
+          url('/pexels-bertellifotografia-13872477.jpg')
+        `
+      }}>
 
         {/* Content container */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
