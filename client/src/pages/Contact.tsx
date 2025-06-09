@@ -90,108 +90,194 @@ const Contact = () => {
         </div>
       </section>
 
-      <section className="py-32">
+      {/* Contact Section */}
+      <section className="py-20 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              We're Here to Help
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Ready to start your car subscription journey? Have questions about our services? 
+              Our friendly team is here to assist you every step of the way.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Form */}
-            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-gray-700 p-8">
-              <h2 className="text-2xl font-bold mb-6 text-white">Send us a message</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-primary focus:border-primary text-white placeholder-gray-400"
-                    required
-                  />
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                    <i className="fas fa-paper-plane text-white text-lg"></i>
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900">Send us a message</h3>
                 </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-primary focus:border-primary text-white placeholder-gray-400"
-                    required
-                  />
-                </div>
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-300 mb-1">
-                    Phone (optional)
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-primary focus:border-primary text-white placeholder-gray-400"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    rows={4}
-                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-primary focus:border-primary text-white placeholder-gray-400"
-                    required
-                  ></textarea>
-                </div>
-                <Button type="submit" className="w-full bg-primary hover:bg-accent text-white py-3">
-                  Send Message
-                </Button>
-              </form>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Enter your full name"
+                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 transition-all duration-200 group-hover:border-gray-300"
+                        required
+                      />
+                    </div>
+                    <div className="group">
+                      <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email address"
+                        className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 transition-all duration-200 group-hover:border-gray-300"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="group">
+                    <label htmlFor="phone" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Phone Number (Optional)
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Enter your phone number"
+                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 transition-all duration-200 group-hover:border-gray-300"
+                    />
+                  </div>
+                  
+                  <div className="group">
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
+                      Your Message *
+                    </label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows={6}
+                      placeholder="Tell us how we can help you..."
+                      className="w-full px-4 py-3 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-900 placeholder-gray-500 transition-all duration-200 group-hover:border-gray-300 resize-none"
+                      required
+                    ></textarea>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    disabled={loading}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? (
+                      <span className="flex items-center">
+                        <i className="fas fa-spinner fa-spin mr-2"></i>
+                        Sending...
+                      </span>
+                    ) : (
+                      <span className="flex items-center">
+                        <i className="fas fa-paper-plane mr-2"></i>
+                        Send Message
+                      </span>
+                    )}
+                  </Button>
+                </form>
+              </div>
             </div>
 
             {/* Contact Information */}
-            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-gray-700 p-8">
-              <h2 className="text-2xl font-bold mb-6 text-white">Get in touch</h2>
-              <div className="space-y-8">
-                <div>
-                  <h3 className="text-lg font-semibold mb-2 text-white">Customer Support</h3>
-                  <div className="space-y-3">
-                    <p className="flex items-center text-gray-300">
-                      <i className="fas fa-phone-alt w-5 text-primary"></i>
-                      <a href="tel:1800787422" className="ml-2 hover:text-primary">1800 7874 227</a>
-                    </p>
-                    <p className="flex items-center text-gray-300">
-                      <i className="fas fa-envelope w-5 text-primary"></i>
-                      <a href="mailto:melbourne@rushcarrental.com.au" className="ml-2 hover:text-primary">melbourne@rushcarrental.com.au</a>
-                    </p>
+            <div className="space-y-6">
+              {/* Contact Info Card */}
+              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center mr-4">
+                    <i className="fas fa-headset text-white text-lg"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Customer Support</h3>
+                </div>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                      <i className="fas fa-phone-alt text-blue-600"></i>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Phone</p>
+                      <a href="tel:1800787422" className="text-gray-900 font-semibold hover:text-blue-600 transition-colors">
+                        1800 7874 227
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                      <i className="fas fa-envelope text-blue-600"></i>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Email</p>
+                      <a href="mailto:melbourne@rushcarrental.com.au" className="text-gray-900 font-semibold hover:text-blue-600 transition-colors break-all">
+                        melbourne@rushcarrental.com.au
+                      </a>
+                    </div>
                   </div>
                 </div>
+              </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold mb-2 text-white">Business Hours</h3>
-                  <div className="space-y-2 text-gray-300">
-                    <p>Monday - Friday: 8:00 AM - 8:00 PM</p>
-                    <p>Saturday - Sunday: 9:00 AM - 5:00 PM</p>
+              {/* Business Hours Card */}
+              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
+                    <i className="fas fa-clock text-white text-lg"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Business Hours</h3>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <span className="font-semibold text-gray-700">Monday - Friday</span>
+                    <span className="text-gray-900 font-medium">8:00 AM - 8:00 PM</span>
+                  </div>
+                  <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <span className="font-semibold text-gray-700">Saturday - Sunday</span>
+                    <span className="text-gray-900 font-medium">9:00 AM - 5:00 PM</span>
                   </div>
                 </div>
+              </div>
 
-                <div>
-                  <h3 className="text-lg font-semibold mb-2 text-white">Locations</h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start text-gray-300">
-                      <i className="fas fa-map-marker-alt w-5 text-primary mt-1"></i>
-                      <div className="ml-2">
-                        <p className="font-medium">Westmeadows</p>
-                        <p>Melbourne, VIC</p>
+              {/* Location Card */}
+              <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center mr-4">
+                    <i className="fas fa-map-marker-alt text-white text-lg"></i>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900">Our Location</h3>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors duration-200">
+                  <div className="flex items-start">
+                    <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-3 mt-1 flex-shrink-0">
+                      <i className="fas fa-building text-red-600 text-sm"></i>
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-900">Westmeadows</p>
+                      <p className="text-gray-700 font-medium">Melbourne, VIC</p>
+                      <div className="mt-2 text-gray-600">
                         <p>Unit 3, 95-97 Western Ave,</p>
                         <p>Westmeadows, VIC 3049</p>
                       </div>
