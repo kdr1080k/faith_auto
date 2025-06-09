@@ -43,8 +43,8 @@
 
 /* Map container styles */
 .mapContainer {
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 250px;
   border-radius: 0.5rem;
   overflow: hidden;
   position: relative;
