@@ -3,14 +3,17 @@ import { Car } from "@shared/schema";
 import { formatCurrency, getCarImageUrl } from "@/lib/utils";
 import { GreatValueBadge } from "@/components/ui/badges";
 import styles from './CarCard.module.css';
+import comparisonStyles from '../home/ComparisonSection.module.css';
 
 interface CarCardProps {
   car: Car;
   size?: 'default' | 'large';
   isSubscription?: boolean;
+  isVisible?: boolean;
+  animationDelay?: number;
 }
 
-const CarCard = ({ car, size = 'default', isSubscription = false }: CarCardProps) => {
+const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = true, animationDelay = 0 }: CarCardProps) => {
   const imageSizes = {
     default: "h-48",
     large: "h-64"
@@ -19,26 +22,32 @@ const CarCard = ({ car, size = 'default', isSubscription = false }: CarCardProps
   const detailsLink = isSubscription ? `/subscription-car/${car.id}` : `/car/${car.id}`;
 
   if (!isSubscription) {
-    // Second-hand car style
+    // Second-hand car style using ComparisonSection design
     return (
-      <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+      <div 
+        className={`bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-gray-100 ${comparisonStyles.card} ${
+          isVisible ? comparisonStyles.visible : ''
+        }`}
+        style={{ '--delay': `${animationDelay}ms` } as React.CSSProperties}
+      >
         <Link href={detailsLink}>
-          <div className="relative">
+          <div className="relative h-40 overflow-hidden">
             <img 
               src={getCarImageUrl(car.id)} 
               alt={`${car.make} ${car.model}`} 
-              className="w-full h-48 object-cover"
+              className="w-full h-full object-cover"
             />
           </div>
-          <div className="p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <i className="fas fa-car text-gray-500"></i>
-              <h3 className="text-lg text-gray-800">{car.make}</h3>
+
+          <div className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <i className="fas fa-car text-primary text-xl"></i>
+              <h3 className="text-xl font-semibold text-gray-800">{car.make}</h3>
             </div>
-            <p className="text-gray-600 mb-3">{car.model}</p>
+            <p className="text-gray-600 mb-4">{car.model}</p>
             <div className="flex justify-between items-center">
-              <div className="text-gray-700">${formatCurrency(car.weeklyPrice)}/week</div>
-              <div className={`text-sm ${car.available ? 'text-green-600' : 'text-red-600'}`}>
+              <div className="text-primary font-semibold">${formatCurrency(car.weeklyPrice)}/week</div>
+              <div className={`text-sm font-medium ${car.available ? 'text-green-600' : 'text-red-600'}`}>
                 {car.available ? 'Available' : 'Not Available'}
               </div>
             </div>

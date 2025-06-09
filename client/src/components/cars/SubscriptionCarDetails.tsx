@@ -63,16 +63,15 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Image Section */}
           <div className="relative rounded-xl overflow-hidden">
-            <img 
-              src={getCarImageUrl(displayCar.id)} 
+            <img
+              src={getCarImageUrl(displayCar.id)}
               alt={`${displayCar.make} ${displayCar.model}`}
               className="w-full aspect-[16/10] object-cover rounded-xl"
             />
-            <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              displayCar.available 
-                ? 'bg-success/90 text-white' 
-                : 'bg-danger/90 text-white'
-            }`}>
+            <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${displayCar.available
+              ? 'bg-success/90 text-white'
+              : 'bg-danger/90 text-white'
+              }`}>
               {displayCar.available ? 'Available Now' : 'Coming Soon'}
             </span>
           </div>
@@ -92,7 +91,7 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                 {displayCar.description}
               </p>
               {/* Quick Actions */}
-    
+
             </div>
           </div>
         </div>
@@ -108,9 +107,9 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
               <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
                 <h2 className="text-2xl font-bold mb-6">Vehicle Description</h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Experience luxury and performance with the {displayCar.year} {displayCar.make} {displayCar.model}. 
-                  This premium vehicle combines sophisticated design with cutting-edge technology, 
-                  offering an exceptional driving experience. Perfect for those who demand the best 
+                  Experience luxury and performance with the {displayCar.year} {displayCar.make} {displayCar.model}.
+                  This premium vehicle combines sophisticated design with cutting-edge technology,
+                  offering an exceptional driving experience. Perfect for those who demand the best
                   in automotive excellence.
                 </p>
               </div>
@@ -146,58 +145,67 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                 </div>
               </div>
 
-             
-            </div>
 
+            </div>
             {/* Sidebar - Subscription Plans */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-sm p-8 sticky top-8">
                 <h2 className="text-2xl font-bold mb-6">Subscription Plans</h2>
                 <div className="space-y-4">
-                  {[4, 6, 9].map((months) => {
-                    const weeklyDiscount = months === 4 ? 0 : months === 6 ? 50 : 100;
-                    const discountedPrice = displayCar.weeklyPrice - weeklyDiscount;
+                  {[9, 6, 4].map((months) => {
+                    const planLabels = {
+                      9: 'BEST VALUE',
+                      6: 'POPULAR',
+                      4: 'MOST FLEXIBLE',
+                    };
+                    const planPrices = {
+                      9: 260,
+                      6: 280,
+                      4: 300,
+                    };
                     const isSelected = selectedPlan === months;
-                    
+
                     return (
                       <button
                         key={months}
                         onClick={() => setSelectedPlan(months)}
-                        className={`w-full p-4 rounded-xl border-2 transition-all ${
-                          isSelected 
-                            ? 'border-primary bg-primary/5' 
+                        className={`w-full text-left p-4 rounded-xl border-2 transition-all ${isSelected
+                            ? 'border-primary bg-primary/5'
                             : 'border-gray-200 hover:border-primary/50'
-                        }`}
+                          }`}
                       >
                         <div className="flex justify-between items-center">
-                          <span className="text-lg font-semibold text-gray-900">{months} Months</span>
+                          <span className="text-lg font-semibold text-gray-900">{planLabels[months]}</span>
                           <div className="text-right">
                             <div className="flex items-baseline gap-1">
                               <span className={`text-2xl font-bold ${isSelected ? 'text-primary' : 'text-gray-900'}`}>
-                                ${discountedPrice}
+                                ${planPrices[months]}
                               </span>
                               <span className="text-sm text-gray-600">/week</span>
                             </div>
-                            {weeklyDiscount > 0 && (
-                              <div className="mt-1">
-                                <span className="text-sm text-success">Save ${weeklyDiscount}/week</span>
-                              </div>
-                            )}
                           </div>
                         </div>
+
+                        {/* Divider line */}
+                        <hr className="my-3 border-t border-gray-200" />
+
+                        <ul className="ml-5 list-disc text-sm text-gray-700">
+                          <li>{months} months minimum term Subscription</li>
+                          <li>385 km weekly mileage included (30c per excess KM)</li>
+                          <li>1x primary driver</li>
+                        </ul>
                       </button>
                     );
                   })}
                 </div>
 
                 <div className="mt-6">
-                  <Link 
+                  <Link
                     href={selectedPlan !== null ? "/enquiry" : "#"}
-                    className={`w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all ${
-                      selectedPlan !== null 
-                        ? "bg-primary hover:bg-primary/90 text-white" 
+                    className={`w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium transition-all ${selectedPlan !== null
+                        ? "bg-primary hover:bg-primary/90 text-white"
                         : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                    }`}
+                      }`}
                     onClick={(e) => {
                       if (selectedPlan === null) {
                         e.preventDefault();
@@ -205,13 +213,15 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                     }}
                   >
                     <i className="fas fa-envelope mr-2"></i>
-                    {selectedPlan !== null 
-                      ? "Make an Enquiry" 
+                    {selectedPlan !== null
+                      ? "Make an Enquiry"
                       : "Select a plan to enquire"}
                   </Link>
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </section>

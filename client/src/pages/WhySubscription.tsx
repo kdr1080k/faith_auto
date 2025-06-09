@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import Hero from "@/components/home/Hero";
 import FeaturedCars from "@/components/home/FeaturedCars";
@@ -7,6 +8,16 @@ import CarSearchForm from "@/components/home/CarSearchForm";
 import ContactCTA from "@/components/home/ContactCTA";
 
 const WhySubscription = () => {
+  const [filters, setFilters] = useState({
+    location: "All",
+    bodyType: "All",
+    fuelType: "All",
+    seats: "All"
+  });
+
+  const handleFilterChange = (newFilters: typeof filters) => {
+    setFilters(newFilters);
+  };
   return (
     <>
       <Helmet>
@@ -92,9 +103,12 @@ const WhySubscription = () => {
         </div>
       </section>
 
-      <CarSearchForm />
+      <CarSearchForm 
+        onFilterChange={handleFilterChange}
+        initialLocation="All"
+      />
       
-      <ComparisonSection />
+      <ComparisonSection filters={filters} />
 
       <ContactCTA />
     </>

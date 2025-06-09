@@ -3,16 +3,43 @@ import { useQuery } from "@tanstack/react-query";
 import { Car } from "@shared/schema";
 import CarCard from "@/components/cars/CarCard";
 
-const LOCATIONS = ["Brisbane", "Sydney", "Melbourne", "Adelaide", "Perth"];
+const LOCATIONS = ["All", "Brisbane", "Sydney", "Melbourne", "Adelaide", "Perth"];
 const BODY_TYPES = ["All", "SUV", "Sedan", "Hatchback", "Wagon", "Ute", "Van", "Coupe"];
 const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid", "Electric"];
 const SEATS = ["All", "2", "4", "5", "6", "7+"];
 
-const CarSearchForm = () => {
-  const [location, setLocation] = useState(LOCATIONS[0]);
+interface CarSearchFormProps {
+  buttonText?: string;
+  onFilterChange?: (filters: {
+    location: string;
+    bodyType: string;
+    fuelType: string;
+    seats: string;
+  }) => void;
+  initialLocation?: string;
+}
+
+const CarSearchForm: React.FC<CarSearchFormProps> = ({ 
+  buttonText = "Find My Car", 
+  onFilterChange,
+  initialLocation = LOCATIONS[0]
+}) => {
+  const [location, setLocation] = useState(initialLocation);
   const [bodyType, setBodyType] = useState("All");
   const [fuelType, setFuelType] = useState("All");
   const [seats, setSeats] = useState("All");
+
+  // Notify parent component when filters change
+  useEffect(() => {
+    if (onFilterChange) {
+      onFilterChange({
+        location,
+        bodyType,
+        fuelType,
+        seats
+      });
+    }
+  }, [location, bodyType, fuelType, seats, onFilterChange]);
   const [isVisible, setIsVisible] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
@@ -138,16 +165,7 @@ const CarSearchForm = () => {
             ))}
           </select>
         </div>
-        {/* Button */}
-        <button
-          type="submit"
-          className={`ml-0 md:ml-8 mt-4 md:mt-0 flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white font-bold px-8 py-3 rounded-xl shadow transition-all duration-1000 delay-500 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
-        >
-          Find My Car
-          <span className="inline-block transform translate-x-1">→</span>
-        </button>
+
       </form>
 
       {/* Results Section */}
