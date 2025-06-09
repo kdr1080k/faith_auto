@@ -44,12 +44,12 @@ const AllInclusive = () => {
           <div className={`bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`} style={{ transitionDelay: '200ms' }}>
-            <div className="flex items-center justify-between mb-4">
-              <i className="fas fa-shield-alt text-2xl text-primary"></i>
-              <span className="text-lg font-semibold text-gray-900">All inclusive rates</span>
+            <div className="flex flex-col items-center mb-4">
+              <i className="fas fa-shield-alt text-2xl text-primary mb-2"></i>
+              <span className="text-lg font-semibold text-gray-900 text-center">All inclusive rates</span>
             </div>
             <p className="text-gray-600">
-              Insurance, registration, servicing and roadside assistance all included for complete peace of mind.*
+              Insurance, registration, servicing and roadside assistance all included for complete peace of mind.
             </p>
           </div>
 
@@ -57,12 +57,12 @@ const AllInclusive = () => {
           <div className={`bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`} style={{ transitionDelay: '400ms' }}>
-            <div className="flex items-center justify-between mb-4">
-              <i className="fas fa-car text-2xl text-primary"></i>
-              <span className="text-lg font-semibold text-gray-900">Premium luxury vehicles</span>
+            <div className="flex flex-col items-center mb-4">
+              <i className="fas fa-car text-2xl text-primary mb-2"></i>
+              <span className="text-lg font-semibold text-gray-900 text-center">Premium luxury vehicles</span>
             </div>
             <p className="text-gray-600">
-              Choose from our fleet of new & near-new hatchbacks, sedans and SUVs.
+              Choose from our fleet of new & near-new Japanese import hatchbacks, sedans and SUVs.
             </p>
           </div>
 
@@ -70,12 +70,12 @@ const AllInclusive = () => {
           <div className={`bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-1000 transform ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`} style={{ transitionDelay: '600ms' }}>
-            <div className="flex items-center justify-between mb-4">
-              <i className="fas fa-calendar-alt text-2xl text-primary"></i>
-              <span className="text-lg font-semibold text-gray-900">Flexible options</span>
+            <div className="flex flex-col items-center mb-4">
+              <i className="fas fa-calendar-alt text-2xl text-primary mb-2"></i>
+              <span className="text-lg font-semibold text-gray-900 text-center">Flexible options</span>
             </div>
             <p className="text-gray-600">
-              Subscribe from 3 months with options to switch, upgrade or purchase at term end.*
+              Subscribe from 3 months with options to switch, upgrade or purchase at term end.
             </p>
           </div>
         </div>

@@ -106,7 +106,7 @@ const Home = () => {
                 </li>
                 <li className="flex items-center">
                   <i className="fas fa-check text-primary mr-2"></i>
-                  Trade-in welcome
+                  High quality vehicles
                 </li>
               </ul>
               <Link href="/second-hand-cars">
@@ -180,7 +180,7 @@ const Home = () => {
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">Customer First</h3>
               <p className="text-gray-300">
-                Dedicated support team available 7 days a week
+                Dedicated support team available during the week.
               </p>
             </div>
           </div>
