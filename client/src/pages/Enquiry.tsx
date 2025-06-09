@@ -424,7 +424,7 @@ const Enquiry: React.FC = () => {
               <div className="flex items-start space-x-3 text-left">
                 <Checkbox
                   checked={formData.agreeToPrivacy}
-                  onCheckedChange={(checked) => updateFormData('agreeToPrivacy', checked)}
+                  onCheckedChange={(checked) => updateFormData('agreeToPrivacy', checked === true)}
                   className="mt-1"
                 />
                 <p className="text-gray-600">
@@ -432,9 +432,18 @@ const Enquiry: React.FC = () => {
                 </p>
               </div>
               
+              {/* Debug info - shows which fields are missing */}
+              <div className="text-sm text-red-600 mb-4">
+                Missing fields: 
+                {!formData.firstName && " First Name"}
+                {!formData.lastName && " Last Name"}
+                {!formData.email && " Email"}
+                {!formData.phone && " Phone"}
+                {!formData.agreeToPrivacy && " Privacy Agreement"}
+              </div>
+              
               <Button 
                 onClick={handleSubmit}
-                disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.agreeToPrivacy}
                 className="w-full bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-full text-lg"
               >
                 Submit
