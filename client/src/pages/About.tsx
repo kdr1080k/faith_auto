@@ -39,39 +39,40 @@ const About: React.FC = () => {
         <meta name="description" content="Learn about Faith Auto, Australia's leading importer of high-quality Japanese vehicles, providing reliable and trustworthy cars to Australian drivers." />
       </Helmet>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        {/* Hero Banner Section */}
-        <section className="relative min-h-[400px] md:min-h-[450px] lg:min-h-[500px] flex items-center">
-          <div className="absolute inset-0 bg-cover bg-center" style={{ 
-            backgroundImage: `
-              linear-gradient(to bottom, 
-                rgba(31, 41, 55, 0.95), 
-                rgba(31, 41, 55, 0.85)
-              ),
-              url('/pexels-bertellifotografia-13872477.jpg')
-            `
-          }}></div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center z-20 h-full">
-            <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
-              <div 
-                className="opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
-                style={{ animationDelay: '250ms' }}
-              >
-                <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 cursor-default">
-                  About Faith Auto
-                </h1>
-              </div>
-              <div 
-                className="mt-4 opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
-                style={{ animationDelay: '500ms' }}
-              >
-                <p className="text-lg md:text-xl text-white transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-default max-w-2xl">
-                  Your trusted source for high-quality Japanese imports in Australia
-                </p>
-              </div>
+      {/* Hero Banner Section - Full Width */}
+      <section className="relative w-full h-[600px] bg-cover bg-center bg-no-repeat" style={{ 
+        backgroundImage: `
+          linear-gradient(to bottom, 
+            rgba(31, 41, 55, 0.95), 
+            rgba(31, 41, 55, 0.85)
+          ),
+          url('/pexels-bertellifotografia-13872477.jpg')
+        `
+      }}>
+        <div className="absolute inset-0 bg-black/60 z-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center z-20 h-full">
+          <div className="max-w-3xl mx-auto text-center flex flex-col items-center">
+            <div 
+              className="opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
+              style={{ animationDelay: '250ms' }}
+            >
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 cursor-default">
+                About Faith Auto
+              </h1>
+            </div>
+            <div 
+              className="mt-4 opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
+              style={{ animationDelay: '500ms' }}
+            >
+              <p className="text-lg md:text-xl text-white transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-default max-w-2xl">
+                Your trusted source for high-quality Japanese imports in Australia
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Content Sections */}
         <div className="max-w-5xl mx-auto px-4 py-16 sm:px-6 lg:px-8">

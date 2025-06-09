@@ -47,7 +47,7 @@ const faqs = [
 export default function FAQ() {
   return (
     <div className="bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 mt-24"> {/* Added mt-24 */}
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
             Frequently Asked Questions
@@ -66,9 +66,8 @@ export default function FAQ() {
                         {faq.question}
                       </span>
                       <ChevronDownIcon
-                        className={`${
-                          open ? 'rotate-180 transform' : ''
-                        } h-6 w-6 text-gray-500`}
+                        className={`${open ? 'rotate-180 transform' : ''
+                          } h-6 w-6 text-gray-500`}
                       />
                     </Disclosure.Button>
                     <Transition

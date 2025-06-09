@@ -32,9 +32,9 @@ const Header = () => {
           <div className={`flex-shrink-0 ${styles.navItem} ${styles.logo}`}>
             <Link href="/" className="group">
               <img 
-                src="/logo.svg" 
+                src="/faith_auto.png" 
                 alt="Faith Auto" 
-                className="h-8 w-auto transform duration-300 group-hover:scale-110" 
+                className="h-16 w-auto transform duration-300 group-hover:scale-110" 
               />
             </Link>
           </div>
