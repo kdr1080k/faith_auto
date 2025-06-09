@@ -1,10 +1,10 @@
-import type { Express } from "express";
+import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get all cars with optional filters
-  app.get("/api/cars", async (req, res) => {
+  app.get("/api/cars", async (req: Request, res: Response) => {
     try {
       const category = req.query.category as string | undefined;
       const location = req.query.location as string | undefined;
@@ -24,7 +24,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           seats === "7+" ? car.seats >= 7 : String(car.seats) === seats
         );
       }
-      res.json({ cars });
+      res.json(cars);
     } catch (error) {
       console.error("Error fetching cars:", error);
       res.status(500).json({ message: "Failed to fetch cars" });
@@ -32,7 +32,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get a specific car by ID
-  app.get("/api/cars/:id", async (req, res) => {
+  app.get("/api/cars/:id", async (req: Request, res: Response) => {
     try {
       const car = await storage.getCarById(req.params.id);
       if (!car) {
@@ -46,7 +46,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get features for a specific car
-  app.get("/api/cars/:id/features", async (req, res) => {
+  app.get("/api/cars/:id/features", async (req: Request, res: Response) => {
     try {
       const features = await storage.getFeaturesByCarId(req.params.id);
       res.json(features);
@@ -57,7 +57,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Get subscription plans for a specific car
-  app.get("/api/cars/:id/subscription-plans", async (req, res) => {
+  app.get("/api/cars/:id/subscription-plans", async (req: Request, res: Response) => {
     try {
       const plans = await storage.getSubscriptionPlansByCarId(req.params.id);
       res.json(plans);
