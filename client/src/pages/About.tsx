@@ -222,9 +222,9 @@ const About: React.FC = () => {
                   Today, Faith Auto is more than a dealership. It's a community built on integrity, transparency, and faith.
                 </p>
               </div>
-              <div className="relative rounded-xl overflow-hidden shadow-2xl">
+              <div className="relative rounded-xl overflow-hidden shadow-2xl aspect-square">
                 <img 
-                  src="/pexels-taras-makarenko-188506-593172.jpg" 
+                  src="/pexels-colin-lloyd-2120291-3751007.jpg" 
                   alt="Faith Auto Showroom" 
                   className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
