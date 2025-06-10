@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,9 @@ import { useToast } from "@/hooks/use-toast";
 
 const Contact = () => {
   const { toast } = useToast();
+  // Create refs for all sections that need scroll animations
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,6 +25,31 @@ const Contact = () => {
     message: "",
   });
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('opacity-100', 'translate-y-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-4');
+        }
+      });
+    };
+
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px'
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    
+    // Observe all section elements
+    sectionRefs.current.forEach(ref => {
+      if (ref) observer.observe(ref);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -96,8 +124,10 @@ const Contact = () => {
         <section className="py-230 min-h-screen">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div 
+              ref={el => sectionRefs.current[0] = el}
+              className="grid grid-cols-1 lg:grid-cols-3 gap-8 opacity-0 translate-y-4 transition-all duration-1000"
+            >
               {/* Contact Form */}
               <div className="lg:col-span-2">
                 <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 border border-white/20 hover:bg-white/15 transition-all duration-300">
@@ -197,7 +227,10 @@ const Contact = () => {
               {/* Contact Information */}
               <div className="space-y-6">
                 {/* Contact Info Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div 
+                  ref={el => sectionRefs.current[1] = el}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
+                >
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-green-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-headset text-white text-lg"></i>
@@ -233,7 +266,10 @@ const Contact = () => {
                 </div>
 
                 {/* Business Hours Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div 
+                  ref={el => sectionRefs.current[2] = el}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
+                >
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-purple-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-clock text-white text-lg"></i>
@@ -254,7 +290,10 @@ const Contact = () => {
                 </div>
 
                 {/* Location Card */}
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div 
+                  ref={el => sectionRefs.current[3] = el}
+                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
+                >
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-red-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-map-marker-alt text-white text-lg"></i>

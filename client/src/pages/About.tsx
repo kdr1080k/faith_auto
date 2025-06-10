@@ -3,33 +3,84 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Helmet } from "react-helmet-async";
 
+// Add CSS keyframes for more subtle animations
+const animationStyles = `
+  @keyframes subtleFadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes gentleSlideIn {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  
+  @keyframes softScale {
+    0% { opacity: 0; transform: scale(0.98); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  
+  @keyframes fadeInRight {
+    0% { opacity: 0; transform: translateX(30px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+`;
+
 const About: React.FC = () => {
   // Create refs for all sections that need scroll animations
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const textRefs = useRef<(HTMLElement | null)[]>([]);
 
   useEffect(() => {
+    // Add animation styles to the document
+    const styleElement = document.createElement('style');
+    styleElement.textContent = animationStyles;
+    document.head.appendChild(styleElement);
+
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-4');
+          const element = entry.target as HTMLElement;
+          const animationType = element.dataset.animation;
+          
+          // Remove all initial animation classes
+          element.classList.remove('opacity-0', 'translate-y-8', 'translate-x-8', '-translate-x-8', 'scale-95', 'rotate-3', '-rotate-3');
+          
+          // Add final state classes with staggered timing
+          setTimeout(() => {
+            element.classList.add('opacity-100', 'translate-y-0', 'translate-x-0', 'scale-100', 'rotate-0');
+            
+            // Add subtle entrance effects based on animation type
+            if (animationType === 'fade-in') {
+              element.style.animation = 'subtleFadeIn 0.8s ease-out forwards';
+            } else if (animationType === 'slide-in') {
+              element.style.animation = 'gentleSlideIn 0.8s ease-out forwards';
+            } else if (animationType === 'soft-scale') {
+              element.style.animation = 'softScale 0.6s ease-out forwards';
+            } else if (animationType === 'fade-right') {
+              element.style.animation = 'fadeInRight 0.8s ease-out forwards';
+            }
+          }, parseInt(element.dataset.delay || '0'));
         }
       });
     };
 
     const observerOptions = {
       threshold: 0.1,
-      rootMargin: '0px'
+      rootMargin: '-20px'
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     
-    // Observe all section elements
-    sectionRefs.current.forEach(ref => {
+    // Observe all section elements and text elements
+    [...sectionRefs.current, ...textRefs.current].forEach(ref => {
       if (ref) observer.observe(ref);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.head.removeChild(styleElement);
+    };
   }, []);
 
   return (
@@ -55,7 +106,7 @@ const About: React.FC = () => {
               className="opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
               style={{ animationDelay: '250ms' }}
             >
-              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 cursor-default">
+              <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight transform transition-all duration-300 hover:scale-105 cursor-default">
                 About Faith Auto
               </h1>
             </div>
@@ -63,7 +114,7 @@ const About: React.FC = () => {
               className="mt-4 opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards] flex flex-col items-center"
               style={{ animationDelay: '500ms' }}
             >
-              <p className="text-lg md:text-xl text-white transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-default max-w-2xl">
+              <p className="text-lg md:text-xl text-white transform transition-all duration-300 hover:scale-[1.02] cursor-default max-w-2xl">
                 Your trusted source for high-quality Japanese imports in Australia
               </p>
             </div>
@@ -71,14 +122,14 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* Mission & Story Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-
-        {/* Content Sections */}
-        <div className="max-w-5xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-          {/* Mission & Story Section */}
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <section 
             ref={el => sectionRefs.current[0] = el}
-            className="mb-16 opacity-0 translate-y-4 transition-all duration-1000"
+            className="mb-16 opacity-0 translate-y-8 transition-all duration-800 ease-out"
+            data-animation="fade-in"
+            data-delay="0"
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
@@ -109,11 +160,17 @@ const About: React.FC = () => {
               </div>
             </div>
           </section>
+        </div>
+      </div>
 
-          {/* Team Section */}
+      {/* Team Section */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <section 
             ref={el => sectionRefs.current[1] = el}
-            className="mb-16 bg-gray-50 rounded-2xl p-8 opacity-0 translate-y-4 transition-all duration-1000"
+            className="opacity-0 translate-y-8 transition-all duration-800 ease-out"
+            data-animation="fade-in"
+            data-delay="100"
           >
             <h2 className="text-3xl font-bold mb-6 hover:scale-105 transition-transform duration-300">
               Our Team
@@ -152,99 +209,126 @@ const About: React.FC = () => {
               "We're not just selling cars — we're building relationships through trust and consistency."
             </blockquote>
           </section>
+        </div>
+      </div>
 
-          {/* Vehicle Categories Section */}
-          <section 
-            ref={el => sectionRefs.current[2] = el}
-            className="mb-16 opacity-0 translate-y-4 transition-all duration-1000"
-          >
-            <h2 className="text-3xl font-bold mb-8 hover:scale-105 transition-transform duration-300">
-              Our Vehicle Categories
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: 'Performance Vehicles',
-                  items: [
-                    'JDM performance models (Toyota Supra, Nissan Skyline)',
-                    'Honda Type R series'
-                  ]
-                },
-                {
-                  title: 'Family & Utility',
-                  items: [
-                    'Toyota Alphard & Hiace',
-                    'Land Cruiser Prado'
-                  ]
-                }
-              ].map((category, index) => (
-                <div key={index}>
-                  <h3 className="text-xl font-bold mb-4 hover:text-primary transition-colors duration-300">{category.title}</h3>
-                  <ul className="space-y-3">
-                    {category.items.map((item, itemIndex) => (
-                      <li 
-                        key={itemIndex} 
-                        className="flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-300"
-                      >
-                        <span className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center mr-3">
-                          <i className="fas fa-check text-gray-600 text-sm"></i>
-                        </span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
+      {/* Vehicle Categories Section - Full Width Dark Theme */}
+      <section 
+        ref={el => sectionRefs.current[2] = el}
+        className="w-full bg-gray-900 text-white py-20 opacity-0 translate-y-8 transition-all duration-800 ease-out"
+        data-animation="fade-in"
+        data-delay="100"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold mb-12 hover:scale-105 transition-transform duration-300 text-center">
+            Our Vehicle Categories
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            {[
+              {
+                title: 'Performance Vehicles',
+                items: [
+                  'JDM performance models (Toyota Supra, Nissan Skyline)',
+                  'Honda Type R series'
+                ]
+              },
+              {
+                title: 'Family & Utility',
+                items: [
+                  'Toyota Alphard & Hiace',
+                  'Land Cruiser Prado'
+                ]
+              }
+            ].map((category, index) => (
+              <div key={index} className="hover:bg-gray-800/30 rounded-xl p-6 transition-colors duration-300">
+                <h3 className="text-2xl font-bold mb-6 text-blue-400 hover:text-blue-300 transition-colors duration-300">{category.title}</h3>
+                <ul className="space-y-4">
+                  {category.items.map((item, itemIndex) => (
+                    <li 
+                      key={itemIndex} 
+                      className="flex items-start text-gray-300 hover:text-white transition-colors duration-300"
+                    >
+                      <span className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                        <i className="fas fa-check text-white text-sm"></i>
+                      </span>
+                      <span className="text-base leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Service Promise Section */}
-          <section 
-            ref={el => sectionRefs.current[3] = el}
-            className="mb-16 bg-gray-50 rounded-2xl p-8 opacity-0 translate-y-4 transition-all duration-1000"
-          >
-            <h2 className="text-3xl font-bold mb-8 hover:scale-105 transition-transform duration-300">
-              Our Service Promise
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: 'Clear History Reports',
-                  description: 'Complete auction sheets and odometer verification for every vehicle.'
-                },
-                {
-                  title: 'Extended Warranty Options',
-                  description: 'Comprehensive warranty and service packages available.'
-                },
-                {
-                  title: 'Australia-Wide Delivery',
-                  description: 'Professional vehicle transport to any location in Australia.'
-                },
-                {
-                  title: 'Expert Support',
-                  description: 'Multilingual team providing personalized assistance throughout your journey.'
-                }
-              ].map((service, index) => (
-                <div 
-                  key={index}
-                  className="flex items-start hover:transform hover:translate-x-2 transition-transform duration-300"
-                >
-                  <span className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center mr-3 mt-1">
-                    <i className="fas fa-check text-gray-600 text-sm"></i>
+      {/* Service Promise Section - Full Width Dark Theme with Delayed Text */}
+      <section 
+        ref={el => sectionRefs.current[3] = el}
+        className="w-full bg-gray-900 text-white py-20 opacity-0 translate-y-8 transition-all duration-800 ease-out"
+        data-animation="fade-in"
+        data-delay="200"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold mb-12 hover:scale-105 transition-transform duration-300 text-center">
+            Our Service Promise
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {[
+              {
+                title: 'Clear History Reports',
+                description: 'Complete auction sheets and odometer verification for every vehicle.',
+                delay: '300'
+              },
+              {
+                title: 'Extended Warranty Options',
+                description: 'Comprehensive warranty and service packages available.',
+                delay: '500'
+              },
+              {
+                title: 'Australia-Wide Delivery',
+                description: 'Professional vehicle transport to any location in Australia.',
+                delay: '700'
+              },
+              {
+                title: 'Expert Support',
+                description: 'Multilingual team providing personalized assistance throughout your journey.',
+                delay: '900'
+              }
+            ].map((service, index) => (
+              <div 
+                key={index}
+                className="hover:bg-gray-800/30 rounded-xl p-6 transition-all duration-300 transform hover:-translate-y-1"
+              >
+                <div className="flex items-start">
+                  <span className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-4 mt-1 flex-shrink-0">
+                    <i className="fas fa-check text-white text-sm"></i>
                   </span>
-                  <div>
-                    <h3 className="font-bold mb-1 hover:text-primary transition-colors duration-300">{service.title}</h3>
-                    <p className="text-gray-600 hover:text-gray-900 transition-colors duration-300">{service.description}</p>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-3 text-blue-400 hover:text-blue-300 transition-colors duration-300">{service.title}</h3>
+                    <p 
+                      ref={el => textRefs.current[index] = el}
+                      className="text-gray-300 hover:text-white transition-colors duration-300 leading-relaxed opacity-0 translate-x-8"
+                      data-animation="fade-right"
+                      data-delay={service.delay}
+                    >
+                      {service.description}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-          {/* Why Choose Us Section */}
+      {/* Why Choose Us Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <section 
             ref={el => sectionRefs.current[4] = el}
-            className="mb-16 opacity-0 translate-y-4 transition-all duration-1000"
+            className="mb-16 opacity-0 translate-y-8 transition-all duration-800 ease-out"
+            data-animation="fade-in"
+            data-delay="100"
           >
             <h2 className="text-3xl font-bold mb-8 hover:scale-105 transition-transform duration-300">
               Why Choose Faith Auto
@@ -278,11 +362,17 @@ const About: React.FC = () => {
               ))}
             </div>
           </section>
+        </div>
+      </div>
 
-          {/* CTA Section */}
+      {/* CTA Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <section 
             ref={el => sectionRefs.current[5] = el}
-            className="text-center bg-gray-50 rounded-2xl p-12 opacity-0 transition-all duration-1000"
+            className="text-center opacity-0 translate-y-8 transition-all duration-800 ease-out"
+            data-animation="fade-in"
+            data-delay="150"
           >
             <h2 className="text-3xl font-bold mb-6 hover:scale-105 transition-transform duration-300">
               Ready to Find Your Perfect Vehicle?
@@ -291,9 +381,13 @@ const About: React.FC = () => {
               Browse our current inventory or make an enquiry. Our team is here to help you find the perfect Japanese import for your needs.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-             
+              <Link href="/cars">
+                <Button className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg w-full sm:w-auto transform transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                  Browse Inventory
+                </Button>
+              </Link>
               <Link href="/contact">
-                <Button variant="outline" className="border-primary text-primary hover:bg-primary/5 px-8 py-6 text-lg w-full sm:w-auto transform transition-transform duration-300 hover:scale-105">
+                <Button variant="outline" className="border-primary text-primary hover:bg-primary/5 px-8 py-6 text-lg w-full sm:w-auto transform transition-all duration-300 hover:scale-105 hover:shadow-md">
                   Make an Enquiry
                 </Button>
               </Link>
