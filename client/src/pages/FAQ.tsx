@@ -1,5 +1,6 @@
 import { Disclosure, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { useEffect } from 'react';
 
 const faqs = [
   {
@@ -45,20 +46,101 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  useEffect(() => {
+    // Add professional CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 40px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes fade-right {
+        from {
+          opacity: 0;
+          transform: translate3d(-50px, 0, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .animate-fade-up {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-right {
+        opacity: 0;
+        transform: translate3d(-50px, 0, 0);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-up.animate-in {
+        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-fade-right.animate-in {
+        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-fade-up.animate-in,
+      .animate-fade-right.animate-in {
+        will-change: auto;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Animation observer
+    const animationObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          // Clean up performance properties after animation
+          setTimeout(() => {
+            (entry.target as HTMLElement).style.willChange = 'auto';
+          }, 1000);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '-50px'
+    });
+
+    // Observe all elements with animation classes
+    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-right');
+    animatedElements.forEach(element => animationObserver.observe(element));
+
+    return () => {
+      animationObserver.disconnect();
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <div className="bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 mt-24"> {/* Added mt-24 */}
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
+          <h2 className="animate-fade-up text-3xl font-bold text-gray-900 text-center mb-2" style={{ animationDelay: '200ms' }}>
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600 text-center mb-12">
+          <p className="animate-fade-right text-lg text-gray-600 text-center mb-12" style={{ animationDelay: '300ms' }}>
             Everything you need to know about our car subscription service and second-hand cars
           </p>
 
           <div className="space-y-6">
             {faqs.map((faq, index) => (
-              <Disclosure key={index} as="div" className="border-b border-gray-200 pb-6">
+              <Disclosure key={index} as="div" className={`animate-fade-up border-b border-gray-200 pb-6`} style={{ animationDelay: `${400 + (index * 100)}ms` }}>
                 {({ open }) => (
                   <>
                     <Disclosure.Button className="flex w-full items-center justify-between text-left">
@@ -89,15 +171,16 @@ export default function FAQ() {
           </div>
 
           <div className="mt-12 text-center">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+            <h3 className="animate-fade-up text-xl font-semibold text-gray-900 mb-4" style={{ animationDelay: `${400 + (faqs.length * 100) + 200}ms` }}>
               Still have questions?
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="animate-fade-right text-gray-600 mb-6" style={{ animationDelay: `${400 + (faqs.length * 100) + 300}ms` }}>
               Can't find the answer you're looking for? Please contact our customer support team.
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90"
+              className="animate-fade-up inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-primary/90"
+              style={{ animationDelay: `${400 + (faqs.length * 100) + 400}ms` }}
             >
               Contact Us
             </a>

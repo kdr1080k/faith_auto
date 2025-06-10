@@ -53,17 +53,25 @@ const Contact = () => {
       }
 
       .animate-fade-up {
-        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         opacity: 0;
+        transform: translate3d(0, 40px, 0);
         will-change: opacity, transform;
         backface-visibility: hidden;
       }
 
       .animate-fade-right {
-        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         opacity: 0;
+        transform: translate3d(-50px, 0, 0);
         will-change: opacity, transform;
         backface-visibility: hidden;
+      }
+
+      .animate-fade-up.animate-in {
+        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-fade-right.animate-in {
+        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
       .animate-fade-up.animate-in,
