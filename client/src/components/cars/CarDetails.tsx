@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { Car, Feature } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CarDetailsProps {
   carId: string;
@@ -96,6 +96,87 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
 
   const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
 
+  useEffect(() => {
+    // Add professional CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 40px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes fade-right {
+        from {
+          opacity: 0;
+          transform: translate3d(-50px, 0, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .animate-fade-up {
+        opacity: 0;
+        transform: translate3d(0, 40px, 0);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-right {
+        opacity: 0;
+        transform: translate3d(-50px, 0, 0);
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-up.animate-in {
+        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-fade-right.animate-in {
+        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      .animate-fade-up.animate-in,
+      .animate-fade-right.animate-in {
+        will-change: auto;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Animation observer
+    const animationObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+          // Clean up performance properties after animation
+          setTimeout(() => {
+            (entry.target as HTMLElement).style.willChange = 'auto';
+          }, 1000);
+        }
+      });
+    }, {
+      threshold: 0.15,
+      rootMargin: '-50px'
+    });
+
+    // Observe all elements with animation classes
+    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-right');
+    animatedElements.forEach(element => animationObserver.observe(element));
+
+    return () => {
+      animationObserver.disconnect();
+      document.head.removeChild(style);
+    };
+  }, []);
+
   if (!car) {
     return <div className="text-center py-10">Car not found</div>;
   }
@@ -106,7 +187,7 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Image Section */}
-          <div className="relative rounded-xl overflow-hidden">
+          <div className="animate-fade-up relative rounded-xl overflow-hidden" style={{ animationDelay: '200ms' }}>
             <img 
               src={getCarImageUrl(car.id)} 
               alt={`${car.make} ${car.model}`}
@@ -124,15 +205,15 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
           {/* Details Section */}
           <div className="flex flex-col h-full">
             <div className="mb-6">
-              <div className="flex items-center gap-3 mb-2">
+              <div className="animate-fade-right flex items-center gap-3 mb-2" style={{ animationDelay: '300ms' }}>
                 <span className="text-sm text-gray-600">{car.location}</span>
                 <span className="text-sm text-gray-600">•</span>
                 <span className="text-sm text-gray-600">{car.category}</span>
               </div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h1 className="animate-fade-up text-3xl md:text-4xl font-bold text-gray-900 mb-4" style={{ animationDelay: '400ms' }}>
                 {car.year} {car.make} {car.model}
               </h1>
-              <p className="text-gray-600 text-lg leading-relaxed">
+              <p className="animate-fade-right text-gray-600 text-lg leading-relaxed" style={{ animationDelay: '500ms' }}>
                 {car.description || `Experience luxury and performance with the ${car.year} ${car.make} ${car.model}. 
                 This premium vehicle combines sophisticated design with cutting-edge technology, 
                 offering an exceptional driving experience.`}
@@ -149,9 +230,9 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
             {/* Main Content */}
             <div className="lg:col-span-2">
               {/* Car Description */}
-              <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
+              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 mb-8" style={{ animationDelay: '300ms' }}>
                 <h2 className="text-2xl font-bold mb-6">Vehicle Description</h2>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="animate-fade-right text-gray-600 leading-relaxed" style={{ animationDelay: '400ms' }}>
                   {car.description || `Experience luxury and performance with the ${car.year} ${car.make} ${car.model}. 
                   This premium vehicle combines sophisticated design with cutting-edge technology, 
                   offering an exceptional driving experience. Perfect for those who demand the best 
@@ -160,30 +241,30 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
               </div>
 
               {/* Car Specifications */}
-              <div className="bg-white rounded-xl shadow-sm p-8 mb-8">
+              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 mb-8" style={{ animationDelay: '400ms' }}>
                 <h2 className="text-2xl font-bold mb-6">Vehicle Specifications</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '500ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Model Category</p>
                     <p className="font-medium">{car.category}</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '600ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Body Type</p>
                     <p className="font-medium">{car.bodyType}</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '700ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Drive Type</p>
                     <p className="font-medium">{car.driveType}</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '800ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Fuel Type</p>
                     <p className="font-medium">{car.fuelType}</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '900ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Seats</p>
                     <p className="font-medium">{car.seats} seats</p>
                   </div>
-                  <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '1000ms' }}>
                     <p className="text-sm text-gray-500 mb-1">Location</p>
                     <p className="font-medium">{car.location}</p>
                   </div>
@@ -191,11 +272,11 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
               </div>
 
               {/* Features */}
-              <div className="bg-white rounded-xl shadow-sm p-8">
+              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8" style={{ animationDelay: '500ms' }}>
                 <h2 className="text-2xl font-bold mb-6">Vehicle Features</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {features?.map((feature) => (
-                    <div key={feature.id} className="flex items-center text-gray-700">
+                  {features?.map((feature, index) => (
+                    <div key={feature.id} className="animate-fade-right flex items-center text-gray-700" style={{ animationDelay: `${600 + (index * 100)}ms` }}>
                       <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
                         <i className={`fas fa-${feature.icon} text-success`}></i>
                       </div>
@@ -208,20 +289,21 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
 
             {/* Sidebar - Price and Contact */}
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-xl shadow-sm p-8 sticky top-8">
+              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 sticky top-8" style={{ animationDelay: '600ms' }}>
                 <h2 className="text-2xl font-bold mb-6">Purchase Details</h2>
                 <div className="mb-6">
-                  <p className="text-sm text-gray-600 mb-2">Price</p>
-                  <div className="text-3xl font-bold text-primary">
+                  <p className="animate-fade-right text-sm text-gray-600 mb-2" style={{ animationDelay: '700ms' }}>Price</p>
+                  <div className="animate-fade-right text-3xl font-bold text-primary" style={{ animationDelay: '800ms' }}>
                     ${(car.weeklyPrice * 52).toLocaleString()}
                   </div>
-                  <p className="text-sm text-gray-500 mt-1">Drive away price</p>
+                  <p className="animate-fade-right text-sm text-gray-500 mt-1" style={{ animationDelay: '900ms' }}>Drive away price</p>
                 </div>
 
                 <div className="space-y-4">
                   <Link 
                     href="/contact"
-                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-primary hover:bg-primary/90 text-white transition-all"
+                    className="animate-fade-up w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-primary hover:bg-primary/90 text-white transition-all"
+                    style={{ animationDelay: '1000ms' }}
                   >
                     <i className="fas fa-envelope mr-2"></i>
                     Make an Enquiry

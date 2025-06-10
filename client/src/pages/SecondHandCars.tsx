@@ -371,7 +371,7 @@ const SecondHandCars: React.FC = () => {
                     className="animate-fade-up"
                     style={{ animationDelay: `${400 + (index * 100)}ms` }}
                   >
-                    <CarCard car={car} />
+                    <CarCard car={car} customLink="/car/smart-1" />
                   </div>
                 ))}
               </div>

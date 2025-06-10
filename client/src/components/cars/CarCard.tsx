@@ -11,15 +11,16 @@ interface CarCardProps {
   isSubscription?: boolean;
   isVisible?: boolean;
   animationDelay?: number;
+  customLink?: string;
 }
 
-const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = true, animationDelay = 0 }: CarCardProps) => {
+const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = true, animationDelay = 0, customLink }: CarCardProps) => {
   const imageSizes = {
     default: "h-48",
     large: "h-64"
   };
 
-  const detailsLink = isSubscription ? `/subscription-car/${car.id}` : `/car/${car.id}`;
+  const detailsLink = customLink || (isSubscription ? `/subscription-car/${car.id}` : `/car/${car.id}`);
 
   if (!isSubscription) {
     // Second-hand car style using ComparisonSection design
