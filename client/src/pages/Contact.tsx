@@ -27,28 +27,79 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Add professional CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fade-up {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 40px, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      @keyframes fade-right {
+        from {
+          opacity: 0;
+          transform: translate3d(-50px, 0, 0);
+        }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+
+      .animate-fade-up {
+        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-right {
+        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        opacity: 0;
+        will-change: opacity, transform;
+        backface-visibility: hidden;
+      }
+
+      .animate-fade-up.animate-in,
+      .animate-fade-right.animate-in {
+        will-change: auto;
+      }
+    `;
+    document.head.appendChild(style);
+
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('opacity-100', 'translate-y-0');
-          entry.target.classList.remove('opacity-0', 'translate-y-4');
+          entry.target.classList.add('animate-in');
+          // Clean up performance properties after animation
+          setTimeout(() => {
+            (entry.target as HTMLElement).style.willChange = 'auto';
+          }, 1000);
         }
       });
     };
 
     const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px'
+      threshold: 0.15,
+      rootMargin: '-50px'
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     
-    // Observe all section elements
-    sectionRefs.current.forEach(ref => {
-      if (ref) observer.observe(ref);
-    });
+    // Observe all elements with animation classes
+    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-right');
+    animatedElements.forEach(element => observer.observe(element));
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.head.removeChild(style);
+    };
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -100,18 +151,12 @@ const Contact = () => {
         <section className="relative h-[600px] flex items-center">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center w-full">
             <div className="w-full max-w-2xl mx-auto text-center">
-              <div 
-                className="flex flex-col items-center opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards]"
-                style={{ animationDelay: '250ms' }}
-              >
+              <div className="animate-fade-up" style={{ animationDelay: '200ms' }}>
                 <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 cursor-default">
                   Contact Us
                 </h1>
               </div>
-              <div 
-                className="flex flex-col items-center mt-4 opacity-0 animate-[slide-fade-in_1.2s_cubic-bezier(0.4,0,0.2,1)_forwards]"
-                style={{ animationDelay: '500ms' }}
-              >
+              <div className="animate-fade-right mt-4" style={{ animationDelay: '400ms' }}>
                 <p className="text-lg md:text-xl text-white transform transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-[1.02] cursor-default">
                   Have questions about our car subscription service? Get in touch with our team today.
                 </p>
@@ -124,13 +169,10 @@ const Contact = () => {
         <section className="py-230 min-h-screen">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
            
-            <div 
-              ref={el => sectionRefs.current[0] = el}
-              className="grid grid-cols-1 lg:grid-cols-3 gap-8 opacity-0 translate-y-4 transition-all duration-1000"
-            >
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Contact Form */}
               <div className="lg:col-span-2">
-                <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 border border-white/20 hover:bg-white/15 transition-all duration-300">
+                <div className="animate-fade-up bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 md:p-10 border border-white/20 hover:bg-white/15 transition-all duration-300" style={{ animationDelay: '300ms' }}>
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-blue-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-paper-plane text-white text-lg"></i>
@@ -206,7 +248,8 @@ const Contact = () => {
                     <Button 
                       type="submit" 
                       disabled={loading}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="animate-fade-up w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-4 px-6 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      style={{ animationDelay: '600ms' }}
                     >
                       {loading ? (
                         <span className="flex items-center">
@@ -227,10 +270,7 @@ const Contact = () => {
               {/* Contact Information */}
               <div className="space-y-6">
                 {/* Contact Info Card */}
-                <div 
-                  ref={el => sectionRefs.current[1] = el}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
-                >
+                <div className="animate-fade-up bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300" style={{ animationDelay: '400ms' }}>
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-green-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-headset text-white text-lg"></i>
@@ -244,8 +284,8 @@ const Contact = () => {
                         <i className="fas fa-phone-alt text-blue-300"></i>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-300">Phone</p>
-                        <a href="tel:1800787422" className="text-white font-semibold hover:text-blue-300 transition-colors">
+                        <p className="animate-fade-right text-sm text-gray-300" style={{ animationDelay: '500ms' }}>Phone</p>
+                        <a href="tel:1800787422" className="animate-fade-right text-white font-semibold hover:text-blue-300 transition-colors" style={{ animationDelay: '600ms' }}>
                           1800 7874 227
                         </a>
                       </div>
@@ -256,8 +296,8 @@ const Contact = () => {
                         <i className="fas fa-envelope text-blue-300"></i>
                       </div>
                       <div>
-                        <p className="text-sm text-gray-300">Email</p>
-                        <a href="mailto:melbourne@rushcarrental.com.au" className="text-white font-semibold hover:text-blue-300 transition-colors break-all">
+                        <p className="animate-fade-right text-sm text-gray-300" style={{ animationDelay: '700ms' }}>Email</p>
+                        <a href="mailto:melbourne@rushcarrental.com.au" className="animate-fade-right text-white font-semibold hover:text-blue-300 transition-colors break-all" style={{ animationDelay: '800ms' }}>
                           melbourne@rushcarrental.com.au
                         </a>
                       </div>
@@ -266,10 +306,7 @@ const Contact = () => {
                 </div>
 
                 {/* Business Hours Card */}
-                <div 
-                  ref={el => sectionRefs.current[2] = el}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
-                >
+                <div className="animate-fade-up bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300" style={{ animationDelay: '500ms' }}>
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-purple-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-clock text-white text-lg"></i>
@@ -279,21 +316,18 @@ const Contact = () => {
                   
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                      <span className="font-semibold text-gray-200">Monday - Friday</span>
-                      <span className="text-white font-medium">8:00 AM - 8:00 PM</span>
+                      <span className="animate-fade-right font-semibold text-gray-200" style={{ animationDelay: '700ms' }}>Monday - Friday</span>
+                      <span className="animate-fade-right text-white font-medium" style={{ animationDelay: '800ms' }}>8:00 AM - 8:00 PM</span>
                     </div>
                     <div className="flex justify-between items-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                      <span className="font-semibold text-gray-200">Saturday - Sunday</span>
-                      <span className="text-white font-medium">9:00 AM - 5:00 PM</span>
+                      <span className="animate-fade-right font-semibold text-gray-200" style={{ animationDelay: '900ms' }}>Saturday - Sunday</span>
+                      <span className="animate-fade-right text-white font-medium" style={{ animationDelay: '1000ms' }}>9:00 AM - 5:00 PM</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Location Card */}
-                <div 
-                  ref={el => sectionRefs.current[3] = el}
-                  className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300 opacity-0 translate-y-4 transition-all duration-1000"
-                >
+                <div className="animate-fade-up bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-8 border border-white/20 hover:bg-white/15 transition-all duration-300" style={{ animationDelay: '600ms' }}>
                   <div className="flex items-center mb-6">
                     <div className="w-12 h-12 bg-red-600/80 backdrop-blur-sm rounded-full flex items-center justify-center mr-4">
                       <i className="fas fa-map-marker-alt text-white text-lg"></i>
@@ -307,11 +341,11 @@ const Contact = () => {
                         <i className="fas fa-building text-red-300 text-sm"></i>
                       </div>
                       <div>
-                        <p className="font-bold text-white">Westmeadows</p>
-                        <p className="text-gray-200 font-medium">Melbourne, VIC</p>
+                        <p className="animate-fade-right font-bold text-white" style={{ animationDelay: '800ms' }}>Westmeadows</p>
+                        <p className="animate-fade-right text-gray-200 font-medium" style={{ animationDelay: '900ms' }}>Melbourne, VIC</p>
                         <div className="mt-2 text-gray-300">
-                          <p>Unit 3, 95-97 Western Ave,</p>
-                          <p>Westmeadows, VIC 3049</p>
+                          <p className="animate-fade-right" style={{ animationDelay: '1000ms' }}>Unit 3, 95-97 Western Ave,</p>
+                          <p className="animate-fade-right" style={{ animationDelay: '1100ms' }}>Westmeadows, VIC 3049</p>
                         </div>
                       </div>
                     </div>
