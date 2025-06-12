@@ -149,7 +149,7 @@ const WhySubscription = () => {
         initialLocation="All"
       />
       
-      <ComparisonSection filters={filters} />
+      <ComparisonSection filters={filters} category="subscription" />
 
       <ContactCTA />
     </>

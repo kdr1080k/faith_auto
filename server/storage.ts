@@ -430,4 +430,7 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { DbStorage } from './db-storage';
+
+// Use database storage to fetch real Faith Auto/Rush data
+export const storage = new DbStorage();

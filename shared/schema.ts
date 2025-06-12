@@ -15,6 +15,7 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export const cars = pgTable("cars", {
   id: varchar("id").primaryKey(), // e.g., "smart-1", "hyundai-venue"
+  dbId: integer("db_id"), // Original database ID for reference
   make: text("make").notNull(), // e.g., "Smart", "Hyundai"
   model: text("model").notNull(), // e.g., "#1", "Venue"
   year: integer("year").notNull(),
@@ -24,9 +25,11 @@ export const cars = pgTable("cars", {
   driveType: text("drive_type").notNull(), // FWD, RWD, AWD
   weeklyPrice: integer("weekly_price").notNull(), // in dollars, e.g., 289
   available: boolean("available").notNull().default(true),
+  status: text("status").notNull().default("available"), // Database status: available, unavailable, sold, etc.
   isGreatValue: boolean("is_great_value").notNull().default(false),
   category: text("category").notNull(), // e.g., "smart", "standard"
   location: text("location").notNull(), // City - Brisbane, Sydney, etc.
+  image: text("image"), // URL to car image
 });
 
 export const features = pgTable("features", {

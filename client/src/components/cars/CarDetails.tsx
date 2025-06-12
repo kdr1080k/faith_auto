@@ -13,10 +13,12 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
   const staticCars: Record<string, Car & { description?: string }> = {
     "smart-1": {
       id: "smart-1",
+      dbId: null,
       make: "Smart",
       model: "#1",
       weeklyPrice: 30056,
       available: true,
+      status: "available",
       isGreatValue: true,
       fuelType: "Electric",
       bodyType: "SUV",
@@ -25,14 +27,17 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
       driveType: "AWD",
       category: "Electric SUV",
       location: "Brisbane",
+      image: null,
       description: "Experience the future of mobility with the Smart #1. This all-electric SUV combines premium design with cutting-edge technology. Featuring a spacious interior, advanced driver assistance systems, and impressive range, the Smart #1 is perfect for modern urban living."
     },
     "smart-3": {
       id: "smart-3",
+      dbId: null,
       make: "Smart",
       model: "#3",
       weeklyPrice: 31096,
       available: true,
+      status: "available",
       isGreatValue: false,
       fuelType: "Electric",
       bodyType: "SUV",
@@ -41,14 +46,17 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
       driveType: "AWD",
       category: "Electric SUV",
       location: "Melbourne",
+      image: null,
       description: "The Smart #3 represents the perfect blend of style and substance. This electric SUV offers exceptional performance, premium comfort, and the latest in automotive technology. With its sleek design and impressive range, it's the ideal choice for those seeking a sustainable luxury driving experience."
     },
     "hyundai-venue": {
       id: "hyundai-venue",
+      dbId: null,
       make: "Hyundai",
       model: "Venue",
       weeklyPrice: 23920,
       available: true,
+      status: "available",
       isGreatValue: true,
       fuelType: "Petrol",
       bodyType: "SUV",
@@ -57,6 +65,7 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
       driveType: "FWD",
       category: "Compact SUV",
       location: "Brisbane",
+      image: null,
       description: "The Hyundai Venue is a stylish and practical compact SUV that's perfect for city living. With its efficient petrol engine, modern safety features, and comfortable interior, it offers excellent value for money. The high driving position and compact dimensions make it ideal for urban navigation."
     }
   };
@@ -189,17 +198,70 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
           {/* Image Section */}
           <div className="animate-fade-up relative rounded-xl overflow-hidden" style={{ animationDelay: '200ms' }}>
             <img 
-              src={getCarImageUrl(car.id)} 
+              src={car.image || getCarImageUrl(car.id)}
               alt={`${car.make} ${car.model}`}
-              className="w-full aspect-[16/10] object-cover rounded-xl"
+              className="w-full aspect-[16/10] object-cover"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.jpg";
+              }}
             />
             <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              car.available 
-                ? 'bg-success/90 text-white' 
-                : 'bg-danger/90 text-white'
+              car.status?.toLowerCase() === 'available' || car.status?.toLowerCase() === 'active'
+                ? 'bg-green-500 text-white'
+                : 'bg-red-500 text-white'
             }`}>
-              {car.available ? 'Available Now' : 'Coming Soon'}
+              {car.status 
+                ? car.status.charAt(0).toUpperCase() + car.status.slice(1)
+                : (car.available ? 'Available' : 'Unavailable')}
             </span>
+            
+            {/* Car Title */}
+            <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-4">
+              {car.make} {car.model} {car.year}
+            </h1>
+
+            {/* Vehicle Description */}
+            <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900 mb-3">Vehicle Description</h2>
+              <p className="text-gray-600 leading-relaxed">
+                {car.description || "No description available."}
+              </p>
+            </div>
+
+            {/* Vehicle Specifications */}
+            <div className="bg-white rounded-xl p-6 shadow-sm">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Vehicle Specifications</h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-500">Body Type</p>
+                    <p className="font-medium text-gray-900">{car.bodyType}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Fuel Type</p>
+                    <p className="font-medium text-gray-900">{car.fuelType}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Drive Type</p>
+                    <p className="font-medium text-gray-900">{car.driveType}</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-500">Year</p>
+                    <p className="font-medium text-gray-900">{car.year}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Seats</p>
+                    <p className="font-medium text-gray-900">{car.seats}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">Category</p>
+                    <p className="font-medium text-gray-900">{car.category}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Details Section */}
@@ -309,7 +371,12 @@ const CarDetails = ({ carId }: CarDetailsProps) => {
                     Make an Enquiry
                   </Link>
                   
-                 
+                  {/* Call to Action */}
+                  <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                    <Link href={`/enquiry?carId=${car.id}&make=${car.make}&model=${car.model}&type=secondhand`} className="inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                      Make an Enquiry
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

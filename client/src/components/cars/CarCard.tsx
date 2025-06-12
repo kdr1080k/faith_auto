@@ -20,7 +20,12 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
     large: "h-64"
   };
 
-  const detailsLink = customLink || (isSubscription ? `/subscription-car/${car.id}` : `/car/${car.id}`);
+  const detailsLink = customLink || (isSubscription ? `/subscription-car/example?carId=${car.dbId || car.id}` : `/car/${car.id}`);
+  
+  // Debug logging
+  if (isSubscription) {
+    console.log('Subscription car link:', detailsLink, 'dbId:', car.dbId, 'id:', car.id);
+  }
 
   if (!isSubscription) {
     // Second-hand car style using ComparisonSection design
@@ -34,22 +39,22 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
         <Link href={detailsLink}>
           <div className="relative h-40 overflow-hidden">
             <img 
-              src={getCarImageUrl(car.id)} 
+              src={car.image || getCarImageUrl(car.id)} 
               alt={`${car.make} ${car.model}`} 
               className="w-full h-full object-cover"
             />
           </div>
 
           <div className="p-6">
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-2">
               <i className="fas fa-car text-primary text-xl"></i>
-              <h3 className="text-xl font-semibold text-gray-800">{car.make}</h3>
+              <h3 className="text-xl font-semibold text-gray-800">{car.model}</h3>
             </div>
-            <p className="text-gray-600 mb-4">{car.model}</p>
+            <p className="text-gray-600 mb-4">{car.bodyType || car.category}</p>
             <div className="flex justify-between items-center">
-              <div className="text-primary font-semibold">{formatCurrency(car.weeklyPrice * 52)}</div>
+              <div className="text-primary font-semibold">{formatCurrency(Math.round(car.weeklyPrice / 4.33))}/week</div>
               <div className={`text-sm font-medium ${car.available ? 'text-green-600' : 'text-red-600'}`}>
-                {car.available ? 'Available' : 'Not Available'}
+                {car.status ? car.status.charAt(0).toUpperCase() + car.status.slice(1) : (car.available ? 'Available' : 'Not Available')}
               </div>
             </div>
           </div>
@@ -64,7 +69,7 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
       <Link href={detailsLink}>
         <div className={styles.imageContainer}>
           <img 
-            src={getCarImageUrl(car.id)} 
+            src={car.image || getCarImageUrl(car.id)} 
             alt={`${car.make} ${car.model}`} 
             className={styles.image}
           />
@@ -73,24 +78,26 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
         <div className="p-4">
           <div className="flex items-center gap-2 mb-2">
             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${
-              car.available 
+              car.status?.toLowerCase() === 'available' || car.status?.toLowerCase() === 'active'
                 ? 'bg-success-light text-success' 
                 : 'bg-danger-light text-danger'
             }`}>
-              {car.available ? 'Available' : 'Not Available'}
+              {car.status 
+                ? car.status.charAt(0).toUpperCase() + car.status.slice(1) 
+                : (car.available ? 'Available' : 'Unavailable')}
             </span>
           </div>
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text-lg font-bold text-text-primary">{car.make}</h3>
-              <p className="text-text-secondary">{car.model}</p>
+              <h3 className="text-lg font-bold text-text-primary">{car.model}</h3>
+              <p className="text-text-secondary">{car.bodyType || car.category}</p>
             </div>
             <div className="text-right">
               <p className="text-sm text-text-light">From</p>
               <div className="bg-primary text-white px-3 py-1.5 rounded-md font-bold">
-                {formatCurrency(car.weeklyPrice)}/week
+                {formatCurrency(Math.round(car.weeklyPrice / 4.33))}/week
               </div>
-              <p className="text-sm text-text-light mt-1">Per Week</p>
+                              <p className="text-sm text-text-light mt-1">Per Week</p>
             </div>
           </div>
         </div>

@@ -25,7 +25,7 @@ const SubscriptionCarDetail = () => {
         <meta 
           name="description" 
           content={car 
-            ? `Subscribe to the ${car.make} ${car.model} from $${car.weeklyPrice}/week. All-inclusive subscription with insurance and maintenance.` 
+            ? `Subscribe to the ${car.make} ${car.model} from $${car.weeklyPrice}/month. All-inclusive subscription with insurance and maintenance.` 
             : "Car subscription details"} 
         />
       </Helmet>

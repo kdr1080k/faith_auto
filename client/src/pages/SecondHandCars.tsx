@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
+import { useQuery } from "@tanstack/react-query";
 import { Car } from "@shared/schema";
 import CarCard from "@/components/cars/CarCard";
 
@@ -114,124 +115,48 @@ const SecondHandCars: React.FC = () => {
     };
   }, []);
 
-  // Hardcoded car listings
-  const hardcodedCars: Car[] = [
-    {
-      id: "smart-1",
-      make: "Smart",
-      model: "#1",
-      weeklyPrice: 30056,
-      available: true,
-      isGreatValue: true,
-      fuelType: "Electric",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "AWD",
-      category: "Electric SUV",
-      location: "Brisbane"
-    },
-    {
-      id: "smart-3",
-      make: "Smart",
-      model: "#3",
-      weeklyPrice: 31096,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Electric",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "AWD",
-      category: "Electric SUV",
-      location: "Melbourne"
-    },
-    {
-      id: "hyundai-venue",
-      make: "Hyundai",
-      model: "Venue",
-      weeklyPrice: 23920,
-      available: true,
-      isGreatValue: true,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "FWD",
-      category: "Compact SUV",
-      location: "Brisbane"
-    },
-    {
-      id: "nissan-xtrail",
-      make: "Nissan",
-      model: "X-Trail",
-      weeklyPrice: 27040,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 7,
-      year: 2023,
-      driveType: "AWD",
-      category: "Family SUV",
-      location: "Brisbane"
-    },
-    {
-      id: "toyota-yaris",
-      make: "Toyota",
-      model: "Yaris Cross Hybrid",
-      weeklyPrice: 29016,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "AWD",
-      category: "Hybrid SUV",
-      location: "Brisbane"
-    },
-    {
-      id: "suzuki-swift",
-      make: "Suzuki",
-      model: "Swift",
-      weeklyPrice: 29120,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Petrol",
-      bodyType: "Hatchback",
-      seats: 5,
-      year: 2023,
-      driveType: "FWD",
-      category: "Compact",
-      location: "Brisbane"
+  // Fetch second-hand cars from Faith Auto database
+  const { data: allCars = [], isLoading } = useQuery<Car[]>({
+    queryKey: ['/api/cars'],
+    queryFn: async () => {
+      const response = await fetch('/api/cars?category=secondhand');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     }
-  ];
+  });
 
   // Filter cars based on selected criteria
-  const filteredCars = hardcodedCars.filter(car => {
+  const filteredCars = allCars.filter((car: Car) => {
     if (location !== "All" && car.location !== location) return false;
     if (bodyType !== "All" && car.bodyType !== bodyType) return false;
     if (fuelType !== "All" && car.fuelType !== fuelType) return false;
-    if (seats !== "All" && car.seats !== parseInt(seats)) return false;
+    if (seats !== "All") {
+      if (seats === "7+") {
+        if (car.seats < 7) return false;
+      } else {
+        if (car.seats.toString() !== seats) return false;
+      }
+    }
     return true;
   });
 
   // Group filtered cars into rows of 3 for animation
-  const rows = filteredCars.reduce((acc, car, index) => {
+  const rows = filteredCars.reduce((acc: Car[][], car: Car, index: number) => {
     const rowIndex = Math.floor(index / 3);
     if (!acc[rowIndex]) {
       acc[rowIndex] = [];
     }
     acc[rowIndex].push(car);
     return acc;
-  }, [] as typeof filteredCars[]);
+  }, [] as Car[][]);
 
   return (
     <>
       <Helmet>
-        <title>Second Hand Cars | Faith Auto</title>
-        <meta name="description" content="Browse our selection of quality second-hand cars. Each vehicle is thoroughly inspected and comes with a warranty." />
+        <title>Stock List | Faith Auto</title>
+        <meta name="description" content="Browse our selection of quality vehicles. Each car is thoroughly inspected and comes with a warranty." />
       </Helmet>
 
       {/* Hero Section */}
@@ -249,10 +174,10 @@ const SecondHandCars: React.FC = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <div className="pt-24">
             <h1 className="animate-fade-up tex3t-4xl md:text-5xl font-bold text-white mb-4" style={{ animationDelay: '200ms' }}>
-              Quality Used Cars
+              Premium Vehicle Collection
             </h1>
             <p className="animate-fade-right text-xl text-white max-w-3xl mx-auto" style={{ animationDelay: '400ms' }}>
-              Browse our selection of thoroughly inspected second-hand vehicles.
+              Browse our selection of thoroughly inspected vehicles.
               All cars come with warranty and our quality guarantee.
             </p>
           </div>
@@ -348,14 +273,20 @@ const SecondHandCars: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="animate-fade-up text-3xl font-bold text-gray-900 mb-4" style={{ animationDelay: '200ms' }}>
-                Available Vehicles ({filteredCars.length})
+                {isLoading ? 'Loading...' : `Available Vehicles (${filteredCars.length})`}
               </h2>
               <p className="animate-fade-right text-lg text-gray-600" style={{ animationDelay: '300ms' }}>
-                Find your perfect second-hand vehicle from our quality assured collection
+                Find your perfect vehicle from our quality assured collection
               </p>
             </div>
 
-            {filteredCars.length === 0 ? (
+            {isLoading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="bg-gray-100 rounded-lg h-64 animate-pulse"></div>
+                ))}
+              </div>
+            ) : filteredCars.length === 0 ? (
               <div className="animate-fade-up text-center py-16" style={{ animationDelay: '400ms' }}>
                 <div className="text-gray-500">
                   <i className="fas fa-car text-6xl mb-4"></i>
@@ -365,13 +296,13 @@ const SecondHandCars: React.FC = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredCars.map((car, index) => (
+                {filteredCars.map((car: Car, index: number) => (
                   <div 
                     key={car.id} 
                     className="animate-fade-up"
                     style={{ animationDelay: `${400 + (index * 100)}ms` }}
                   >
-                    <CarCard car={car} customLink="/car/smart-1" />
+                    <CarCard car={car} customLink={`/car/${car.id}`} />
                   </div>
                 ))}
               </div>
@@ -379,12 +310,12 @@ const SecondHandCars: React.FC = () => {
           </div>
         </section>
 
-        {/* Why Choose Our Second Hand Cars Section */}
+        {/* Why Choose Our Vehicles Section */}
         <section className="py-24 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="animate-fade-up text-3xl font-bold text-gray-900 mb-6" style={{ animationDelay: '200ms' }}>
-                Why Choose Our Second Hand Cars?
+                Why Choose Our Vehicles?
               </h2>
               <p className="animate-fade-right text-xl text-gray-600 max-w-3xl mx-auto" style={{ animationDelay: '300ms' }}>
                 Every vehicle in our collection undergoes rigorous inspection and comes with our quality guarantee

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
+import { Car } from "@shared/schema";
 import styles from './ComparisonSection.module.css';
 
 interface ComparisonSectionProps {
@@ -9,11 +11,25 @@ interface ComparisonSectionProps {
     fuelType: string;
     seats: string;
   };
+  category?: 'subscription' | 'secondhand' | 'all';
 }
 
-const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters }) => {
+const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category = 'all' }) => {
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Fetch cars from database based on category
+  const { data: cars = [], isLoading } = useQuery<Car[]>({
+    queryKey: ['/api/cars', category],
+    queryFn: async () => {
+      const url = category === 'all' ? '/api/cars' : `/api/cars?category=${category}`;
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    }
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -36,129 +52,33 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters }) => {
     };
   }, []);
 
-  const features = [
-    {
-      title: "Toyota",
-      description: "RAV4",
-      price: "$299/week",
-      available: true,
-      icon: "car",
-      location: "Brisbane",
-      bodyType: "SUV",
-      fuelType: "Hybrid",
-      seats: 5
-    },
-    {
-      title: "BMW",
-      description: "X5",
-      price: "$899/week",
-      available: true,
-      icon: "car",
-      location: "Melbourne",
-      bodyType: "SUV",
-      fuelType: "Petrol",
-      seats: 7
-    },
-    {
-      title: "Hyundai",
-      description: "Tucson",
-      price: "$459/week",
-      available: false,
-      icon: "car",
-      location: "Sydney",
-      bodyType: "SUV",
-      fuelType: "Hybrid",
-      seats: 5
-    },
-    {
-      title: "Tesla",
-      description: "Model 3",
-      price: "$659/week",
-      available: true,
-      icon: "car",
-      location: "Brisbane",
-      bodyType: "Sedan",
-      fuelType: "Electric",
-      seats: 5
-    },
-    {
-      title: "Mercedes-Benz",
-      description: "GLE",
-      price: "$929/week",
-      available: false,
-      icon: "car",
-      location: "Melbourne",
-      bodyType: "SUV",
-      fuelType: "Hybrid",
-      seats: 7
-    },
-    {
-      title: "Volkswagen",
-      description: "Tiguan",
-      price: "$529/week",
-      available: true,
-      icon: "car",
-      location: "Adelaide",
-      bodyType: "SUV",
-      fuelType: "Petrol",
-      seats: 5
-    },
-    {
-      title: "Audi",
-      description: "Q7",
-      price: "$999/week",
-      available: true,
-      icon: "car",
-      location: "Perth",
-      bodyType: "SUV",
-      fuelType: "Hybrid",
-      seats: 7
-    },
-    {
-      title: "Mazda",
-      description: "CX-5",
-      price: "$489/week",
-      available: true,
-      icon: "car",
-      location: "Brisbane",
-      bodyType: "SUV",
-      fuelType: "Petrol",
-      seats: 5
-    },
-    {
-      title: "Honda",
-      description: "CR-V",
-      price: "$469/week",
-      available: false,
-      icon: "car",
-      location: "Sydney",
-      bodyType: "SUV",
-      fuelType: "Hybrid",
-      seats: 5
-    }
-  ];
-
-  // Filter features based on props
-  const filteredFeatures = features.filter(feature => {
+  // Filter cars based on props
+  const filteredCars = cars.filter(car => {
     if (!filters) return true;
     
-    if (filters.location !== "All" && feature.location !== filters.location) return false;
-    if (filters.bodyType !== "All" && feature.bodyType !== filters.bodyType) return false;
-    if (filters.fuelType !== "All" && feature.fuelType !== filters.fuelType) return false;
-    if (filters.seats !== "All" && feature.seats !== parseInt(filters.seats)) return false;
+    if (filters.location !== "All" && car.location !== filters.location) return false;
+    if (filters.bodyType !== "All" && car.bodyType !== filters.bodyType) return false;
+    if (filters.fuelType !== "All" && car.fuelType !== filters.fuelType) return false;
+    if (filters.seats !== "All") {
+      if (filters.seats === "7+") {
+        if (car.seats < 7) return false;
+      } else {
+        if (car.seats.toString() !== filters.seats) return false;
+      }
+    }
     
     return true;
   });
 
-  // Group filtered features into rows of 3
-  const rows = filteredFeatures.reduce((acc, feature, index) => {
+  // Group filtered cars into rows of 3
+  const rows = filteredCars.reduce((acc: Car[][], car: Car, index: number) => {
     const rowIndex = Math.floor(index / 3);
     if (!acc[rowIndex]) {
       acc[rowIndex] = [];
     }
-    acc[rowIndex].push(feature);
+    acc[rowIndex].push(car);
     return acc;
-  }, [] as typeof filteredFeatures[]);
+  }, [] as Car[][]);
 
   return (
     <section 
@@ -176,43 +96,75 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Subscription Vehicles</h2>
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">
+            {category === 'subscription' ? 'Our Subscription Vehicles' : 
+             category === 'secondhand' ? 'Stock List' : 
+             'Faith Auto Vehicle Collection'}
+          </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            {filteredFeatures.length} subscription vehicles found. All-inclusive weekly pricing with no hidden fees.
+            {isLoading ? 'Loading...' : `${filteredCars.length} vehicles available`}. 
+            {category === 'subscription' ? 'All-inclusive weekly pricing with no hidden fees.' :
+             category === 'secondhand' ? 'Quality assured vehicles with warranty.' :
+             'Subscription and stock list vehicles with competitive weekly pricing.'}
           </p>
         </div>
 
-        {filteredFeatures.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-gray-100 rounded-lg h-64 animate-pulse"></div>
+            ))}
+          </div>
+        ) : filteredCars.length > 0 ? (
           <div className="space-y-8">
-            {rows.map((row, rowIndex) => (
+            {rows.map((row: Car[], rowIndex: number) => (
               <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {row.map((feature) => (
+                {row.map((car: Car) => (
                   <div 
-                    key={feature.title}
+                    key={car.id}
                     className={`bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-gray-100 ${styles.card} ${
                       isInView ? styles.visible : ''
                     }`}
                     style={{ '--delay': `${rowIndex * 400}ms` } as React.CSSProperties}
                   >
-                    <Link href="/subscription-car/example">
+                    <Link href={car.category === 'subscription' ? `/subscription-car/example?carId=${car.dbId || car.id}` : `/car/${car.id}`}>
                       <div className="relative h-40 overflow-hidden">
                         <img 
-                          src="/pexels-prime-cinematics-1005175-2036544.jpg" 
-                          alt={feature.title}
+                          src={car.image || "/pexels-prime-cinematics-1005175-2036544.jpg"} 
+                          alt={car.make}
                           className="w-full h-full object-cover"
                         />
                       </div>
 
                       <div className="p-6">
-                        <div className="flex items-center gap-2 mb-4">
-                          <i className={`fas fa-${feature.icon} text-primary text-xl`}></i>
-                          <h3 className="text-xl font-semibold text-gray-800">{feature.title}</h3>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <i className="fas fa-car text-primary text-xl"></i>
+                            <h3 className="text-xl font-semibold text-gray-800">{car.model}</h3>
+                          </div>
+                          <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            car.category === 'subscription' 
+                              ? 'bg-blue-100 text-blue-800' 
+                              : 'bg-green-100 text-green-800'
+                          }`}>
+                            {car.category === 'subscription' ? 'Subscription' : 'Stock List'}
+                          </span>
                         </div>
-                        <p className="text-gray-600 mb-4">{feature.description}</p>
+                        <p className="text-gray-600 mb-2">{car.bodyType || car.category}</p>
+                        <div className="flex items-center gap-4 mb-4 text-sm text-gray-500">
+                          <span>{car.year}</span>
+                        </div>
                         <div className="flex justify-between items-center">
-                          <div className="text-primary font-semibold">{feature.price}</div>
-                          <div className={`text-sm font-medium ${feature.available ? 'text-green-600' : 'text-red-600'}`}>
-                            {feature.available ? 'Available' : 'Not Available'}
+                          <div className="text-primary font-semibold">
+                            ${Math.round(car.weeklyPrice / 4.33).toLocaleString()}/week
+                            {car.isGreatValue && (
+                              <span className="ml-2 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
+                                Great Value!
+                              </span>
+                            )}
+                          </div>
+                          <div className={`text-sm font-medium ${car.available ? 'text-green-600' : 'text-red-600'}`}>
+                            {car.status ? car.status.charAt(0).toUpperCase() + car.status.slice(1) : (car.available ? 'Available' : 'Not Available')}
                           </div>
                         </div>
                       </div>
@@ -225,7 +177,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters }) => {
         ) : (
           <div className="text-center py-12">
             <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 max-w-md mx-auto">
-              <p className="text-gray-600 mb-4">No subscription cars match your selected filters.</p>
+              <p className="text-gray-600 mb-4">No vehicles match your selected filters.</p>
               <p className="text-sm text-gray-500">Try adjusting your filter criteria to see more vehicles.</p>
             </div>
           </div>

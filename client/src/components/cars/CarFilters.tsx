@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 const FUEL_TYPES = ["All", "Petrol", "Diesel", "Hybrid", "Electric"];
 const BODY_TYPES = ["All", "SUV", "Sedan", "Hatchback", "Wagon", "Ute", "Van", "Coupe"];
 const SEATS = ["All", "2", "4", "5", "6", "7+"];
-const MAKES = ["All", "Smart", "Tesla", "Toyota", "Hyundai", "Nissan", "Suzuki", "Mazda"];
+const MAKES = ["All", "Smart", "Tesla", "Toyota", "Hyundai", "Nissan", "Suzuki", "Mazda", "BMW", "Mercedes-Benz", "Audi", "Volkswagen", "Honda", "Kia", "Lexus", "Faith Auto", "Used Vehicle"];
 
 interface FiltersState {
   location: string;

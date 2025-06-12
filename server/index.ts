@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
@@ -56,8 +57,8 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use the port provided by Azure or fall back to 8080
-  const port = process.env.PORT || 8080;
+  // Use the port provided by Azure or fall back to 3000
+  const port = process.env.PORT || 3000;
   server.listen(port, () => {
     log(`serving on port ${port}`);
   });

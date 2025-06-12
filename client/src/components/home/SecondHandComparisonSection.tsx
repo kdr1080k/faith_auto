@@ -5,7 +5,7 @@ import { Link } from "wouter";
 import CarCard from "@/components/cars/CarCard";
 import styles from './ComparisonSection.module.css';
 
-const SecondHandComparisonSection = () => {
+const StockListSection = () => {
   const [isInView, setIsInView] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -70,7 +70,7 @@ const SecondHandComparisonSection = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">Available Vehicles</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse our selection of quality pre-owned vehicles. Each car is thoroughly inspected and comes with our quality guarantee.
+            Browse our selection of quality vehicles. Each car is thoroughly inspected and comes with our quality guarantee.
           </p>
         </div>
 
@@ -106,4 +106,4 @@ const SecondHandComparisonSection = () => {
   );
 };
 
-export default SecondHandComparisonSection; 
+export default StockListSection; 

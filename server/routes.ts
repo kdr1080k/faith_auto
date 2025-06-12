@@ -45,6 +45,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get a specific car by database ID
+  app.get("/api/cars/db/:dbId", async (req: Request, res: Response) => {
+    try {
+      const car = await storage.getCarByDbId(req.params.dbId);
+      if (!car) {
+        return res.status(404).json({ message: "Car not found" });
+      }
+      res.json(car);
+    } catch (error) {
+      console.error("Error fetching car by database ID:", error);
+      res.status(500).json({ message: "Failed to fetch car details" });
+    }
+  });
+
   // Get features for a specific car
   app.get("/api/cars/:id/features", async (req: Request, res: Response) => {
     try {

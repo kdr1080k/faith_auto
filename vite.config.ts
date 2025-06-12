@@ -23,6 +23,7 @@ export default defineConfig(({ command }) => ({
     minify: command === 'build',
     target: 'es2015',
     cssTarget: 'chrome61',
+    assetsDir: 'assets',
   },
   server: {
     port: 5173,
@@ -30,9 +31,16 @@ export default defineConfig(({ command }) => ({
     allowedHosts: ['.azurewebsites.net'],
     proxy: {
       '/api': {
-        target: 'http://localhost:5006',
+        target: 'http://localhost:3000',
         changeOrigin: true
       }
-    }
-  }  
+    },
+    strictPort: true,
+  },
+  publicDir: 'public',
+  // Serve attached_assets directory
+  static: {
+    '/attached_assets': 'attached_assets',
+  },
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
 }));

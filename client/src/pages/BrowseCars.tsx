@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import CarCard from "@/components/cars/CarCard";
 import CarFilters from "@/components/cars/CarFilters";
 import { Car } from "@shared/schema";
+import { useQuery } from "@tanstack/react-query";
 
 interface FiltersState {
   location: string;
@@ -16,55 +17,6 @@ const SORTS = [
   { label: "Price (low to high)", value: "price-asc" },
   { label: "Price (high to low)", value: "price-desc" },
   { label: "Newest", value: "newest" },
-];
-
-// Hardcoded subscription cars data
-const SUBSCRIPTION_CARS: Car[] = [
-  {
-    id: "smart-1-sub",
-    make: "Smart",
-    model: "#1",
-    weeklyPrice: 299,
-    available: true,
-    isGreatValue: true,
-    fuelType: "Electric",
-    bodyType: "SUV",
-    seats: 5,
-    year: 2023,
-    driveType: "AWD",
-    category: "Electric SUV",
-    location: "Brisbane"
-  },
-  {
-    id: "tesla-3-sub",
-    make: "Tesla",
-    model: "Model 3",
-    weeklyPrice: 349,
-    available: true,
-    isGreatValue: false,
-    fuelType: "Electric",
-    bodyType: "Sedan",
-    seats: 5,
-    year: 2023,
-    driveType: "AWD",
-    category: "Electric Sedan",
-    location: "Melbourne"
-  },
-  {
-    id: "toyota-camry-sub",
-    make: "Toyota",
-    model: "Camry",
-    weeklyPrice: 249,
-    available: true,
-    isGreatValue: true,
-    fuelType: "Hybrid",
-    bodyType: "Sedan",
-    seats: 5,
-    year: 2023,
-    driveType: "FWD",
-    category: "Hybrid Sedan",
-    location: "Sydney"
-  }
 ];
 
 function useQueryParams(): FiltersState & { sort: string } {
@@ -84,19 +36,35 @@ function useQueryParams(): FiltersState & { sort: string } {
 
 const BrowseCars = () => {
   const filters = useQueryParams();
-  const [loading, setLoading] = useState(false);
   const [, navigate] = useLocation();
   const [sort, setSort] = useState(filters.sort);
 
-  // Apply filters to the cars
+  // Fetch cars from the API
+  const { data: cars = [], isLoading } = useQuery<Car[]>({
+    queryKey: ['/api/cars', filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (filters.location !== 'All') params.append('location', filters.location);
+      if (filters.bodyType !== 'All') params.append('bodyType', filters.bodyType);
+      if (filters.fuelType !== 'All') params.append('fuelType', filters.fuelType);
+      if (filters.seats !== 'All') params.append('seats', filters.seats);
+      
+      const response = await fetch(`/api/cars?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch cars');
+      }
+      return response.json();
+    }
+  });
+
+  // Apply remaining filters and sorting
   const filteredCars = useMemo(() => {
-    let filtered = SUBSCRIPTION_CARS.filter(car => {
-      if (filters.bodyType !== "All" && car.bodyType !== filters.bodyType) return false;
-      if (filters.fuelType !== "All" && car.fuelType !== filters.fuelType) return false;
-      if (filters.seats !== "All" && car.seats !== parseInt(filters.seats)) return false;
-      if (filters.make !== "All" && car.make !== filters.make) return false;
-      return true;
-    });
+    let filtered = [...(cars || [])];
+
+    // Apply make filter (since it's not handled by the backend)
+    if (filters.make !== "All") {
+      filtered = filtered.filter(car => car.make === filters.make);
+    }
 
     // Apply sorting
     if (sort === "price-asc") {
@@ -108,7 +76,7 @@ const BrowseCars = () => {
     }
 
     return filtered;
-  }, [filters.bodyType, filters.fuelType, filters.seats, filters.make, sort]);
+  }, [cars, filters.make, sort]);
 
   const handleApplyFilters = (newFilters: FiltersState) => {
     const params = new URLSearchParams({ ...newFilters, sort });
@@ -152,7 +120,7 @@ const BrowseCars = () => {
           </div>
 
           {/* Car Grid */}
-          {loading ? (
+          {isLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white rounded-lg h-64 animate-pulse" />
@@ -162,7 +130,8 @@ const BrowseCars = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredCars.length === 0 ? (
                 <div className="col-span-full text-center text-gray-400 py-12">
-                  No cars found matching your criteria.
+                  <p className="text-lg font-medium mb-2">No vehicles match your selected filters.</p>
+                  <p>Try adjusting your filter criteria to see more vehicles.</p>
                 </div>
               ) : (
                 filteredCars.map(car => (

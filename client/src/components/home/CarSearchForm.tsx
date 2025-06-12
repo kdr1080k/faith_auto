@@ -86,10 +86,16 @@ const CarSearchForm: React.FC<CarSearchFormProps> = ({
 
   // Filter cars based on selected criteria
   const filteredCars = cars.filter(car => {
-    if (car.location !== location) return false;
+    if (location !== "All" && car.location !== location) return false;
     if (bodyType !== "All" && car.bodyType !== bodyType) return false;
     if (fuelType !== "All" && car.fuelType !== fuelType) return false;
-    if (seats !== "All" && car.seats.toString() !== seats) return false;
+    if (seats !== "All") {
+      if (seats === "7+") {
+        if (car.seats < 7) return false;
+      } else {
+        if (car.seats.toString() !== seats) return false;
+      }
+    }
     return true;
   });
 
