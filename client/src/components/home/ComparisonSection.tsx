@@ -20,7 +20,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
 
   // Fetch cars from database based on category
   const { data: cars = [], isLoading } = useQuery<Car[]>({
-    queryKey: ['/api/cars', category],
+    queryKey: ['/api/cars', category, filters?.location, filters?.bodyType, filters?.fuelType, filters?.seats],
     queryFn: async () => {
       const url = category === 'all' ? '/api/cars' : `/api/cars?category=${category}`;
       const response = await fetch(url);
@@ -28,7 +28,11 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
         throw new Error('Network response was not ok');
       }
       return response.json();
-    }
+    },
+    staleTime: 30000, // Consider data stale after 30 seconds
+    gcTime: 60000, // Keep in cache for 1 minute (replaces cacheTime in v5)
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: true // Always refetch when component mounts
   });
 
   useEffect(() => {
@@ -52,8 +56,8 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
     };
   }, []);
 
-  // Filter cars based on props
-  const filteredCars = cars.filter(car => {
+  // Filter cars based on props - ensure cars is an array
+  const filteredCars = Array.isArray(cars) ? cars.filter((car: Car) => {
     if (!filters) return true;
     
     if (filters.location !== "All" && car.location !== filters.location) return false;
@@ -68,7 +72,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
     }
     
     return true;
-  });
+  }) : [];
 
   // Group filtered cars into rows of 3
   const rows = filteredCars.reduce((acc: Car[][], car: Car, index: number) => {
@@ -98,14 +102,14 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold mb-4 text-gray-800">
             {category === 'subscription' ? 'Our Subscription Vehicles' : 
-             category === 'secondhand' ? 'Stock List' : 
+             category === 'secondhand' ? 'Car Listings' : 
              'Faith Auto Vehicle Collection'}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             {isLoading ? 'Loading...' : `${filteredCars.length} vehicles available`}. 
             {category === 'subscription' ? 'All-inclusive weekly pricing with no hidden fees.' :
              category === 'secondhand' ? 'Quality assured vehicles with warranty.' :
-             'Subscription and stock list vehicles with competitive weekly pricing.'}
+             'Subscription and Car Listings vehicles with competitive weekly pricing.'}
           </p>
         </div>
 
@@ -127,7 +131,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
                     }`}
                     style={{ '--delay': `${rowIndex * 400}ms` } as React.CSSProperties}
                   >
-                    <Link href={car.category === 'subscription' ? `/subscription-car/example?carId=${car.dbId || car.id}` : `/car/${car.id}`}>
+                                            <Link href={car.category === 'subscription' ? `/subscription-car/example?carId=${car.dbId || car.id}` : `/car/detail?carId=${car.dbId || (car.id.includes('secondhand-') ? car.id.replace('secondhand-', '') : car.id)}`}>
                       <div className="relative h-40 overflow-hidden">
                         <img 
                           src={car.image || "/pexels-prime-cinematics-1005175-2036544.jpg"} 
@@ -147,7 +151,7 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
                               ? 'bg-blue-100 text-blue-800' 
                               : 'bg-green-100 text-green-800'
                           }`}>
-                            {car.category === 'subscription' ? 'Subscription' : 'Stock List'}
+                            {car.category === 'subscription' ? 'Subscription' : 'Car Listings'}
                           </span>
                         </div>
                         <p className="text-gray-600 mb-2">{car.bodyType || car.category}</p>
@@ -156,7 +160,16 @@ const ComparisonSection: React.FC<ComparisonSectionProps> = ({ filters, category
                         </div>
                         <div className="flex justify-between items-center">
                           <div className="text-primary font-semibold">
-                            ${Math.round(car.weeklyPrice / 4.33).toLocaleString()}/week
+                            {car.category === 'secondhand' && (car as any).actualPrice ? (
+                              // For second-hand cars, show the actual selling price
+                              `$${((car as any).actualPrice).toLocaleString()}`
+                            ) : car.category === 'subscription' && (car as any).subscriptionPlans?.threeMonth ? (
+                              // For subscription cars with subscription plans, show the 3-month total price
+                              `$${((car as any).subscriptionPlans.threeMonth).toLocaleString()}/per week`
+                            ) : (
+                              // Fallback to weekly price calculation
+                              `$${Math.round(car.weeklyPrice).toLocaleString()}/week`
+                            )}
                             {car.isGreatValue && (
                               <span className="ml-2 text-xs bg-orange-100 text-orange-800 px-2 py-1 rounded-full">
                                 Great Value!

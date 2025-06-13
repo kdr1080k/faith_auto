@@ -210,7 +210,7 @@ const About: React.FC = () => {
                 >
                   Our journey began in 2018 with the launch of Rush Car Rental, a premium car rental brand serving 
                   thousands of satisfied customers across major cities in Australia. Over time, we saw a growing 
-                  demand for well-maintained, trustworthy used cars — especially those from Japan. This inspired us 
+                  demand for well-maintained, trustworthy cars — especially those from Japan. This inspired us 
                   to create Faith Auto, a brand built on our passion for vehicles and our commitment to long-term value.
                 </p>
                 <p 

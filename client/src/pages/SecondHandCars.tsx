@@ -117,14 +117,18 @@ const SecondHandCars: React.FC = () => {
 
   // Fetch second-hand cars from Faith Auto database
   const { data: allCars = [], isLoading } = useQuery<Car[]>({
-    queryKey: ['/api/cars'],
+    queryKey: ['/api/cars', 'secondhand', location, bodyType, fuelType, seats],
     queryFn: async () => {
       const response = await fetch('/api/cars?category=secondhand');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       return response.json();
-    }
+    },
+    staleTime: 30000, // Consider data stale after 30 seconds
+    gcTime: 60000, // Keep in cache for 1 minute
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: true // Always refetch when component mounts
   });
 
   // Filter cars based on selected criteria
@@ -155,7 +159,7 @@ const SecondHandCars: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Stock List | Faith Auto</title>
+        <title>Car Listings | Faith Auto</title>
         <meta name="description" content="Browse our selection of quality vehicles. Each car is thoroughly inspected and comes with a warranty." />
       </Helmet>
 
@@ -299,10 +303,10 @@ const SecondHandCars: React.FC = () => {
                 {filteredCars.map((car: Car, index: number) => (
                   <div 
                     key={car.id} 
-                    className="animate-fade-up"
+                    className="animate-fade-up animate-in opacity-100"
                     style={{ animationDelay: `${400 + (index * 100)}ms` }}
                   >
-                    <CarCard car={car} customLink={`/car/${car.id}`} />
+                    <CarCard car={car} customLink={`/car/detail?carId=${car.dbId || (car.id.includes('secondhand-') ? car.id.replace('secondhand-', '') : car.id)}`} />
                   </div>
                 ))}
               </div>

@@ -13,9 +13,11 @@ import About from "@/pages/About";
 import Help from "@/pages/Help";
 import Contact from "@/pages/Contact";
 import WhySubscription from "@/pages/WhySubscription";
+import SubscriptionInventory from "@/pages/SubscriptionInventory";
 import LongTermRental from "@/pages/LongTermRental";
 import SecondHandCars from "@/pages/SecondHandCars";
 import Layout from "@/components/layout/Layout";
+import ScrollToTop from "@/components/ScrollToTop";
 import Enquiry from "@/pages/Enquiry";
 import FAQ from "@/pages/FAQ";
 import ThankYou from "@/pages/ThankYou";
@@ -26,12 +28,14 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/browse-cars" component={BrowseCars} />
       <Route path="/car/:id" component={CarDetail} />
+      <Route path="/car/detail" component={CarDetail} />
       <Route path="/subscription-car/:id" component={SubscriptionCarDetail} />
       <Route path="/smart" component={Smart} />
       <Route path="/about" component={About} />
       <Route path="/help" component={Help} />
       <Route path="/contact" component={Contact} />
       <Route path="/subscription" component={WhySubscription} />
+      <Route path="/subscription-inventory" component={SubscriptionInventory} />
       <Route path="/second-hand-cars" component={SecondHandCars} />
       <Route path="/long-term-rental" component={LongTermRental} />
       <Route path="/enquiry" component={Enquiry} />
@@ -46,6 +50,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <ScrollToTop />
         <Toaster />
         <Layout>
           <Router />

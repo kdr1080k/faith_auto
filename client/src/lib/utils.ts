@@ -9,8 +9,8 @@ export const formatCurrency = (amount: number): string => {
   return amount.toLocaleString('en-AU', {
     style: 'currency',
     currency: 'AUD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 };
 

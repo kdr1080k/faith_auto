@@ -58,7 +58,7 @@ const ContactCTA = () => {
         >
           <Link href="/contact">
             <Button size="lg" className="bg-primary text-white hover:bg-primary/90 transform transition-all duration-300 hover:scale-105">
-              Make an Enquiry
+              Contact Us
               <i className="fas fa-arrow-right ml-2"></i>
             </Button>
           </Link>

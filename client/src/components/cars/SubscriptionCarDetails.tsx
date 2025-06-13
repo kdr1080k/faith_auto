@@ -1,13 +1,128 @@
 import { useQuery } from "@tanstack/react-query";
-import { Car as BaseCar } from "@shared/schema";
+import { Car } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
 import { Link } from "wouter";
 import { useState, useEffect } from "react";
-import { Car, FullCar } from "@/types/car";
+import { Car as FullCar } from "@/types/car";
+import { useRoute, useSearch } from 'wouter';
+import { Helmet } from "react-helmet-async";
 
 interface SubscriptionCarDetailsProps {
   carId: string;
 }
+
+// Image Carousel Component
+const ImageCarousel = ({ images, carName, status, available }: { images: string[], carName: string, status?: string, available?: boolean }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const goToPrevious = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === 0 ? Math.max(0, images.length - 1) : prevIndex - 1
+    );
+  };
+  
+  const goToNext = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const StatusBadge = () => (
+    <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold z-10 ${
+      available 
+        ? 'bg-green-100 text-green-800' 
+        : 'bg-red-100 text-red-800'
+    }`}>
+      {status ? status.charAt(0).toUpperCase() + status.slice(1) : (available ? 'Available' : 'Not Available')}
+    </div>
+  );
+
+  // Professional no-image placeholder
+  const NoImagePlaceholder = () => (
+    <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center rounded-lg">
+      <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mb-4">
+        <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <p className="text-gray-500 font-medium text-lg mb-1">{carName}</p>
+      <p className="text-gray-400 text-sm">Image coming soon</p>
+    </div>
+  );
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="relative mb-6">
+        <NoImagePlaceholder />
+        <StatusBadge />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative mb-6">
+      <div className="relative w-full h-80 rounded-lg overflow-hidden">
+        <img 
+          src={images[currentImageIndex] || '/src/assets/car-placeholder.jpg'} 
+          alt={`${carName} - Image ${currentImageIndex + 1}`}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            // If image fails to load, show placeholder
+            (e.target as HTMLImageElement).style.display = 'none';
+            const placeholder = (e.target as HTMLElement).nextElementSibling as HTMLElement;
+            if (placeholder) placeholder.style.display = 'flex';
+          }}
+        />
+        {/* Fallback placeholder for broken images */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center" style={{ display: 'none' }}>
+          <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mb-4">
+            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p className="text-gray-500 font-medium text-lg mb-1">{carName}</p>
+          <p className="text-gray-400 text-sm">Image unavailable</p>
+        </div>
+        
+        {images.length > 1 && (
+          <>
+            <button 
+              onClick={goToPrevious}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button 
+              onClick={goToNext}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </>
+        )}
+        
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <StatusBadge />
+    </div>
+  );
+};
 
 const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
   // Get the actual car ID from URL parameters
@@ -45,7 +160,7 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
 
   // Fetch car data by database ID if available
   const { data: car, isLoading, error } = useQuery<Car>({
-    queryKey: [`/api/cars/db/${actualCarId}`],
+    queryKey: [`/api/cars/db/${actualCarId}?carType=subscription`],
     enabled: !!actualCarId && actualCarId !== "example"
   });
 
@@ -185,30 +300,11 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Image + Title Section */}
             <div className="opacity-0 animate-[professionalSlideIn_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]" style={{ animationDelay: '200ms' }}>
-              <div className="relative rounded-xl overflow-hidden mb-6">
-                <img
-                  src={displayCar.image || "/placeholder.jpg"}
-                  alt={`${displayCar.make} ${displayCar.model}`}
-                  className="w-full aspect-[16/10] object-cover rounded-xl"
-                  onError={(e) => {
-                    console.log('Image failed to load:', displayCar.image);
-                    e.currentTarget.src = "/placeholder.jpg";
-                  }}
-                />
-                <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                  displayCar.status?.toLowerCase() === 'available' || displayCar.status?.toLowerCase() === 'active'
-                    ? 'bg-green-500 text-white'
-                    : 'bg-red-500 text-white'
-                }`}>
-                  {displayCar.status 
-                    ? displayCar.status.charAt(0).toUpperCase() + displayCar.status.slice(1)
-                    : (displayCar.available ? 'Available' : 'Unavailable')}
-                </span>
-              </div>
+              <ImageCarousel images={displayCar.images || []} carName={`${displayCar.make} ${displayCar.model}`} status={displayCar.status} available={displayCar.available} />
               
               {/* Car Title */}
               <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                {displayCar.make} {displayCar.model} {displayCar.year}
+             {displayCar.model} 
               </h1>
 
               {/* Vehicle Description */}
@@ -225,26 +321,30 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-500">Body Type</p>
-                      <p className="font-medium text-gray-900">{displayCar.bodyType}</p>
+                      <p className="text-sm text-gray-500">Year</p>
+                      <p className="font-medium text-gray-900">{displayCar.year || 'Not specified'}</p>
                     </div>
                     <div>
                       <p className="text-sm text-gray-500">Fuel Type</p>
-                      <p className="font-medium text-gray-900">{displayCar.fuelType}</p>
+                      <p className="font-medium text-gray-900">{displayCar.fuelType || 'Not specified'}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Drive Type</p>
-                      <p className="font-medium text-gray-900">{displayCar.driveType}</p>
+                      <p className="text-sm text-gray-500">Seats</p>
+                      <p className="font-medium text-gray-900">{displayCar.seats ? `${displayCar.seats} seats` : 'Not specified'}</p>
                     </div>
                   </div>
                   <div className="space-y-3">
                     <div>
-                      <p className="text-sm text-gray-500">Year</p>
-                      <p className="font-medium text-gray-900">{displayCar.year}</p>
+                      <p className="text-sm text-gray-500">Body Type</p>
+                      <p className="font-medium text-gray-900">{displayCar.bodyType || 'Not specified'}</p>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Category</p>
-                      <p className="font-medium text-gray-900">{displayCar.category}</p>
+                      <p className="text-sm text-gray-500">Location</p>
+                      <p className="font-medium text-gray-900">{displayCar.location || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Mileage</p>
+                      <p className="font-medium text-gray-900">{displayCar.mileage ? `${displayCar.mileage.toLocaleString()} km` : 'Not specified'}</p>
                     </div>
                   </div>
                 </div>
@@ -289,8 +389,8 @@ const SubscriptionCarDetails = ({ carId }: SubscriptionCarDetailsProps) => {
                             {planLabels[months]}
                           </span>
                           <div className="text-right">
-                            <span className="text-2xl font-bold">${price}</span>
-                            <span className="text-gray-500">/total</span>
+                            <span className="text-2xl font-bold">${price.toFixed(2)}</span>
+                            <span className="text-gray-500">per week</span>
                           </div>
                         </div>
                         <ul className="ml-5 list-disc text-sm text-gray-700">

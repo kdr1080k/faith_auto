@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import { Link } from 'wouter';
 import LocationMap from './LocationMap';
 import styles from './Footer.module.css';
 
@@ -39,21 +39,28 @@ const Footer = () => {
             <h3 className="font-bold text-lg mb-4 text-white">Services</h3>
             <ul className="space-y-4">
               <li>
+                <Link href="/second-hand-cars" className="group">
+                  <span className={styles.footerLink}>Car Listings</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/subscription" className="group">
                   <span className={styles.footerLink}>Car Subscription</span>
                 </Link>
               </li>
-              <li>
-                <Link href="/second-hand-cars" className="group">
-                  <span className={styles.footerLink}>Second Hand Cars</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/long-term-rental" className="group">
-                  <span className={styles.footerLink}>Long Term Rental</span>
-                </Link>
-              </li>
+
             </ul>
+
+            {/* Logo under Services with spacing */}
+            <div className="mt-8 pt-6 border-t border-gray-700">
+              <Link href="/" className="group inline-block">
+                <img
+                  src="/header_logo.png"
+                  alt="Faith Auto"
+                  className="h-12 w-auto transform duration-300 group-hover:scale-110 opacity-90 hover:opacity-100"
+                />
+              </Link>
+            </div>
           </div>
 
           {/* Company */}

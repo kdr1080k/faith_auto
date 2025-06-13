@@ -20,11 +20,24 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
     large: "h-64"
   };
 
-  const detailsLink = customLink || (isSubscription ? `/subscription-car/example?carId=${car.dbId || car.id}` : `/car/${car.id}`);
+  // For second-hand cars, ensure we use the actual database ID
+  const getDatabaseId = () => {
+    if (isSubscription) {
+      return car.dbId || car.id;
+    } else {
+      // For second-hand cars, car.dbId should be the actual database ID
+      // If car.dbId is null/undefined, extract from car.id (e.g., "secondhand-123" -> "123")
+      return car.dbId || (car.id.includes('secondhand-') ? car.id.replace('secondhand-', '') : car.id);
+    }
+  };
+
+  const detailsLink = customLink || (isSubscription ? `/subscription-car/example?carId=${getDatabaseId()}` : `/car/detail?carId=${getDatabaseId()}`);
   
   // Debug logging
   if (isSubscription) {
-    console.log('Subscription car link:', detailsLink, 'dbId:', car.dbId, 'id:', car.id);
+    console.log('Subscription car link:', detailsLink, 'dbId:', car.dbId, 'id:', car.id, 'finalId:', getDatabaseId());
+  } else {
+    console.log('Second-hand car link:', detailsLink, 'dbId:', car.dbId, 'id:', car.id, 'finalId:', getDatabaseId());
   }
 
   if (!isSubscription) {
@@ -52,7 +65,15 @@ const CarCard = ({ car, size = 'default', isSubscription = false, isVisible = tr
             </div>
             <p className="text-gray-600 mb-4">{car.bodyType || car.category}</p>
             <div className="flex justify-between items-center">
-              <div className="text-primary font-semibold">{formatCurrency(Math.round(car.weeklyPrice / 4.33))}/week</div>
+              <div className="text-primary font-semibold">
+                {car.category === 'secondhand' && (car as any).actualPrice ? (
+                  // For second-hand cars, show the actual selling price
+                  `$${((car as any).actualPrice).toLocaleString()}`
+                ) : (
+                  // For subscription cars or cars without actualPrice, show weekly price
+                  `${formatCurrency(Math.round(car.weeklyPrice / 4.33))}/week`
+                )}
+              </div>
               <div className={`text-sm font-medium ${car.available ? 'text-green-600' : 'text-red-600'}`}>
                 {car.status ? car.status.charAt(0).toUpperCase() + car.status.slice(1) : (car.available ? 'Available' : 'Not Available')}
               </div>

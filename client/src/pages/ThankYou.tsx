@@ -154,7 +154,7 @@ const ThankYou: React.FC = () => {
               <p className="animate-fade-right text-sm text-gray-500" style={{ animationDelay: '1100ms' }}>
                 Need immediate assistance? Call us at{' '}
                 <a href="tel:1800787422" className="text-gray-800 hover:underline">
-                  1800 7874 227
+                1800 316 965
                 </a>
               </p>
             </div>

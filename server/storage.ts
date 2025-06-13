@@ -14,6 +14,7 @@ export interface IStorage {
   // Car methods
   getCars(category?: string, location?: string): Promise<Car[]>;
   getCarById(id: string): Promise<Car | undefined>;
+  getCarByDbId(dbId: string, carType?: 'subscription' | 'secondhand'): Promise<Car | undefined>;
   createCar(car: InsertCar): Promise<Car>;
   
   // Feature methods
@@ -84,6 +85,11 @@ export class MemStorage implements IStorage {
 
   async getCarById(id: string): Promise<Car | undefined> {
     return this.cars.get(id);
+  }
+
+  async getCarByDbId(dbId: string, carType?: 'subscription' | 'secondhand'): Promise<Car | undefined> {
+    // For MemStorage, we'll just delegate to getCarById since we don't have separate tables
+    return this.getCarById(dbId);
   }
 
   async createCar(car: InsertCar): Promise<Car> {

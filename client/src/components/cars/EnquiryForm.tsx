@@ -25,10 +25,37 @@ const EnquiryForm = ({ isOpen, onClose, carMake, carModel, selectedPlan }: Enqui
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
-    // For now, just close the dialog
-    onClose();
+    
+    try {
+      const submissionData = {
+        ...formData,
+        carMake,
+        carModel,
+        selectedPlan
+      };
+
+      const response = await fetch('/api/car-enquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Secure car enquiry submission successful:', result.message);
+        // You might want to show a success message here
+        onClose();
+      } else {
+        console.error('Car enquiry submission failed:', result.message);
+        // You might want to show an error message here
+      }
+    } catch (error) {
+      console.error("Error submitting car enquiry form:", error);
+      // You might want to show an error message here
+    }
   };
 
   return (

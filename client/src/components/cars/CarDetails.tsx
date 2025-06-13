@@ -3,388 +3,341 @@ import { Link } from "wouter";
 import { Car, Feature } from "@shared/schema";
 import { getCarImageUrl } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { Car as FullCar } from "@/types/car";
+import { useRoute, useSearch } from 'wouter';
+import { Helmet } from "react-helmet-async";
 
 interface CarDetailsProps {
   carId: string;
 }
 
+// Image Carousel Component
+const ImageCarousel = ({ images, carName, status, available }: { images: string[], carName: string, status?: string, available?: boolean }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const goToPrevious = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === 0 ? Math.max(0, images.length - 1) : prevIndex - 1
+    );
+  };
+
+  const goToNext = () => {
+    setCurrentImageIndex((prevIndex) => 
+      prevIndex === images.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const StatusBadge = () => (
+    <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-semibold z-10 ${
+      available 
+        ? 'bg-green-100 text-green-800' 
+        : 'bg-red-100 text-red-800'
+    }`}>
+      {status ? status.charAt(0).toUpperCase() + status.slice(1) : (available ? 'Available' : 'Not Available')}
+    </div>
+  );
+
+  // Professional no-image placeholder
+  const NoImagePlaceholder = () => (
+    <div className="w-full h-80 bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center rounded-lg">
+      <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mb-4">
+        <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </div>
+      <p className="text-gray-500 font-medium text-lg mb-1">{carName}</p>
+      <p className="text-gray-400 text-sm">Image coming soon</p>
+    </div>
+  );
+
+  if (!images || images.length === 0) {
+    return (
+      <div className="relative mb-6">
+        <NoImagePlaceholder />
+        <StatusBadge />
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative mb-6">
+      <div className="relative w-full h-80 rounded-lg overflow-hidden">
+        <img
+          src={images[currentImageIndex] || '/src/assets/car-placeholder.jpg'}
+          alt={`${carName} - Image ${currentImageIndex + 1}`}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            // If image fails to load, show placeholder
+            (e.target as HTMLImageElement).style.display = 'none';
+            const placeholder = (e.target as HTMLElement).nextElementSibling as HTMLElement;
+            if (placeholder) placeholder.style.display = 'flex';
+          }}
+        />
+        {/* Fallback placeholder for broken images */}
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center" style={{ display: 'none' }}>
+          <div className="w-20 h-20 bg-gray-300 rounded-full flex items-center justify-center mb-4">
+            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <p className="text-gray-500 font-medium text-lg mb-1">{carName}</p>
+          <p className="text-gray-400 text-sm">Image unavailable</p>
+        </div>
+        
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={goToPrevious}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              onClick={goToNext}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors z-10"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </>
+        )}
+        
+        {images.length > 1 && (
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className={`w-2 h-2 rounded-full transition-colors ${
+                  index === currentImageIndex ? 'bg-white' : 'bg-white/50'
+                }`}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <StatusBadge />
+    </div>
+  );
+};
+
 const CarDetails = ({ carId }: CarDetailsProps) => {
-  // Static data for second-hand cars
-  const staticCars: Record<string, Car & { description?: string }> = {
-    "smart-1": {
-      id: "smart-1",
-      dbId: null,
-      make: "Smart",
-      model: "#1",
-      weeklyPrice: 30056,
-      available: true,
-      status: "available",
-      isGreatValue: true,
-      fuelType: "Electric",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "AWD",
-      category: "Electric SUV",
-      location: "Brisbane",
-      image: null,
-      description: "Experience the future of mobility with the Smart #1. This all-electric SUV combines premium design with cutting-edge technology. Featuring a spacious interior, advanced driver assistance systems, and impressive range, the Smart #1 is perfect for modern urban living."
-    },
-    "smart-3": {
-      id: "smart-3",
-      dbId: null,
-      make: "Smart",
-      model: "#3",
-      weeklyPrice: 31096,
-      available: true,
-      status: "available",
-      isGreatValue: false,
-      fuelType: "Electric",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "AWD",
-      category: "Electric SUV",
-      location: "Melbourne",
-      image: null,
-      description: "The Smart #3 represents the perfect blend of style and substance. This electric SUV offers exceptional performance, premium comfort, and the latest in automotive technology. With its sleek design and impressive range, it's the ideal choice for those seeking a sustainable luxury driving experience."
-    },
-    "hyundai-venue": {
-      id: "hyundai-venue",
-      dbId: null,
-      make: "Hyundai",
-      model: "Venue",
-      weeklyPrice: 23920,
-      available: true,
-      status: "available",
-      isGreatValue: true,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2023,
-      driveType: "FWD",
-      category: "Compact SUV",
-      location: "Brisbane",
-      image: null,
-      description: "The Hyundai Venue is a stylish and practical compact SUV that's perfect for city living. With its efficient petrol engine, modern safety features, and comfortable interior, it offers excellent value for money. The high driving position and compact dimensions make it ideal for urban navigation."
-    }
-  };
+  // Get the actual car ID from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const actualCarId = urlParams.get('carId') || carId;
+  
+  // Debug logging
+  console.log('CarDetails - carId:', carId, 'actualCarId:', actualCarId, 'URL search:', window.location.search);
 
-  // Get static car data
-  const car = staticCars[carId];
-
-  // Static features data
-  const staticFeatures: Record<string, Feature[]> = {
-    "smart-1": [
-      { id: 1, carId: "smart-1", name: "ABS Brakes", icon: "shield-alt" },
-      { id: 2, carId: "smart-1", name: "Android Auto", icon: "android" },
-      { id: 3, carId: "smart-1", name: "Apple CarPlay", icon: "apple" },
-      { id: 4, carId: "smart-1", name: "360° Camera", icon: "video" },
-      { id: 5, carId: "smart-1", name: "Adaptive Cruise Control", icon: "tachometer-alt" },
-      { id: 6, carId: "smart-1", name: "Heated Seats", icon: "fire" }
-    ],
-    "smart-3": [
-      { id: 1, carId: "smart-3", name: "ABS Brakes", icon: "shield-alt" },
-      { id: 2, carId: "smart-3", name: "Android Auto", icon: "android" },
-      { id: 3, carId: "smart-3", name: "Apple CarPlay", icon: "apple" },
-      { id: 4, carId: "smart-3", name: "360° Camera", icon: "video" },
-      { id: 5, carId: "smart-3", name: "Adaptive Cruise Control", icon: "tachometer-alt" },
-      { id: 6, carId: "smart-3", name: "Panoramic Sunroof", icon: "sun" }
-    ],
-    "hyundai-venue": [
-      { id: 1, carId: "hyundai-venue", name: "ABS Brakes", icon: "shield-alt" },
-      { id: 2, carId: "hyundai-venue", name: "Android Auto", icon: "android" },
-      { id: 3, carId: "hyundai-venue", name: "Apple CarPlay", icon: "apple" },
-      { id: 4, carId: "hyundai-venue", name: "Reversing Camera", icon: "video" },
-      { id: 5, carId: "hyundai-venue", name: "Cruise Control", icon: "tachometer-alt" },
-      { id: 6, carId: "hyundai-venue", name: "Power Mirrors", icon: "adjust" }
-    ]
-  };
-
-  const features = staticFeatures[carId];
-
-  const [selectedPlan, setSelectedPlan] = useState<number | null>(null);
+  // Fetch car data by database ID if available
+  const { data: car, isLoading, error } = useQuery<Car>({
+    queryKey: [`/api/cars/db/${actualCarId}?carType=secondhand`],
+    enabled: !!actualCarId
+  });
 
   useEffect(() => {
     // Add professional CSS animations
     const style = document.createElement('style');
     style.textContent = `
-      @keyframes fade-up {
-        from {
-          opacity: 0;
-          transform: translate3d(0, 40px, 0);
-        }
-        to {
-          opacity: 1;
-          transform: translate3d(0, 0, 0);
-        }
-      }
-
-      @keyframes fade-right {
-        from {
-          opacity: 0;
-          transform: translate3d(-50px, 0, 0);
-        }
-        to {
-          opacity: 1;
-          transform: translate3d(0, 0, 0);
-        }
-      }
-
-      .animate-fade-up {
-        opacity: 0;
-        transform: translate3d(0, 40px, 0);
-        will-change: opacity, transform;
+      .animate-element {
+        will-change: transform, opacity;
         backface-visibility: hidden;
       }
-
-      .animate-fade-right {
-        opacity: 0;
-        transform: translate3d(-50px, 0, 0);
-        will-change: opacity, transform;
-        backface-visibility: hidden;
+      
+      @keyframes professionalFadeUp {
+        0% { 
+          opacity: 0; 
+          transform: translate3d(0, 25px, 0) scale3d(0.98, 0.98, 1); 
+        }
+        100% { 
+          opacity: 1; 
+          transform: translate3d(0, 0, 0) scale3d(1, 1, 1); 
+        }
       }
 
-      .animate-fade-up.animate-in {
-        animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      @keyframes professionalSlideIn {
+        0% { 
+          opacity: 0; 
+          transform: translate3d(-30px, 0, 0) scale3d(0.96, 0.96, 1); 
+        }
+        100% { 
+          opacity: 1; 
+          transform: translate3d(0, 0, 0) scale3d(1, 1, 1); 
+        }
       }
 
-      .animate-fade-right.animate-in {
-        animation: fade-right 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      }
-
-      .animate-fade-up.animate-in,
-      .animate-fade-right.animate-in {
-        will-change: auto;
+      @keyframes professionalFadeRight {
+        0% { 
+          opacity: 0; 
+          transform: translate3d(30px, 0, 0) scale3d(0.96, 0.96, 1); 
+        }
+        100% { 
+          opacity: 1; 
+          transform: translate3d(0, 0, 0) scale3d(1, 1, 1); 
+        }
       }
     `;
     document.head.appendChild(style);
 
-    // Animation observer
-    const animationObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-          // Clean up performance properties after animation
-          setTimeout(() => {
-            (entry.target as HTMLElement).style.willChange = 'auto';
-          }, 1000);
-        }
-      });
-    }, {
-      threshold: 0.15,
-      rootMargin: '-50px'
-    });
-
-    // Observe all elements with animation classes
-    const animatedElements = document.querySelectorAll('.animate-fade-up, .animate-fade-right');
-    animatedElements.forEach(element => animationObserver.observe(element));
-
     return () => {
-      animationObserver.disconnect();
       document.head.removeChild(style);
     };
   }, []);
 
-  if (!car) {
-    return <div className="text-center py-10">Car not found</div>;
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center pt-32">
+      <div className="text-center opacity-0 animate-[professionalFadeUp_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]">
+        <div className="text-lg text-gray-600">Loading car details...</div>
+      </div>
+    </div>;
   }
 
-  return (
-    <>
-      {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          {/* Image Section */}
-          <div className="animate-fade-up relative rounded-xl overflow-hidden" style={{ animationDelay: '200ms' }}>
-            <img 
-              src={car.image || getCarImageUrl(car.id)}
-              alt={`${car.make} ${car.model}`}
-              className="w-full aspect-[16/10] object-cover"
-              onError={(e) => {
-                e.currentTarget.src = "/placeholder.jpg";
-              }}
-            />
-            <span className={`absolute top-4 left-4 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              car.status?.toLowerCase() === 'available' || car.status?.toLowerCase() === 'active'
-                ? 'bg-green-500 text-white'
-                : 'bg-red-500 text-white'
-            }`}>
-              {car.status 
-                ? car.status.charAt(0).toUpperCase() + car.status.slice(1)
-                : (car.available ? 'Available' : 'Unavailable')}
-            </span>
-            
-            {/* Car Title */}
-            <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-4">
-              {car.make} {car.model} {car.year}
-            </h1>
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center pt-32">
+      <div className="text-center opacity-0 animate-[professionalFadeUp_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]">
+        <div className="text-lg text-red-600">Error: {String(error)}</div>
+      </div>
+    </div>;
+  }
 
-            {/* Vehicle Description */}
-            <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-3">Vehicle Description</h2>
-              <p className="text-gray-600 leading-relaxed">
-                {car.description || "No description available."}
-              </p>
-            </div>
+  if (!car) {
+    return <div className="min-h-screen flex items-center justify-center pt-32">
+      <div className="text-center opacity-0 animate-[professionalFadeUp_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]">
+        <div className="text-lg text-gray-600">Car not found</div>
+      </div>
+    </div>;
+  }
 
-            {/* Vehicle Specifications */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Vehicle Specifications</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm text-gray-500">Body Type</p>
-                    <p className="font-medium text-gray-900">{car.bodyType}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Fuel Type</p>
-                    <p className="font-medium text-gray-900">{car.fuelType}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Drive Type</p>
-                    <p className="font-medium text-gray-900">{car.driveType}</p>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm text-gray-500">Year</p>
-                    <p className="font-medium text-gray-900">{car.year}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Seats</p>
-                    <p className="font-medium text-gray-900">{car.seats}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">Category</p>
-                    <p className="font-medium text-gray-900">{car.category}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+  // Use actual price if available (for second-hand cars), otherwise calculate from weekly price
+  const annualPrice = (car as any).actualPrice || (car.weeklyPrice ? car.weeklyPrice * 52 : 0);
 
-          {/* Details Section */}
-          <div className="flex flex-col h-full">
-            <div className="mb-6">
-              <div className="animate-fade-right flex items-center gap-3 mb-2" style={{ animationDelay: '300ms' }}>
-                <span className="text-sm text-gray-600">{car.location}</span>
-                <span className="text-sm text-gray-600">•</span>
-                <span className="text-sm text-gray-600">{car.category}</span>
-              </div>
-              <h1 className="animate-fade-up text-3xl md:text-4xl font-bold text-gray-900 mb-4" style={{ animationDelay: '400ms' }}>
-                {car.year} {car.make} {car.model}
+  try {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Hero Section */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            {/* Image + Title Section */}
+            <div className="opacity-0 animate-[professionalSlideIn_0.8s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]" style={{ animationDelay: '200ms' }}>
+              <ImageCarousel images={car.images || []} carName={`${car.make} ${car.model}`} status={car.status} available={car.available} />
+              
+              {/* Car Title */}
+              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                {car.model}
               </h1>
-              <p className="animate-fade-right text-gray-600 text-lg leading-relaxed" style={{ animationDelay: '500ms' }}>
-                {car.description || `Experience luxury and performance with the ${car.year} ${car.make} ${car.model}. 
-                This premium vehicle combines sophisticated design with cutting-edge technology, 
-                offering an exceptional driving experience.`}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Details Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-2">
-              {/* Car Description */}
-              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 mb-8" style={{ animationDelay: '300ms' }}>
-                <h2 className="text-2xl font-bold mb-6">Vehicle Description</h2>
-                <p className="animate-fade-right text-gray-600 leading-relaxed" style={{ animationDelay: '400ms' }}>
-                  {car.description || `Experience luxury and performance with the ${car.year} ${car.make} ${car.model}. 
-                  This premium vehicle combines sophisticated design with cutting-edge technology, 
-                  offering an exceptional driving experience. Perfect for those who demand the best 
-                  in automotive excellence.`}
+              {/* Vehicle Description */}
+              <div className="bg-white rounded-xl p-6 mb-6 shadow-sm">
+                <h2 className="text-xl font-semibold text-gray-900 mb-3">Vehicle Description</h2>
+                <p className="text-gray-600 leading-relaxed">
+                  {car.description || "No description available."}
                 </p>
               </div>
 
-              {/* Car Specifications */}
-              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 mb-8" style={{ animationDelay: '400ms' }}>
-                <h2 className="text-2xl font-bold mb-6">Vehicle Specifications</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '500ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Model Category</p>
-                    <p className="font-medium">{car.category}</p>
-                  </div>
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '600ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Body Type</p>
-                    <p className="font-medium">{car.bodyType}</p>
-                  </div>
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '700ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Drive Type</p>
-                    <p className="font-medium">{car.driveType}</p>
-                  </div>
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '800ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Fuel Type</p>
-                    <p className="font-medium">{car.fuelType}</p>
-                  </div>
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '900ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Seats</p>
-                    <p className="font-medium">{car.seats} seats</p>
-                  </div>
-                  <div className="animate-fade-right bg-gray-50 p-4 rounded-lg" style={{ animationDelay: '1000ms' }}>
-                    <p className="text-sm text-gray-500 mb-1">Location</p>
-                    <p className="font-medium">{car.location}</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Features */}
-              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8" style={{ animationDelay: '500ms' }}>
-                <h2 className="text-2xl font-bold mb-6">Vehicle Features</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {features?.map((feature, index) => (
-                    <div key={feature.id} className="animate-fade-right flex items-center text-gray-700" style={{ animationDelay: `${600 + (index * 100)}ms` }}>
-                      <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mr-4">
-                        <i className={`fas fa-${feature.icon} text-success`}></i>
-                      </div>
-                      <span>{feature.name}</span>
+              {/* Vehicle Specifications */}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Vehicle Specifications</h2>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-500">Year</p>
+                      <p className="font-medium text-gray-900">{car.year || 'Not specified'}</p>
                     </div>
-                  ))}
+                    <div>
+                      <p className="text-sm text-gray-500">Fuel Type</p>
+                      <p className="font-medium text-gray-900">{car.fuelType || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Seats</p>
+                      <p className="font-medium text-gray-900">{car.seats ? `${car.seats} seats` : 'Not specified'}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-gray-500">Body Type</p>
+                      <p className="font-medium text-gray-900">{car.bodyType || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Location</p>
+                      <p className="font-medium text-gray-900">{car.location || 'Not specified'}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Mileage</p>
+                      <p className="font-medium text-gray-900">{car.mileage !== undefined && car.mileage > 0 ? `${car.mileage.toLocaleString()} km` : 'Not specified'}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Sidebar - Price and Contact */}
-            <div className="lg:col-span-1">
-              <div className="animate-fade-up bg-white rounded-xl shadow-sm p-8 sticky top-8" style={{ animationDelay: '600ms' }}>
+            {/* Purchase Details Section */}
+            <div className="opacity-0 animate-[professionalFadeRight_0.9s_cubic-bezier(0.25,0.46,0.45,0.94)_forwards]" style={{ animationDelay: '400ms' }}>
+              <div className="bg-white rounded-xl shadow-sm p-8">
                 <h2 className="text-2xl font-bold mb-6">Purchase Details</h2>
+                
+                {/* Price Display */}
                 <div className="mb-6">
-                  <p className="animate-fade-right text-sm text-gray-600 mb-2" style={{ animationDelay: '700ms' }}>Price</p>
-                  <div className="animate-fade-right text-3xl font-bold text-primary" style={{ animationDelay: '800ms' }}>
-                    ${(car.weeklyPrice * 52).toLocaleString()}
+                  <p className="text-sm text-gray-600 mb-2">Price</p>
+                  <div className="text-3xl font-bold text-primary mb-2">
+                    ${annualPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </div>
-                  <p className="animate-fade-right text-sm text-gray-500 mt-1" style={{ animationDelay: '900ms' }}>Drive away price</p>
+                  <p className="text-sm text-gray-500">Drive away price</p>
                 </div>
 
+                {/* Additional Details */}
+                {(car.mileage || car.registrationNumber) && (
+                  <div className="mb-6 space-y-3">
+                    {car.mileage && (
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Mileage:</span>
+                        <span className="font-medium">{car.mileage?.toLocaleString()} km</span>
+                      </div>
+                    )}
+                   
+                  </div>
+                )}
+
+                {/* Action Buttons */}
                 <div className="space-y-4">
                   <Link 
-                    href="/contact"
-                    className="animate-fade-up w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-primary hover:bg-primary/90 text-white transition-all"
-                    style={{ animationDelay: '1000ms' }}
+                     href="/contact"
+                    className="w-full inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium bg-primary hover:bg-primary/90 text-white transition-all"
                   >
                     <i className="fas fa-envelope mr-2"></i>
-                    Make an Enquiry
+                    Contact Us
                   </Link>
                   
-                  {/* Call to Action */}
-                  <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                    <Link href={`/enquiry?carId=${car.id}&make=${car.make}&model=${car.model}&type=secondhand`} className="inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-                      Make an Enquiry
-                    </Link>
-                  </div>
+
+                </div>
+
+                {/* Additional Info */}
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                  <h3 className="font-semibold mb-2">What's Included:</h3>
+                  <ul className="text-sm text-gray-600 space-y-1">
+                    <li>• Full vehicle inspection</li>
+                    <li>• Roadworthy certificate</li>
+                    <li>• Registration transfer assistance</li>
+                    <li>• Comprehensive warranty options</li>
+                  </ul>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </>
-  );
+        </section>
+      </div>
+    );
+  } catch (error) {
+    console.error('Error rendering CarDetails:', error);
+    return (
+      <div className="text-center py-10">
+        <h1>Error loading car details</h1>
+        <p>Please try again later.</p>
+      </div>
+    );
+  }
 };
 
 export default CarDetails;

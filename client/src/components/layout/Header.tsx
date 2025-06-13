@@ -32,7 +32,7 @@ const Header = () => {
           {/* Logo */}
           <div className={`flex-shrink-0 ${styles.navItem} ${styles.logo}`}>
             <Link href="/" className="group">
-              <img 
+              <img
                 src="/header_logo.png"
                 alt="Faith Auto"
                 className="h-16 w-auto transform duration-300 group-hover:scale-110"
@@ -42,12 +42,13 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/second-hand-cars" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
+              <span className={styles.desktopMenuText}>Car Listings</span>
+            </Link>
             <Link href="/subscription" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
               <span className={styles.desktopMenuText}>Car Subscription</span>
             </Link>
-            <Link href="/second-hand-cars" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
-              <span className={styles.desktopMenuText}>Stock List</span>
-            </Link>
+
             <Link href="/about" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
               <span className={styles.desktopMenuText}>About Us</span>
             </Link>
@@ -86,18 +87,16 @@ const Header = () => {
 
           {/* Mobile menu */}
           <div
-            className={`${
-              isMobileMenuOpen ? 'block' : 'hidden'
-            } md:hidden absolute top-full left-0 right-0 bg-gray-800 bg-opacity-95 backdrop-blur-sm ${
-              isClosing ? styles.slideOut : styles.slideIn
-            }`}
+            className={`${isMobileMenuOpen ? 'block' : 'hidden'
+              } md:hidden absolute top-full left-0 right-0 bg-gray-800 bg-opacity-95 backdrop-blur-sm ${isClosing ? styles.slideOut : styles.slideIn
+              }`}
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
               <Link href="/subscription" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
                 <span className={styles.mobileMenuText}>Car Subscription</span>
               </Link>
               <Link href="/second-hand-cars" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
-                <span className={styles.mobileMenuText}>Stock List</span>
+                <span className={styles.mobileMenuText}>Car Listings</span>
               </Link>
               <Link href="/about" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
                 <span className={styles.mobileMenuText}>About Us</span>

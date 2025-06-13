@@ -113,17 +113,17 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Faith Auto - Car Subscription & Quality Used Cars</title>
-        <meta name="description" content="Experience the freedom of car subscription or find your perfect pre-owned vehicle. Flexible terms, all-inclusive packages, and quality assured used cars." />
+        <title>Faith Auto - Car Subscription & Quality  cars</title>
+        <meta name="description" content="Experience the freedom of car subscription or find your perfect pre-owned vehicle. Flexible terms, all-inclusive packages, and quality assured  cars." />
       </Helmet>
 
       <Hero
         title="Your Journey, Your Choice"
         subtitle="Subscribe to a flexible car experience or find your perfect pre-owned vehicle. Quality assured, hassle-free, and tailored to your lifestyle."
-        buttonText="Explore Subscription"
-        buttonLink="/subscription"
-        secondaryButtonText="View Used Cars"
-        secondaryButtonLink="/second-hand-cars"
+        buttonText="View Car Listing"
+        buttonLink="/second-hand-cars"
+        secondaryButtonText="Explore Subscription"
+        secondaryButtonLink="/subscription"
       />
 
       {/* Featured Categories Section */}
@@ -168,7 +168,7 @@ const Home = () => {
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
                 <i className="fas fa-car text-primary text-2xl"></i>
               </div>
-              <h3 className="text-2xl font-bold mb-4">Quality Used Cars</h3>
+              <h3 className="text-2xl font-bold mb-4">Quality  cars</h3>
               <ul className="space-y-3 mb-6 text-gray-600">
                 <li className="animate-fade-right flex items-center" style={{ animationDelay: '500ms' }}>
                   <i className="fas fa-check text-primary mr-2"></i>
@@ -280,7 +280,7 @@ const Home = () => {
                 <i className="fas fa-phone text-primary text-xl"></i>
               </div>
               <h3 className="text-lg font-semibold mb-2">Phone</h3>
-              <p className="animate-fade-right text-gray-600" style={{ animationDelay: '500ms' }}>1800 7874 227</p>
+              <p className="animate-fade-right text-gray-600" style={{ animationDelay: '500ms' }}>1800 316 965</p>
             </div>
             <div className="animate-fade-up text-center" style={{ animationDelay: '500ms' }}>
               <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">

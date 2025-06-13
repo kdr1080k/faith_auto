@@ -5,7 +5,23 @@ const ScrollToTop = () => {
   const [location] = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Immediate scroll to top for route changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+
+    // Also ensure scroll position is reset after any async content loads
+    const timeoutId = setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'instant'
+      });
+    }, 100);
+
+    return () => clearTimeout(timeoutId);
   }, [location]);
 
   return null;

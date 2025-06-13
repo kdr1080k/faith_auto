@@ -22,6 +22,7 @@ interface FormData {
 const Enquiry: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [, setLocation] = useLocation();
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     purpose: '',
     employmentStatus: '',
@@ -154,10 +155,43 @@ const Enquiry: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to your backend
-    setLocation('/thank-you');
+  const handleSubmit = async () => {
+    const missingFields = [];
+    if (!formData.firstName) missingFields.push("First Name");
+    if (!formData.lastName) missingFields.push("Last Name");
+    if (!formData.email) missingFields.push("Email");
+    if (!formData.phone) missingFields.push("Phone");
+    if (!formData.agreeToPrivacy) missingFields.push("Privacy Agreement");
+    
+    if (missingFields.length > 0) {
+      setShowValidationErrors(true);
+      return;
+    }
+    
+    try {
+      const response = await fetch('/api/enquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log('Secure form submission successful:', result.message);
+        setLocation('/thank-you');
+      } else {
+        console.error('Form submission failed:', result.message);
+        // Show error to user - you might want to add a toast notification here
+        setShowValidationErrors(true);
+      }
+    } catch (error) {
+      console.error("Error submitting enquiry form:", error);
+      // Show error to user - you might want to add a toast notification here
+      setShowValidationErrors(true);
+    }
   };
 
   const renderProgressDots = () => (
@@ -504,18 +538,13 @@ const Enquiry: React.FC = () => {
                 />
               </div>
               
-              <div className="relative">
-                <svg className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <Input
-                  placeholder="Email address"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => updateFormData('email', e.target.value)}
-                  className="pl-12 p-4 border-2 rounded-lg"
-                />
-              </div>
+              <Input
+                placeholder="Email address"
+                type="email"
+                value={formData.email}
+                onChange={(e) => updateFormData('email', e.target.value)}
+                className="p-4 border-2 rounded-lg"
+              />
               
               <Input
                 placeholder="+61 000 000 000"
@@ -536,8 +565,8 @@ const Enquiry: React.FC = () => {
                 </p>
               </div>
               
-              {/* Show missing fields only if there are actual missing fields */}
-              {(() => {
+              {/* Show missing fields only if validation errors are enabled and there are missing fields */}
+              {showValidationErrors && (() => {
                 const missingFields = [];
                 if (!formData.firstName) missingFields.push("First Name");
                 if (!formData.lastName) missingFields.push("Last Name");
@@ -554,8 +583,7 @@ const Enquiry: React.FC = () => {
               
               <Button 
                 onClick={handleSubmit}
-                disabled={!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.agreeToPrivacy}
-                className="w-full bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-full text-lg disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="w-full bg-gray-800 hover:bg-gray-900 text-white p-4 rounded-full text-lg"
               >
                 Submit
                 <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -572,7 +600,7 @@ const Enquiry: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 pt-32 pb-8">
       <div className="container mx-auto px-4">
         {currentStep > 0 && (
           <div className="mb-8">

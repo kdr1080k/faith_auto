@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Car } from "@shared/schema";
 import CarCard from "@/components/cars/CarCard";
+import { useQuery } from "@tanstack/react-query";
 
 const SubscriptionCarsSection = () => {
   // Filter states
@@ -39,163 +40,46 @@ const SubscriptionCarsSection = () => {
     };
   }, []);
 
-  // Subscription car listings (following Car schema)
-  const subscriptionCars: Car[] = [
-    {
-      id: "sub-toyota-rav4",
-      make: "Toyota",
-      model: "RAV4",
-      weeklyPrice: 29900,
-      available: true,
-      isGreatValue: true,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Hybrid SUV",
-      location: "Brisbane"
+  // Fetch subscription cars from Faith Auto database
+  const { data: allCars = [], isLoading } = useQuery<Car[]>({
+    queryKey: ['/api/cars', 'subscription', location, bodyType, fuelType, seats],
+    queryFn: async () => {
+      const response = await fetch('/api/cars?category=subscription');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
     },
-    {
-      id: "sub-bmw-x5",
-      make: "BMW",
-      model: "X5",
-      weeklyPrice: 89900,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 7,
-      year: 2024,
-      driveType: "AWD",
-      category: "Luxury SUV",
-      location: "Melbourne"
-    },
-    {
-      id: "sub-hyundai-tucson",
-      make: "Hyundai",
-      model: "Tucson",
-      weeklyPrice: 45900,
-      available: false,
-      isGreatValue: true,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Hybrid SUV",
-      location: "Sydney"
-    },
-    {
-      id: "sub-tesla-model3",
-      make: "Tesla",
-      model: "Model 3",
-      weeklyPrice: 65900,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Electric",
-      bodyType: "Sedan",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Electric Sedan",
-      location: "Brisbane"
-    },
-    {
-      id: "sub-mercedes-gle",
-      make: "Mercedes-Benz",
-      model: "GLE",
-      weeklyPrice: 92900,
-      available: false,
-      isGreatValue: false,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 7,
-      year: 2024,
-      driveType: "AWD",
-      category: "Luxury Hybrid SUV",
-      location: "Melbourne"
-    },
-    {
-      id: "sub-volkswagen-tiguan",
-      make: "Volkswagen",
-      model: "Tiguan",
-      weeklyPrice: 52900,
-      available: true,
-      isGreatValue: true,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Compact SUV",
-      location: "Adelaide"
-    },
-    {
-      id: "sub-audi-q7",
-      make: "Audi",
-      model: "Q7",
-      weeklyPrice: 99900,
-      available: true,
-      isGreatValue: false,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 7,
-      year: 2024,
-      driveType: "AWD",
-      category: "Luxury Hybrid SUV",
-      location: "Perth"
-    },
-    {
-      id: "sub-mazda-cx5",
-      make: "Mazda",
-      model: "CX-5",
-      weeklyPrice: 48900,
-      available: true,
-      isGreatValue: true,
-      fuelType: "Petrol",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Compact SUV",
-      location: "Brisbane"
-    },
-    {
-      id: "sub-honda-crv",
-      make: "Honda",
-      model: "CR-V",
-      weeklyPrice: 46900,
-      available: false,
-      isGreatValue: true,
-      fuelType: "Hybrid",
-      bodyType: "SUV",
-      seats: 5,
-      year: 2024,
-      driveType: "AWD",
-      category: "Hybrid SUV",
-      location: "Sydney"
-    }
-  ];
+    staleTime: 30000, // Consider data stale after 30 seconds
+    gcTime: 60000, // Keep in cache for 1 minute
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    refetchOnMount: true // Always refetch when component mounts
+  });
 
   // Filter cars based on selected criteria
-  const filteredCars = subscriptionCars.filter(car => {
+  const filteredCars = allCars.filter((car: Car) => {
     if (location !== "All" && car.location !== location) return false;
     if (bodyType !== "All" && car.bodyType !== bodyType) return false;
     if (fuelType !== "All" && car.fuelType !== fuelType) return false;
-    if (seats !== "All" && car.seats !== parseInt(seats)) return false;
+    if (seats !== "All") {
+      if (seats === "7+") {
+        if (car.seats < 7) return false;
+      } else {
+        if (car.seats.toString() !== seats) return false;
+      }
+    }
     return true;
   });
 
   // Group filtered cars into rows of 3 for animation
-  const rows = filteredCars.reduce((acc, car, index) => {
+  const rows = filteredCars.reduce((acc: Car[][], car: Car, index: number) => {
     const rowIndex = Math.floor(index / 3);
     if (!acc[rowIndex]) {
       acc[rowIndex] = [];
     }
     acc[rowIndex].push(car);
     return acc;
-  }, [] as typeof filteredCars[]);
+  }, [] as Car[][]);
 
   return (
     <>
@@ -286,15 +170,21 @@ const SubscriptionCarsSection = () => {
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">Our Subscription Vehicles</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {filteredCars.length} subscription vehicles found. All-inclusive weekly pricing with no hidden fees.
+              {isLoading ? 'Loading...' : `${filteredCars.length} subscription vehicles available`}. All-inclusive weekly pricing with no hidden fees.
             </p>
           </div>
 
-          {filteredCars.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="bg-gray-100 rounded-lg h-64 animate-pulse"></div>
+              ))}
+            </div>
+          ) : filteredCars.length > 0 ? (
             <div className="space-y-8">
-              {rows.map((row, rowIndex) => (
+              {rows.map((row: Car[], rowIndex: number) => (
                 <div key={rowIndex} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {row.map((car, carIndex) => (
+                  {row.map((car: Car) => (
                     <CarCard 
                       key={car.id} 
                       car={car} 
@@ -302,6 +192,7 @@ const SubscriptionCarsSection = () => {
                       size="default"
                       isVisible={isInView}
                       animationDelay={rowIndex * 400}
+                      customLink={`/subscription-car/example?carId=${car.dbId || car.id}`}
                     />
                   ))}
                 </div>
