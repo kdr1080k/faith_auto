@@ -14,18 +14,35 @@ export class DbStorage implements IStorage {
   private pool;
 
   constructor() {
-    // Use the provided database configuration
-    this.pool = new Pool({
-      user: 'melbournerushcarrental',
-      password: 'rushrcm@250401',
-      host: 'all-data-for-sql.postgres.database.azure.com',
-      database: 'rush-website-and-management-system',
-      port: 5432,
+    // Get database configuration from environment variables
+    const dbConfig = {
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      host: process.env.DB_HOST,
+      database: process.env.DB_NAME,
+      port: parseInt(process.env.DB_PORT || '5432'),
       ssl: {
-        rejectUnauthorized: true
+        rejectUnauthorized: process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false'
       }
-    });
+    };
+
+    // Validate required environment variables
+    const requiredEnvVars = ['DB_USER', 'DB_PASSWORD', 'DB_HOST', 'DB_NAME'];
+    const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+    
+    if (missingVars.length > 0) {
+      throw new Error(`Missing required environment variables: ${missingVars.join(', ')}. Please check your .env file.`);
+    }
+
+    // Create database connection pool
+    this.pool = new Pool(dbConfig);
     this.db = drizzle(this.pool);
+    
+    // Test the connection
+    this.pool.on('error', (err) => {
+      console.error('Unexpected error on idle client', err);
+      process.exit(-1);
+    });
   }
 
   // User methods
