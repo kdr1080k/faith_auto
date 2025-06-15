@@ -22,10 +22,12 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
 
-    - name: Install dependencies
+    - name: Clean and install dependencies
       run: |
+        echo "Cleaning previous installations..."
+        rm -rf node_modules package-lock.json
         echo "Installing dependencies..."
-        npm ci --include=optional --no-audit --no-fund --prefer-offline
+        npm install --include=optional --no-audit --no-fund
         echo "Dependencies installed successfully"
 
     - name: Build application
@@ -47,14 +49,33 @@ jobs:
           echo "❌ Frontend build failed: dist/public directory not found"
           exit 1
         fi
+        echo "✅ Build verification successful"
 
     - name: Create deployment package
       run: |
         echo "Creating deployment package..."
+        # Copy necessary files for deployment
         cp package.json dist/
         cp web.config dist/
         cp startup.sh dist/
         chmod +x dist/startup.sh
+        
+        # Create a minimal package.json for production
+        cat > dist/package.json << EOF
+        {
+          "name": "rest-express",
+          "version": "1.0.0",
+          "type": "module",
+          "scripts": {
+            "start": "node index.js"
+          },
+          "engines": {
+            "node": ">=18.0.0"
+          }
+        }
+        EOF
+        
+        echo "Deployment package created"
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v2
