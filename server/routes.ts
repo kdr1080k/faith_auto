@@ -123,6 +123,18 @@ function checkRateLimit(ip: string, maxRequests = 5, windowMs = 15 * 60 * 1000):
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint
+  app.get("/api/health", (req: Request, res: Response) => {
+    res.json({
+      status: "healthy",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || "development",
+      port: process.env.PORT || "8000",
+      version: "1.0.0"
+    });
+  });
+
   // Get all cars with optional filters
   app.get("/api/cars", async (req: Request, res: Response) => {
     try {

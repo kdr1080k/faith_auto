@@ -60,8 +60,12 @@ jobs:
         cp startup.sh dist/
         chmod +x dist/startup.sh
         
+        # Install production dependencies in dist folder
+        cd dist
+        npm ci --omit=dev --omit=optional
+        
         # Create a minimal package.json for production
-        cat > dist/package.json << EOF
+        cat > package.json << EOF
         {
           "name": "rest-express",
           "version": "1.0.0",
@@ -75,6 +79,7 @@ jobs:
         }
         EOF
         
+        cd ..
         echo "Deployment package created"
 
     - name: Deploy to Azure App Service
