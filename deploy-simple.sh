@@ -1,15 +1,14 @@
 #!/bin/bash
 
-echo "🚀 Starting deployment process..."
+echo "🚀 Starting simple deployment process..."
 
 # Clean previous builds
 echo "🧹 Cleaning previous builds..."
 rm -rf dist/
-rm -rf node_modules/
 
-# Install dependencies
-echo "📦 Installing dependencies..."
-npm ci --omit=optional
+# Install only production dependencies
+echo "📦 Installing production dependencies..."
+npm ci --omit=dev --omit=optional --no-audit --no-fund --prefer-offline
 
 # Build the application
 echo "🔨 Building application..."

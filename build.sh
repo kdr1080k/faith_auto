@@ -1,18 +1,23 @@
 #!/bin/bash
 
-echo "🚀 Starting deployment process..."
+echo "🔧 Starting build process..."
 
-# Clean previous builds
+# Clean previous builds and dependencies
 echo "🧹 Cleaning previous builds..."
 rm -rf dist/
 rm -rf node_modules/
+rm -f package-lock.json
 
-# Install dependencies
+# Install dependencies with optional dependencies included
 echo "📦 Installing dependencies..."
-npm ci --omit=optional
+npm ci --include=optional
+
+# Rebuild native dependencies
+echo "🔨 Rebuilding native dependencies..."
+npm rebuild
 
 # Build the application
-echo "🔨 Building application..."
+echo "🏗️ Building application..."
 npm run build
 
 # Verify build output
@@ -37,4 +42,4 @@ echo "📁 Build output:"
 ls -la dist/
 ls -la dist/public/
 
-echo "🎉 Deployment package ready!" 
+echo "🎉 Build package ready!" 

@@ -25,26 +25,36 @@ jobs:
     - name: Install dependencies
       run: |
         echo "Installing dependencies..."
-        npm ci
+        npm ci --include=optional --no-audit --no-fund --prefer-offline
         echo "Dependencies installed successfully"
 
-    - name: Build frontend
+    - name: Build application
       run: |
-        echo "Building frontend..."
-        npm run build:frontend
-        echo "Frontend build completed"
+        echo "Building application..."
+        npm run build
+        echo "Build completed"
 
-    - name: Build backend
+    - name: Verify build output
       run: |
-        echo "Building backend..."
-        npm run build:backend
-        echo "Backend build completed"
-
-    - name: List build output
-      run: |
-        echo "Checking build output..."
+        echo "Verifying build output..."
         ls -la dist/
         ls -la dist/public/
+        if [ ! -f "dist/index.js" ]; then
+          echo "❌ Backend build failed: dist/index.js not found"
+          exit 1
+        fi
+        if [ ! -d "dist/public" ]; then
+          echo "❌ Frontend build failed: dist/public directory not found"
+          exit 1
+        fi
+
+    - name: Create deployment package
+      run: |
+        echo "Creating deployment package..."
+        cp package.json dist/
+        cp web.config dist/
+        cp startup.sh dist/
+        chmod +x dist/startup.sh
 
     - name: Deploy to Azure App Service
       uses: azure/webapps-deploy@v2

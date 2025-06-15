@@ -6,7 +6,8 @@ import path from "path";
 export default defineConfig(({ command }) => ({
   plugins: [react()],
   define: {
-    'process.env': process.env
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env.VITE_APP_TITLE': JSON.stringify(process.env.VITE_APP_TITLE),
   },
   resolve: {
     alias: {
@@ -19,11 +20,21 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    sourcemap: command === 'serve',
-    minify: command === 'build',
+    sourcemap: false,
+    minify: 'esbuild',
     target: 'es2015',
     cssTarget: 'chrome61',
     assetsDir: 'assets',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-button'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    reportCompressedSize: false
   },
   server: {
     port: 5173,
@@ -38,9 +49,11 @@ export default defineConfig(({ command }) => ({
     strictPort: true,
   },
   publicDir: 'public',
-  // Serve attached_assets directory
   static: {
     '/attached_assets': 'attached_assets',
   },
   assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
+  optimizeDeps: {
+    include: ['react', 'react-dom']
+  }
 }));

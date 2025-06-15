@@ -11,7 +11,8 @@
     "dev": "concurrently \"npm:dev:frontend\" \"npm:dev:backend\"",
     "dev:frontend": "vite",
     "dev:backend": "tsx watch server/index.ts",
-    "build": "npm run build:frontend && npm run build:backend",
+    "build": "npm run build:fix-rollup && npm run build:frontend && npm run build:backend",
+    "build:fix-rollup": "npm install @rollup/rollup-linux-x64-gnu@4.21.1 --no-save || true",
     "build:frontend": "vite build",
     "build:backend": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "node dist/index.js",
@@ -105,6 +106,7 @@
     "zod-validation-error": "^3.4.0"
   },
   "devDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.21.1",
     "@types/connect-pg-simple": "^7.0.3",
     "@types/cors": "2.8.19",
     "@types/express": "4.17.21",
