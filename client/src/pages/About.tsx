@@ -482,7 +482,7 @@ const About: React.FC = () => {
                   data-animation="fade-up"
                   data-delay="400"
                 >
-                  Make an Enquiry
+                  Contact Us
                 </Button>
               </Link>
             </div>
