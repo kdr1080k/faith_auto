@@ -1,45 +1,26 @@
 #!/bin/bash
-echo "=== Faith Auto Application Startup ==="
-echo "Timestamp: $(date)"
-echo "Working Directory: $(pwd)"
-echo "Node Version: $(node --version)"
-echo "Environment: ${NODE_ENV:-development}"
-echo "Azure Port: $PORT"
-echo "Process ID: $$"
+echo "Starting Faith Auto app..."
+echo "Node version: $(node --version)"
+echo "Current directory: $(pwd)"
+echo "PORT: $PORT"
 
-cd /home/site/wwwroot
+# Set required environment variables
 export NODE_ENV=production
+export PORT=${PORT:-8080}
 
-# Azure assigns the port via environment variable
-if [ -z "$PORT" ]; then
-    export PORT=8080
-    echo "Warning: No PORT environment variable set, using default 8080"
-else
-    echo "Using Azure assigned port: $PORT"
-fi
+# Change to the correct directory
+cd /home/site/wwwroot
 
-echo "=== Checking build files ==="
+# Check if the app file exists
 if [ -f "dist/index.js" ]; then
-    echo "✅ Backend build found: dist/index.js"
+    echo "Found app file: dist/index.js"
+    echo "Starting the application on port $PORT"
+    node dist/index.js
 else
-    echo "❌ Backend build not found: dist/index.js"
-    ls -la dist/ || echo "dist directory not found"
+    echo "ERROR: dist/index.js not found!"
+    echo "Contents of current directory:"
+    ls -la
+    echo "Contents of dist directory:"
+    ls -la dist/ 2>/dev/null || echo "dist directory not found"
     exit 1
-fi
-
-if [ -d "dist/public" ]; then
-    echo "✅ Frontend build found: dist/public"
-    echo "Frontend files: $(ls -la dist/public/ | wc -l) items"
-else
-    echo "❌ Frontend build not found: dist/public"
-    ls -la dist/ || echo "dist directory not found"
-    exit 1
-fi
-
-echo "=== Starting application ==="
-echo "Application will be available on port: $PORT"
-echo "Health check will be at: /api/health"
-echo "Starting Node.js process..."
-
-# Start the application
-exec node dist/index.js 
+fi 

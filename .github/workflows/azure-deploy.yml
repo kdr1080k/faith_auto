@@ -54,37 +54,30 @@ jobs:
     - name: Create deployment package
       run: |
         echo "Creating deployment package..."
+        
         # Copy necessary files for deployment
         cp package.json dist/
         cp web.config dist/
         cp startup.sh dist/
         chmod +x dist/startup.sh
         
-        # Install production dependencies in dist folder
-        cd dist
-        npm ci --omit=dev --omit=optional
+        # Copy production dependencies
+        cp -r node_modules dist/
         
-        # Create a minimal package.json for production
-        cat > package.json << EOF
-        {
-          "name": "rest-express",
-          "version": "1.0.0",
-          "type": "module",
-          "scripts": {
-            "start": "node index.js"
-          },
-          "engines": {
-            "node": ">=18.0.0"
-          }
-        }
-        EOF
+        # Verify the deployment package
+        echo "Checking dist contents:"
+        ls -la dist/
+        echo "Checking if index.js exists:"
+        ls -la dist/index.js
+        echo "Checking if public folder exists:"
+        ls -la dist/public/
         
-        cd ..
         echo "Deployment package created"
 
     - name: Deploy to Azure App Service
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3
       with:
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ./dist 
+        package: ./dist
+        clean: true 
