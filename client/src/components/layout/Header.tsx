@@ -42,7 +42,7 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/second-hand-cars" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
+            <Link href="/car-listing" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
               <span className={styles.desktopMenuText}>Car Listings</span>
             </Link>
             <Link href="/subscription" className="text-white hover:text-gray-200 px-2 py-4 text-sm font-medium">
@@ -95,7 +95,7 @@ const Header = () => {
               <Link href="/subscription" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
                 <span className={styles.mobileMenuText}>Car Subscription</span>
               </Link>
-              <Link href="/second-hand-cars" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
+              <Link href="/car-listing" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">
                 <span className={styles.mobileMenuText}>Car Listings</span>
               </Link>
               <Link href="/about" className="block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-white/10">

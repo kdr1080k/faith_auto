@@ -121,7 +121,7 @@ const Home = () => {
         title="Your Journey, Your Choice"
         subtitle="Subscribe to a flexible car experience or find your perfect pre-owned vehicle. Quality assured, hassle-free, and tailored to your lifestyle."
         buttonText="View Car Listing"
-        buttonLink="/second-hand-cars"
+        buttonLink="/car-listing"
         secondaryButtonText="Explore Subscription"
         secondaryButtonLink="/subscription"
       />
@@ -187,7 +187,7 @@ const Home = () => {
                   High quality vehicles
                 </li>
               </ul>
-              <Link href="/second-hand-cars">
+              <Link href="/car-listing">
                 <Button className="animate-fade-up w-full text-white transform transition-transform hover:scale-105" style={{ animationDelay: '900ms' }}>
                   View Vehicles
                 </Button>
