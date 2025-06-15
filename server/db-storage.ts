@@ -14,6 +14,18 @@ export class DbStorage implements IStorage {
   private pool;
 
   constructor() {
+    // Debug environment variables
+    console.log('=== ENVIRONMENT VARIABLE DEBUG ===');
+    console.log('NODE_ENV:', process.env.NODE_ENV);
+    console.log('PORT:', process.env.PORT);
+    console.log('DB_USER available:', !!process.env.DB_USER);
+    console.log('DB_PASSWORD available:', !!process.env.DB_PASSWORD);
+    console.log('DB_HOST available:', !!process.env.DB_HOST);
+    console.log('DB_NAME available:', !!process.env.DB_NAME);
+    console.log('DB_PORT:', process.env.DB_PORT);
+    console.log('All env vars containing DB:', Object.keys(process.env).filter(key => key.includes('DB')));
+    console.log('=== END DEBUG ===');
+
     // Get database configuration from environment variables
     const dbConfig = {
       user: process.env.DB_USER,
